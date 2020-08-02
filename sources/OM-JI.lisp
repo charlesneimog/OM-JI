@@ -957,3 +957,14 @@ THIS OBJECT ARE NOT READY YET. This just work with the fund 6000 and the aguda-n
           (removeIt (cdr lis)))))
 
 ; ===========================================================================
+
+
+(print 
+ "
+                                              OM-JI
+
+      by Charles K. Neimog | charlesneimog.com  
+            collab with reddit users 
+      Universidade Federal de Juiz de Fora (2019-2020)
+"
+)   

@@ -34,13 +34,13 @@
 		    )) 
 
 (print 
-"
+ "
                                               OM-JI
 
       by Charles K. Neimog | charlesneimog.com  
             collab with reddit users 
       Universidade Federal de Juiz de Fora (2019-2020)
 "
-)                
+)               
                     
 
