@@ -1,0 +1,57 @@
+(:om-lib
+
+(:version 0.3)
+(:doc "This Library was developed for the microtonal composition, Mainly to Just Intonation composition in Electronic Environment. 
+For suggestions email us at charlesneimog@outlook.com.
+
+See http://charlesneimog.com")
+(:author "Charles K. Neimog | charlesneimog.com | Master degree in Music Composition at Universidade Federal de Juiz de Fora")
+
+ ;;; SOURCE FILES TO LOAD
+
+(:source-files "sources/OM-JI")
+
+(:symbols 
+      (:packages
+            (:package (:name "Just-Intonation") (:functions rt->mc range-reduce octave-reduce filter-ac-inst modulation-notes modulation-notes-fund choose rt-octave))
+            (:package (:name "Harry Partch") (:functions Diamond Diamond-Identity otonal-inverse utonal-inverse))
+            (:package (:name "Erv Wilson") (:functions cps->identity cps->ratio)
+                  (:packages
+
+                        (:package (:name "MOS")
+                        (:functions MOS MOS-verify MOS-check))
+      
+                        (:package (:name "CPS-Hexany")
+                        (:functions Hexany Hexany-triads Hexany-connections))
+      
+                        (:package (:name "CPS-Eikosany")
+                        (:functions eikosany eikosany-triads eikosany-tetrads eikosany-connections))        
+                                                                                                 ))
+            (:package (:name "Ben Johnston") (:functions interval-sob arith-mean arith-mean-sob johnston-sob))      
+
+        (:package (:name "Others")
+      (:packages
+
+         (:package (:name "Math")
+            (:functions prime-decomposition))
+      
+          (:package (:name "Max/MSP")
+            (:functions midicents->midi gizmo send-max))
+      
+          (:package (:name "Temperament")
+            (:functions mk-temperament))     
+          ))
+          )
+            )
+                  )
+
+
+(print 
+"
+                                              OM-JI
+
+      by Charles K. Neimog | charlesneimog.com  
+            collab with Reddit users 
+      Universidade Federal de Juiz de Fora (2019-2020)
+"
+)       

@@ -1,0 +1,607 @@
+
+(:patch
+ (:om-version 0.049999997)
+ (:name "interval-sobreposition")
+ (:doc "")
+ (:info
+  (:created "2019/10/14 23:19:20")
+  (:modified "2019/10/14 23:19:27"))
+ (:window (:size (727 581)) (:position (52 26)))
+ (:grid nil)
+ (:lock nil)
+ (:boxes
+  (:comment
+   (:x 4)
+   (:y 89)
+   (:w 253)
+   (:h 93)
+   (:fgcolor (:color 0 0 0 1.0))
+   (:bgcolor nil)
+   (:border 0)
+   (:roundness nil)
+   (:text-font (:font (:face "Verdana") (:size 12) (:style :plain)))
+   (:align nil)
+   (:text
+    "Inlet 1: Nota Fundamental.
+
+Inlet 2: Intervalo de Afinação Justa.
+
+Inlet 3: Lista para as sobreposições.")
+   (:id 0))
+  (:comment
+   (:x 238)
+   (:y 238)
+   (:w 371)
+   (:h 59)
+   (:fgcolor (:color 0 0 0 1.0))
+   (:bgcolor nil)
+   (:border 0)
+   (:roundness nil)
+   (:text-font (:font (:face "Verdana") (:size 12) (:style :plain)))
+   (:align nil)
+   (:text
+    "Soprepõe um determinado intervalo seguindo uma lista (sieve). Example: No caso do intervalo 11/8 e a lista 1 2 3 4. O objeto sobreporá o intervalo 11/8 1 vez, 2 vezes, 3 vezes e 4 vezes.")
+   (:id 1))
+  (:box
+   (:type :object)
+   (:reference chord)
+   (:group-id nil)
+   (:name "CHORD")
+   (:x 42)
+   (:y 327)
+   (:w 271)
+   (:h 108)
+   (:color nil)
+   (:border nil)
+   (:roundness nil)
+   (:text-font nil)
+   (:align :center)
+   (:name "CHORD")
+   (:display :mini-view)
+   (:showname nil)
+   (:show-markers t)
+   (:group-id nil)
+   (:lock nil)
+   (:lambda nil)
+   (:inputs
+    (:input
+     (:type :standard)
+     (:name "SELF")
+     (:value nil)
+     (:reactive nil))
+    (:input
+     (:type :standard)
+     (:name "LMIDIC")
+     (:value (:list 6000))
+     (:reactive nil))
+    (:input
+     (:type :standard)
+     (:name "LVEL")
+     (:value (:list 100))
+     (:reactive nil))
+    (:input
+     (:type :standard)
+     (:name "LOFFSET")
+     (:value (:list 0))
+     (:reactive nil))
+    (:input
+     (:type :standard)
+     (:name "LDUR")
+     (:value (:list 1000))
+     (:reactive nil))
+    (:input
+     (:type :key)
+     (:name "lchan")
+     (:value (:list 1))
+     (:reactive nil)))
+   (:outputs
+    (:output (:name "SELF") (:reactive nil))
+    (:output (:name "LMIDIC") (:reactive nil))
+    (:output (:name "LVEL") (:reactive nil))
+    (:output (:name "LOFFSET") (:reactive nil))
+    (:output (:name "LDUR") (:reactive nil))
+    (:output (:name "lchan") (:reactive nil)))
+   (:window (:size nil) (:position nil))
+   (:edition-params (:staff :g))
+   (:value
+    (:object
+     (:class chord)
+     (:slots
+      ((:symbolic-date nil)
+       (:symbolic-dur nil)
+       (:symbolic-dur-extent 0)
+       (:onset 0)
+       (:item-time nil)
+       (:item-internal-time nil)
+       (:item-type nil)
+       (:attributes nil)
+       (:lmidic
+        (:list
+         6204
+         6612
+         6816
+         7020
+         7428
+         7836
+         8040
+         8244
+         8652
+         9060
+         9264
+         9468))
+       (:lvel (:list 100 100 100 100 100 100 100 100 100 100 100 100))
+       (:loffset (:list 0 0 0 0 0 0 0 0 0 0 0 0))
+       (:ldur
+        (:list
+         1000
+         1000
+         1000
+         1000
+         1000
+         1000
+         1000
+         1000
+         1000
+         1000
+         1000
+         1000))
+       (:lchan (:list 1 1 1 1 1 1 1 1 1 1 1 1))
+       (:lport nil)
+       (:notes
+        (:list
+         (:object
+          (:class note)
+          (:slots
+           ((:symbolic-date nil)
+            (:symbolic-dur nil)
+            (:symbolic-dur-extent 0)
+            (:midic 6204)
+            (:vel 100)
+            (:dur 1000)
+            (:chan 1)
+            (:port nil)
+            (:offset 0)))
+          (:add-slots ((:port nil))))
+         (:object
+          (:class note)
+          (:slots
+           ((:symbolic-date nil)
+            (:symbolic-dur nil)
+            (:symbolic-dur-extent 0)
+            (:midic 6612)
+            (:vel 100)
+            (:dur 1000)
+            (:chan 1)
+            (:port nil)
+            (:offset 0)))
+          (:add-slots ((:port nil))))
+         (:object
+          (:class note)
+          (:slots
+           ((:symbolic-date nil)
+            (:symbolic-dur nil)
+            (:symbolic-dur-extent 0)
+            (:midic 6816)
+            (:vel 100)
+            (:dur 1000)
+            (:chan 1)
+            (:port nil)
+            (:offset 0)))
+          (:add-slots ((:port nil))))
+         (:object
+          (:class note)
+          (:slots
+           ((:symbolic-date nil)
+            (:symbolic-dur nil)
+            (:symbolic-dur-extent 0)
+            (:midic 7020)
+            (:vel 100)
+            (:dur 1000)
+            (:chan 1)
+            (:port nil)
+            (:offset 0)))
+          (:add-slots ((:port nil))))
+         (:object
+          (:class note)
+          (:slots
+           ((:symbolic-date nil)
+            (:symbolic-dur nil)
+            (:symbolic-dur-extent 0)
+            (:midic 7428)
+            (:vel 100)
+            (:dur 1000)
+            (:chan 1)
+            (:port nil)
+            (:offset 0)))
+          (:add-slots ((:port nil))))
+         (:object
+          (:class note)
+          (:slots
+           ((:symbolic-date nil)
+            (:symbolic-dur nil)
+            (:symbolic-dur-extent 0)
+            (:midic 7836)
+            (:vel 100)
+            (:dur 1000)
+            (:chan 1)
+            (:port nil)
+            (:offset 0)))
+          (:add-slots ((:port nil))))
+         (:object
+          (:class note)
+          (:slots
+           ((:symbolic-date nil)
+            (:symbolic-dur nil)
+            (:symbolic-dur-extent 0)
+            (:midic 8040)
+            (:vel 100)
+            (:dur 1000)
+            (:chan 1)
+            (:port nil)
+            (:offset 0)))
+          (:add-slots ((:port nil))))
+         (:object
+          (:class note)
+          (:slots
+           ((:symbolic-date nil)
+            (:symbolic-dur nil)
+            (:symbolic-dur-extent 0)
+            (:midic 8244)
+            (:vel 100)
+            (:dur 1000)
+            (:chan 1)
+            (:port nil)
+            (:offset 0)))
+          (:add-slots ((:port nil))))
+         (:object
+          (:class note)
+          (:slots
+           ((:symbolic-date nil)
+            (:symbolic-dur nil)
+            (:symbolic-dur-extent 0)
+            (:midic 8652)
+            (:vel 100)
+            (:dur 1000)
+            (:chan 1)
+            (:port nil)
+            (:offset 0)))
+          (:add-slots ((:port nil))))
+         (:object
+          (:class note)
+          (:slots
+           ((:symbolic-date nil)
+            (:symbolic-dur nil)
+            (:symbolic-dur-extent 0)
+            (:midic 9060)
+            (:vel 100)
+            (:dur 1000)
+            (:chan 1)
+            (:port nil)
+            (:offset 0)))
+          (:add-slots ((:port nil))))
+         (:object
+          (:class note)
+          (:slots
+           ((:symbolic-date nil)
+            (:symbolic-dur nil)
+            (:symbolic-dur-extent 0)
+            (:midic 9264)
+            (:vel 100)
+            (:dur 1000)
+            (:chan 1)
+            (:port nil)
+            (:offset 0)))
+          (:add-slots ((:port nil))))
+         (:object
+          (:class note)
+          (:slots
+           ((:symbolic-date nil)
+            (:symbolic-dur nil)
+            (:symbolic-dur-extent 0)
+            (:midic 9468)
+            (:vel 100)
+            (:dur 1000)
+            (:chan 1)
+            (:port nil)
+            (:offset 0)))
+          (:add-slots ((:port nil))))))))
+     (:add-slots
+      ((:onset 0)
+       (:lchan (:list 1 1 1 1 1 1 1 1 1 1 1 1))
+       (:lport nil)))))
+   (:id 2))
+  (:box
+   (:library "Mathtools")
+   (:type :function)
+   (:reference revel-crible)
+   (:group-id nil)
+   (:name "revel-crible")
+   (:x 292)
+   (:y 163)
+   (:w 93)
+   (:h 30)
+   (:color nil)
+   (:border nil)
+   (:roundness nil)
+   (:text-font nil)
+   (:align nil)
+   (:lock nil)
+   (:lambda nil)
+   (:inputs
+    (:input
+     (:type :standard)
+     (:name "SELF")
+     (:value nil)
+     (:reactive nil)))
+   (:outputs (:output (:name "out") (:reactive nil)))
+   (:id 3))
+  (:box
+   (:library "Mathtools")
+   (:type :function)
+   (:reference c-union)
+   (:group-id nil)
+   (:name "c-union")
+   (:x 288)
+   (:y 96)
+   (:w 77)
+   (:h 30)
+   (:color nil)
+   (:border nil)
+   (:roundness nil)
+   (:text-font nil)
+   (:align nil)
+   (:lock nil)
+   (:lambda nil)
+   (:inputs
+    (:input
+     (:type :standard)
+     (:name "SELF")
+     (:value nil)
+     (:reactive nil))
+    (:input
+     (:type :standard)
+     (:name "CRIBLE")
+     (:value nil)
+     (:reactive nil)))
+   (:outputs (:output (:name "out") (:reactive nil)))
+   (:id 4))
+  (:box
+   (:library "Mathtools")
+   (:type :object)
+   (:reference crible)
+   (:group-id nil)
+   (:name "CRIBLE 2")
+   (:x 315)
+   (:y 39)
+   (:w 70)
+   (:h 50)
+   (:color nil)
+   (:border nil)
+   (:roundness nil)
+   (:text-font nil)
+   (:align :center)
+   (:name "CRIBLE 2")
+   (:display :hidden)
+   (:showname nil)
+   (:group-id nil)
+   (:lock nil)
+   (:lambda nil)
+   (:inputs
+    (:input
+     (:type :standard)
+     (:name "SELF")
+     (:value nil)
+     (:reactive nil))
+    (:input
+     (:type :standard)
+     (:name "CR-EXP")
+     (:value (:list 2 0 18))
+     (:reactive nil)))
+   (:outputs
+    (:output (:name "SELF") (:reactive nil))
+    (:output (:name "CR-EXP") (:reactive nil)))
+   (:window (:size nil) (:position nil))
+   (:edition-params)
+   (:value
+    (:object (:class crible) (:slots ((:cr-exp (:list 3 1 18))))))
+   (:id 5))
+  (:box
+   (:type :value)
+   (:reference cons)
+   (:group-id nil)
+   (:name "list 2")
+   (:x 337)
+   (:y 10)
+   (:w 51)
+   (:h 30)
+   (:color
+    (:color-or-nil
+     (:color (:color 1.0S0 1.0S0 1.0S0 1.0))
+     (:t-or-nil t)))
+   (:border nil)
+   (:roundness nil)
+   (:text-font nil)
+   (:align nil)
+   (:lock nil)
+   (:inputs)
+   (:outputs (:output (:name "value") (:reactive nil)))
+   (:value (:list 3 1 18))
+   (:id 6))
+  (:box
+   (:library "Mathtools")
+   (:type :object)
+   (:reference crible)
+   (:group-id nil)
+   (:name "CRIBLE")
+   (:x 244)
+   (:y 39)
+   (:w 70)
+   (:h 50)
+   (:color nil)
+   (:border nil)
+   (:roundness nil)
+   (:text-font nil)
+   (:align :center)
+   (:name "CRIBLE")
+   (:display :hidden)
+   (:showname nil)
+   (:group-id nil)
+   (:lock nil)
+   (:lambda nil)
+   (:inputs
+    (:input
+     (:type :standard)
+     (:name "SELF")
+     (:value nil)
+     (:reactive nil))
+    (:input
+     (:type :standard)
+     (:name "CR-EXP")
+     (:value (:list 2 0 18))
+     (:reactive nil)))
+   (:outputs
+    (:output (:name "SELF") (:reactive nil))
+    (:output (:name "CR-EXP") (:reactive nil)))
+   (:window (:size nil) (:position nil))
+   (:edition-params)
+   (:value
+    (:object (:class crible) (:slots ((:cr-exp (:list 2 1 18))))))
+   (:id 7))
+  (:box
+   (:type :value)
+   (:reference cons)
+   (:group-id nil)
+   (:name "list")
+   (:x 280)
+   (:y 10)
+   (:w 51)
+   (:h 30)
+   (:color
+    (:color-or-nil
+     (:color (:color 1.0S0 1.0S0 1.0S0 1.0))
+     (:t-or-nil t)))
+   (:border nil)
+   (:roundness nil)
+   (:text-font nil)
+   (:align nil)
+   (:lock nil)
+   (:inputs)
+   (:outputs (:output (:name "value") (:reactive nil)))
+   (:value (:list 2 1 18))
+   (:id 8))
+  (:box
+   (:type :value)
+   (:reference ratio)
+   (:group-id nil)
+   (:name "aux 2")
+   (:x 139)
+   (:y 196)
+   (:w 37)
+   (:h 30)
+   (:color
+    (:color-or-nil
+     (:color (:color 1.0S0 1.0S0 1.0S0 1.0))
+     (:t-or-nil t)))
+   (:border nil)
+   (:roundness nil)
+   (:text-font nil)
+   (:align nil)
+   (:lock nil)
+   (:inputs)
+   (:outputs (:output (:name "value") (:reactive nil)))
+   (:value 9/8)
+   (:id 9))
+  (:box
+   (:type :value)
+   (:reference fixnum)
+   (:group-id nil)
+   (:name "aux")
+   (:x 69)
+   (:y 193)
+   (:w 44)
+   (:h 30)
+   (:color
+    (:color-or-nil
+     (:color (:color 1.0S0 1.0S0 1.0S0 1.0))
+     (:t-or-nil t)))
+   (:border nil)
+   (:roundness nil)
+   (:text-font nil)
+   (:align nil)
+   (:lock nil)
+   (:inputs)
+   (:outputs (:output (:name "value") (:reactive nil)))
+   (:value 6000)
+   (:id 10))
+  (:box
+   (:library "OM-Partch")
+   (:type :function)
+   (:reference interval-sobreposition)
+   (:group-id nil)
+   (:name "interval-sobreposition")
+   (:x 47)
+   (:y 233)
+   (:w 190)
+   (:h 30)
+   (:color nil)
+   (:border nil)
+   (:roundness nil)
+   (:text-font nil)
+   (:align nil)
+   (:lock nil)
+   (:lambda nil)
+   (:inputs
+    (:input
+     (:type :standard)
+     (:name "FUND")
+     (:value 6000)
+     (:reactive nil))
+    (:input
+     (:type :standard)
+     (:name "RATIO")
+     (:value 11/8)
+     (:reactive nil))
+    (:input
+     (:type :standard)
+     (:name "SIEVE")
+     (:value (:list 2 3 7 11 12))
+     (:reactive nil)))
+   (:outputs (:output (:name "out") (:reactive nil)))
+   (:id 11)))
+ (:connections
+  (:connection
+   (:from (:box 3 :out 0))
+   (:to (:box 11 :in 2))
+   (:attributes (:color nil :style nil :modif nil)))
+  (:connection
+   (:from (:box 4 :out 0))
+   (:to (:box 3 :in 0))
+   (:attributes (:color nil :style nil :modif nil)))
+  (:connection
+   (:from (:box 5 :out 0))
+   (:to (:box 4 :in 1))
+   (:attributes (:color nil :style nil :modif nil)))
+  (:connection
+   (:from (:box 6 :out 0))
+   (:to (:box 5 :in 1))
+   (:attributes (:color nil :style nil :modif nil)))
+  (:connection
+   (:from (:box 7 :out 0))
+   (:to (:box 4 :in 0))
+   (:attributes (:color nil :style nil :modif nil)))
+  (:connection
+   (:from (:box 8 :out 0))
+   (:to (:box 7 :in 1))
+   (:attributes (:color nil :style nil :modif nil)))
+  (:connection
+   (:from (:box 9 :out 0))
+   (:to (:box 11 :in 1))
+   (:attributes (:color nil :style nil :modif nil)))
+  (:connection
+   (:from (:box 10 :out 0))
+   (:to (:box 11 :in 0))
+   (:attributes (:color nil :style nil :modif nil)))
+  (:connection
+   (:from (:box 11 :out 0))
+   (:to (:box 2 :in 1))
+   (:attributes (:color nil :style nil :modif nil)))))
