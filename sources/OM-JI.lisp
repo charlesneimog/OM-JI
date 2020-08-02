@@ -429,22 +429,12 @@ THIS OBJECT ARE NOT READY YET. This just work with the fund 6000 and the aguda-n
 (let* ((action1 (loop :for x :in (arithm-ser 1 sobreposition 1) :collect 
                       (if (om= (length (remove-dup (x->dx (x-append fund (sort-list  
 
-
            
 (mapcar #' (lambda (x) (+ (mod x (- aguda fund)) fund)) 
 
-
 (loop :for n :in (arithm-ser 1 x 1) :collect (+ fund (* (om- (f->mc (om* (mc->f fund) interval)) fund) n))))
 
-
-
-
 ) aguda)) 'eq 1)) number_of_interval) x 0))))
-
-
-
-
-
 
 (remove 0 action1)))
 
