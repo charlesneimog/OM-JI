@@ -27,15 +27,19 @@
 
 ;; ===================================================
 
-(defmethod! octave-reduce ((note list) (grave number))
-:initvals ' ((4800 7200 6000) 6000)
-:indoc ' ("List of midicents." "Bass-note: This note will be the bass-note, so if you use 4800 5000, and use the Bass-note 6500, the result will be (6500 6700) not (6000 6200). For this result use, the object range-reduce.")
+(defmethod! octave-reduce ((note list) (octave number))
+:initvals ' ((4800 7200 6000) 1)
+:indoc ' ("List of midicents."  "Octaves of this reduction.")
 :icon 002
 :doc "This object reduces a list of notes in a determinate space of octaves. The note of the first inlet will be the more down note allowed, and in the second inlet must be the octaves of the higher notes that will be allowed." 
 
-(let* ((range (* 1 1200)))
+(let* ((range (* octave 1200))
+(grave (first (sort-list note))))
 
 (if (let ((foo note)) (typep foo 'list-of-lists))
+
+;; Lista de lsitas
+;; Lista
    
       (loop :for listadelista :in note :collect (mapcar #' (lambda (x) (+ (mod x range) grave)) listadelista))
       (mapcar #' (lambda (x) (+ (mod x range) grave)) note))))
@@ -331,7 +335,6 @@ This is a procedure used by Ben Johnston in your strings quartets no. 2 and no. 
 (x-append utonal fundamental otonal)))
 
 
-
 ;; =================================== Erv Wilson =========================================
 
 (defmethod! MOS ((ratio number)(grave number) (aguda number) (sobreposition number))
@@ -348,7 +351,7 @@ These intervals are designated as the small (s) and large (L) intervals (FOR MAK
 
 The relative number of s and L intervals in an MOS is co-prime, i.e., they share no common factors other than 1. Fractions are used to represent MOS scales: the numerator shows the size of the generator, and the denominator shows the number of notes in the scale. 
 
-The numerator and denominator of fractions representing MOS are also co-prime. Wilson organizes these fractions hierarchically on the Scale Tree. MOS are not only scales in their own right but also provide a framework or template for constructing a family of Secondary MOS scales. (in NARUSHIMA - Microtonality and the Tuning Systems of Erv Wilson-Routledge)"
+The numerator and denominator of fractions representing MOS are also co-prime. Wilson organizes these fractions hierarchically on the Scale Tree. MOS are not only scales in their own right but also provide a framework or template for constructing a family of Secondary MOS scales. (in NARUSHIMA - Microtonality and the Tuning Systems of Erv Wilson-Routledge)."
 
 (let*  
 
@@ -400,7 +403,7 @@ aguda)))
 (let* 
     ((action1 (loop :for cknloop :in (x->dx (sort-list (flat notelist)))
 
-        :collect (if (om= cknloop (first (sort-list (remove-dup (x->dx (sort-list (flat notelist))) 'eq 1)))) "s" "L"))))
+        :collect (if (om= cknloop (first (sort-list (remove-dup (x->dx (sort-list (flat notelist))) 'eq 1)))) 's 'L))))
 
 (if (om= (length (remove-dup (x->dx (sort-list (flat notelist))) 'eq 1)) 2) action1 "This is not a MOS")))
 
