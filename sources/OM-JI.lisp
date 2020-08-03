@@ -672,7 +672,7 @@ THIS OBJECT ARE NOT READY YET. This just work with the fund 6000 and the aguda-n
   (cknremove (remove nil hexany)))
 
 (remove-duplicates cknremove :test #'equal)))
-
+ ;; Not ready yet
 
 ;; ===================================================
 
@@ -831,7 +831,6 @@ THIS OBJECT ARE NOT READY YET. This just work with the fund 6000 and the aguda-n
 	  (cond ((> d max-d) (return (list n))) ; n is prime
 		((zerop (rem n d)) (return (cons d (factor (truncate n d)))))))))
 
-
 (values 
  ((factor harmonic)) 
  (let* ((action1 (factor harmonic))) (remove 2 action1))))
@@ -856,6 +855,9 @@ THIS OBJECT ARE NOT READY YET. This just work with the fund 6000 and the aguda-n
 (values 
 (loop :for x :in harmonic :collect (factor x))
 (loop :for x :in harmonic :collect (let* ((action1 (factor x))) (remove 2 action1)))))
+
+
+;; ===================================================
 
 
 ;; ;; =================================== Others =============================================
@@ -939,7 +941,6 @@ THIS OBJECT ARE NOT READY YET. This just work with the fund 6000 and the aguda-n
 
 
 ; =================================== COMBINE BY MIKHAIL MALT (IRCAM 1993-1996) ================
-
 
 
 (defun cartesian-op (l1 l2 fun) 
