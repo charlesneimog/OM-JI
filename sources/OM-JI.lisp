@@ -337,6 +337,8 @@ This is a procedure used by Ben Johnston in your strings quartets no. 2 and no. 
 
 ;; =================================== Erv Wilson =========================================
 
+;; ====================== MOS =============================
+
 (defmethod! MOS ((ratio number)(grave number) (aguda number) (sobreposition number))
 :initvals ' (4/3 6000 7200 11)     
 :indoc ' ("Fundamental note of sobreposition" "Just Intonation interval" "High note" "Number of sobreposition")
@@ -441,7 +443,118 @@ THIS OBJECT ARE NOT READY YET. This just work with the fund 6000 and the aguda-n
 
 (remove 0 action1)))
 
+;; ====================== CPS =============================
+
+(defmethod! cps ((notes list) (quantidade number))
+:initvals ' ((1 3 5 7 9 11) 3)
+:indoc ' ("This object for make CPS's that are not an Hexany or an Eikosany. " "Number of the combinations of the product.")
+:outdoc ' ("harmonics")
+:icon 006
+:doc "This object makes CPS's that are not an Hexany or an Eikosany. In the first inlet put the harmonic-set. In the second inlet put the number of combinations for each set."
+(cps-fun notes quantidade))
+
+; ====== Functions 
+
+(defun cps-fun (notes quantidade) 
+
+(let* 
+
+((combinations (cond
+   ((<=  quantidade 0) notes)
+   (t (flat-once 
+       (cartesian-op notes (combx notes (1- quantidade)) 'x-append)))))
+
+
+  (hexany (loop for cknloop in combinations collect 
+
+        (let* ((ordem (sort-list cknloop))
+               (iguais (let ((L()))
+                         (loop for x from 0 to (1- (length ordem)) do
+                               (when (not (equal (nth (+ x 1) ordem) (nth x ordem)))
+                                 (push (nth x ordem) L)))
+                         (reverse L))))
+          (if (om= (length iguais) quantidade) iguais nil))))
+  (cknremove (remove nil hexany)))
+
+(remove-duplicates cknremove :test #'equal)))
+ ;; Not ready yet
+
 ;; ===================================================
+
+(defmethod! cps->ratio ((hexany list))
+:initvals ' (1 3 5 7)      
+:indoc ' ("harmonicos")
+:outdoc ' ("List of the combinations of the product/harmonics.")
+:icon 006
+:doc "This object converts the combination-product set to ratio."
+
+(cps->ratio-fun hexany))
+
+; ====== Functions 
+
+(defun cps->ratio-fun (hexany)
+(let* ((action1 
+(loop :for cknloop :in hexany :collect (reduce #'* cknloop))))
+
+(loop :for cknloop2 :in action1 :collect (/ cknloop2 (expt 2 (floor (log cknloop2 2)))))))
+
+;; ===================================================
+
+(defmethod! cps->identity ((cps list))
+:initvals ' (1 3 5 7)      
+:indoc ' ("Combination products set of a Hexany, Eikosany or others.")
+:outdoc ' ("Identities")
+:icon 006
+:doc "This object converts CPS to identity/identities in the theory of Partch."
+
+(loop :for cknloop :in cps :collect (reduce #'* cknloop)))
+
+;; ===================================================
+
+(defmethod! cps-chords ((vals list) (n number))
+:initvals ' ((1 3 5 7) 4)      
+:indoc ' ("Hexa" "chord-notes")
+:outdoc ' ("chords")
+:icon 006
+:doc ""
+
+(let* 
+
+((action0 
+(loop :for cknloop :in vals :collect (reduce #'* cknloop)))
+
+(ckn-action (loop :for cknloop2 :in action0 :collect (/ cknloop2 (expt 2 (floor (log cknloop2 2))))))
+
+(combinations (let ((n (1- n)))
+    (combx ckn-action n)))
+
+
+
+  (action1 (loop :for cknloop :in combinations :collect 
+
+        (let* ((ordem (sort-list cknloop))
+               (iguais (let ((L()))
+                         (loop for x from 0 to (1- (length ordem)) do
+                               (when (not (equal (nth (+ x 1) ordem) (nth x ordem)))
+                                 (push (nth x ordem) L)))
+                         (reverse L)))
+          (final (if (om= (length iguais) n) iguais nil))) (remove nil final)))))
+
+
+(remove-duplicates (remove nil action1) :test #'equal)))
+
+
+;; ===================================================
+
+(defmethod! CPS-connections ((lista list) (ratio number) (stacking number))
+:initvals ' ((209/128 1843/1024 133/128 1067/1024 77/64 679/512) 3 4)    
+:indoc ' ("list of ratio of a Hexany, Eikosany or others Wilson's CPS" "choose a ratio for the list in inlet1" "3 for triads; 4 for tetrads; etc")
+:icon 006
+:doc "This object show the connections of a CPS of Erv Wilson in a list of ratios and a number of stacking - example: Triads, Tetrads etcs..."
+
+)
+
+;; ====================== CPS-HEXANY ========================
 
 (defmethod! Hexany ((list list))
 :initvals ' ((5 7 13 17))    
@@ -472,51 +585,6 @@ THIS OBJECT ARE NOT READY YET. This just work with the fund 6000 and the aguda-n
 
 (remove-duplicates cknremove :test #'equal))
 (print "This is not a Hexany, The CPS Hexany needs 4 numbers: for example 3 7 13 17")))
-
-
-;; ===================================================
-(defmethod! hexany-connections ((harmonico list) (hexany list))
-:initvals ' ((3 13) ((3 5) (3 13) (5 13) (3 21) (5 21) (13 21)))    
-:indoc ' ("list of two harmonics" "list of just four harmonics")
-:icon 006
-:doc "This object shown the Hexany connections of the theory of Combination Product-Set of the Composer Erv Wilson."
-
-(let*
-  ((action1 (loop :for cknloop :in hexany
-   collect (let*  ((result1 (first harmonico)) (result2 (first cknloop)) (result3 (second harmonico)) (result4 (second cknloop)))
-       
-             (remove nil 
-                     (remove-duplicates (list
-                             (if (or  (om= result1 result2) (om= result1 result3)) cknloop nil) 
-                             (if (or (om= result3 result2) (om= result3 result4)) cknloop nil)) :test #'equal))))))
-        
-
-
-  (flat (remove nil action1) 1)))
-
-;; ===================================================
-(defmethod! eikosany-connections ((vertice list) (eikosany list))
-:initvals ' ((1 3 9) ((1 3 5) (1 3 7) (1 5 7) (3 5 7) (1 3 9) (1 5 9) (3 5 9) (1 7 9) (3 7 9) (5 7 9) (1 3 11) (1 5 11) (3 5 11) (1 7 11) (3 7 11) (5 7 11) (1 9 11) (3 9 11) (5 9 11) (7 9 11)))    
-:indoc ' ("list of tree harmonics" "list of the cps-eikosany")
-:icon 006
-:doc "This object shown the Eikosany connections of the theory of Combination Product-Set of the Composer Erv Wilson."
-
-(defun same-elem-p (lst1 lst2)
-  (cond ((not (null lst1))
-         (cond ((member (car lst1) lst2)
-                (same-elem-p (cdr lst1) lst2))
-               (t nil)))
-        (t t)))
-
-(let* ((task1 (loop for cknloop in eikosany collect (if
-          
-      (om<= 2 (reduce #'+ 
-                      (x-append
-              (if (same-elem-p (list (first vertice)) cknloop) 1 nil)
-              (if (same-elem-p (list (second vertice)) cknloop) 1 nil)
-              (if (same-elem-p (list (third vertice)) cknloop) 1 nil))))
-           cknloop nil))))
-(remove nil task1)))
 
 
 ;; ===================================================
@@ -569,40 +637,26 @@ THIS OBJECT ARE NOT READY YET. This just work with the fund 6000 and the aguda-n
 
 ;; ===================================================
 
-(defmethod! CPS-connections ((lista list) (ratio number) (stacking number))
-:initvals ' ((209/128 1843/1024 133/128 1067/1024 77/64 679/512) 3 4)    
-:indoc ' ("list of ratio of a Hexany, Eikosany or others Wilson's CPS" "choose a ratio for the list in inlet1" "3 for triads; 4 for tetrads; etc")
+(defmethod! Hexany-connections ((harmonico list) (hexany list))
+:initvals ' ((3 13) ((3 5) (3 13) (5 13) (3 21) (5 21) (13 21)))    
+:indoc ' ("list of two harmonics" "list of just four harmonics")
 :icon 006
-:doc "This object show the connections of a CPS of Erv Wilson in a list of ratios and a number of stacking - example: Triads, Tetrads etcs..."
+:doc "This object shown the Hexany connections of the theory of Combination Product-Set of the Composer Erv Wilson."
+
+(let*
+  ((action1 (loop :for cknloop :in hexany
+   collect (let*  ((result1 (first harmonico)) (result2 (first cknloop)) (result3 (second harmonico)) (result4 (second cknloop)))
+       
+             (remove nil 
+                     (remove-duplicates (list
+                             (if (or  (om= result1 result2) (om= result1 result3)) cknloop nil) 
+                             (if (or (om= result3 result2) (om= result3 result4)) cknloop nil)) :test #'equal))))))
+        
 
 
-(let* 
-    ((choose (nth (om- ratio 1) lista))
+  (flat (remove nil action1) 1)))
 
-     (loop1 (loop for it-11 in lista collect 
-       (x-append (if (om= (numerator choose) (numerator it-11)) it-11 nil)
-       (if (om= (denominator choose) (denominator it-11)) it-11 nil))))
-
-     (action1 (remove-dup (remove nil (flat loop1)) 'eq 1))
-
-     (combinations (let* ((stacking (1- stacking))) (combx action1 stacking)))
-
-
-
-(action2 (loop for cknloop in combinations collect (if  (om= (length 
-                                                     (let ((L())) 
-      (loop for x from 0 to (1- (length (sort-list cknloop))) do
-          (when (not (equal (nth (+ x 1) (sort-list cknloop)) (nth x (sort-list cknloop))))
-            (push (nth x (sort-list cknloop)) L))) 
-      (reverse L))) stacking) (let ((L())) (loop for x from 0 to (1- (length (sort-list cknloop))) do
-          (when (not (equal (nth (+ x 1) (sort-list cknloop)) (nth x (sort-list cknloop))))
-            (push (nth x (sort-list cknloop)) L))) (reverse L)) nil)))
-
-(action3 (remove nil action2)))
-
-(remove-duplicates action3 :test #'equal)))
-
-;; ===================================================
+;; ====================== CPS-EIKOSANY ====================
 
 (defmethod! eikosany ((6-notes list))
 :initvals ' ((1 3 5 7 9 11))      
@@ -624,7 +678,7 @@ THIS OBJECT ARE NOT READY YET. This just work with the fund 6000 and the aguda-n
        (cartesian-op 6-notes (combx 6-notes (1- 3)) 'x-append)))))
 
 
-  (hexany (loop for cknloop in combinations collect 
+  (EIKOSANY (loop for cknloop in combinations collect 
 
         (let* ((ordem (sort-list cknloop))
                (iguais (let ((L()))
@@ -633,46 +687,9 @@ THIS OBJECT ARE NOT READY YET. This just work with the fund 6000 and the aguda-n
                                  (push (nth x ordem) L)))
                          (reverse L))))
           (if (om= (length iguais) 3) iguais nil))))
-  (cknremove (remove nil hexany)))
+  (cknremove (remove nil EIKOSANY)))
 
 (remove-duplicates cknremove :test #'equal)))
-
-
-;; ===================================================
-
-(defmethod! cps ((notes list) (quantidade number))
-:initvals ' ((1 3 5 7 9 11) 3)
-:indoc ' ("This object for make CPS's that are not an Hexany or an Eikosany. " "Number of the combinations of the product.")
-:outdoc ' ("harmonics")
-:icon 006
-:doc "This object makes CPS's that are not an Hexany or an Eikosany. In the first inlet put the harmonic-set. In the second inlet put the number of combinations for each set."
-(cps-fun notes quantidade))
-
-; ====== Functions 
-
-(defun cps-fun (notes quantidade) 
-
-(let* 
-
-((combinations (cond
-   ((<=  quantidade 0) notes)
-   (t (flat-once 
-       (cartesian-op notes (combx notes (1- quantidade)) 'x-append)))))
-
-
-  (hexany (loop for cknloop in combinations collect 
-
-        (let* ((ordem (sort-list cknloop))
-               (iguais (let ((L()))
-                         (loop for x from 0 to (1- (length ordem)) do
-                               (when (not (equal (nth (+ x 1) ordem) (nth x ordem)))
-                                 (push (nth x ordem) L)))
-                         (reverse L))))
-          (if (om= (length iguais) quantidade) iguais nil))))
-  (cknremove (remove nil hexany)))
-
-(remove-duplicates cknremove :test #'equal)))
- ;; Not ready yet
 
 ;; ===================================================
 
@@ -722,85 +739,44 @@ THIS OBJECT ARE NOT READY YET. This just work with the fund 6000 and the aguda-n
 (values 
 (let* (
 (action1 (cps-fun 6-notes 4)))
-(loop for cknloop in action1 collect (cps->ratio-fun (cps-fun cknloop 3))))
+(loop :for cknloop :in action1 :collect (cps->ratio-fun (cps-fun cknloop 3))))
 
 ;; harmonic
 
 (let* (
 (action1 (cps-fun 6-notes 4)))
 
-(loop for cknloop in action1 collect 
+(loop :for cknloop :in action1 :collect 
       (rt-octave (let*
           ((action2-1 (set-difference 6-notes cknloop))
           (action2-2 (reduce #'* action2-1)))
           (om* cknloop action2-2)))))))
 
 
-
 ;; ===================================================
 
-(defmethod! cps->ratio ((hexany list))
-:initvals ' (1 3 5 7)      
-:indoc ' ("harmonicos")
-:outdoc ' ("List of the combinations of the product/harmonics.")
+(defmethod! eikosany-connections ((vertice list) (eikosany list))
+:initvals ' ((1 3 9) ((1 3 5) (1 3 7) (1 5 7) (3 5 7) (1 3 9) (1 5 9) (3 5 9) (1 7 9) (3 7 9) (5 7 9) (1 3 11) (1 5 11) (3 5 11) (1 7 11) (3 7 11) (5 7 11) (1 9 11) (3 9 11) (5 9 11) (7 9 11)))    
+:indoc ' ("list of tree harmonics" "list of the cps-eikosany")
 :icon 006
-:doc "This object converts the combination-product set to ratio."
+:doc "This object shown the Eikosany connections of the theory of Combination Product-Set of the Composer Erv Wilson."
 
-(cps->ratio-fun hexany))
+(defun same-elem-p (lst1 lst2)
+  (cond ((not (null lst1))
+         (cond ((member (car lst1) lst2)
+                (same-elem-p (cdr lst1) lst2))
+               (t nil)))
+        (t t)))
 
-; ====== Functions 
-
-(defun cps->ratio-fun (hexany)
-(let* ((action1 
-(loop for cknloop in hexany collect (reduce #'* cknloop))))
-
-(loop for cknloop2 in action1 collect (/ cknloop2 (expt 2 (floor (log cknloop2 2)))))))
-
-;; ===================================================
-
-(defmethod! cps->identity ((hexany list))
-:initvals ' (1 3 5 7)      
-:indoc ' ("Combination products set of a Hexany, Eikosany or others.")
-:outdoc ' ("identities")
-:icon 006
-:doc "This object converts CPS to identity/identities."
-
-(loop for cknloop in hexany collect (reduce #'* cknloop)))
-
-;; ===================================================
-
-(defmethod! cps-chords ((vals list) (n number))
-:initvals ' ((1 3 5 7) 4)      
-:indoc ' ("Hexa" "chord-notes")
-:outdoc ' ("chords")
-:icon 006
-:doc ""
-
-(let* 
-
-((action0 
-(loop for cknloop in vals collect (reduce #'* cknloop)))
-
-(ckn-action (loop for cknloop2 in action0 collect (/ cknloop2 (expt 2 (floor (log cknloop2 2))))))
-
-(combinations (let ((n (1- n)))
-    (combx ckn-action n)))
-
-
-
-  (action1 (loop for cknloop in combinations collect 
-
-        (let* ((ordem (sort-list cknloop))
-               (iguais (let ((L()))
-                         (loop for x from 0 to (1- (length ordem)) do
-                               (when (not (equal (nth (+ x 1) ordem) (nth x ordem)))
-                                 (push (nth x ordem) L)))
-                         (reverse L)))
-          (final (if (om= (length iguais) n) iguais nil))) (remove nil final)))))
-
-
-(remove-duplicates (remove nil action1) :test #'equal)))
-
+(let* ((task1 (loop for cknloop in eikosany collect (if
+          
+      (om<= 2 (reduce #'+ 
+                      (x-append
+              (if (same-elem-p (list (first vertice)) cknloop) 1 nil)
+              (if (same-elem-p (list (second vertice)) cknloop) 1 nil)
+              (if (same-elem-p (list (third vertice)) cknloop) 1 nil))))
+           cknloop nil))))
+(remove nil task1)))
 
 ;; ;; =================================== Temperament =======================================
 
@@ -820,7 +796,7 @@ THIS OBJECT ARE NOT READY YET. This just work with the fund 6000 and the aguda-n
 :indoc ' ("number or list of the harmonics/parcials.")
 :outdoc ' ("Prime-decomposition" "Prime-decomposition without the 2 that represents the octave interval")
 :icon 004
-:doc "It does the decomposition of prime numbers. This can be useful with identities by Harry Partch, mainly, when we use the conception of identity by Ben Johnston: 'Each prime number used in deriving a harmonic scale contributes to a characteristic psychoacoustical meaning (JOHNSTON, 2006, p. 27).'"
+:doc "It does the decomposition of prime numbers. This can be useful with identities by Harry Partch, mainly, when we use the conception of identity by Ben Johnston: 'Each prime number used in deriving a harmonic scale contributes to a characteristic psychoacoustical meaning (JOHNSTON, 2006, p. 27).' Lisp code of https://sholtz9421.wordpress.com/2012/10/08/prime-number-factorization-in-lisp/."
 :numouts 2 
 
 (defun factor (n)
@@ -840,7 +816,7 @@ THIS OBJECT ARE NOT READY YET. This just work with the fund 6000 and the aguda-n
 :indoc ' ("Number or numbers list.")
 :outdoc ' ("Prime-decomposition" "Prime-decomposition without the number 2. It represents the octave interval")
 :icon 004
-:doc "It does the decomposition of prime numbers. This can be useful with identities by Harry Partch, mainly, when we use the conception of identity by Ben Johnston: 'Each prime number used in deriving a harmonic scale contributes to a characteristic psychoacoustical meaning (JOHNSTON, 2006, p. 27).'"
+:doc "It does the decomposition of prime numbers. This can be useful with identities by Harry Partch, mainly, when we use the conception of identity by Ben Johnston: 'Each prime number used in deriving a harmonic scale contributes to a characteristic psychoacoustical meaning (JOHNSTON, 2006, p. 27).' Lisp code of https://sholtz9421.wordpress.com/2012/10/08/prime-number-factorization-in-lisp/."
 :numouts 2 
 
 (defun factor (n)
