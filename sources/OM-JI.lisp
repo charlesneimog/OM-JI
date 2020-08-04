@@ -786,7 +786,9 @@ THIS OBJECT ARE NOT READY YET. This just work with the fund 6000 and the aguda-n
 :icon 004
 :doc "create a temperament"
 
-(x-append fund (f->mc (om* (mc->f fund) (om^ (expt ratio (om/ 1 division)) (arithm-ser 1 division 1))))))
+(let ((Question (print "Temperamented music, really?")))
+
+(x-append fund (f->mc (om* (mc->f fund) (om^ (expt ratio (om/ 1 division)) (arithm-ser 1 division 1)))))))
 
 
 ;; ;; =================================== Math =============================================
