@@ -59,24 +59,24 @@
 
 (loop :for notelistloop :in notelist :collect
       (mapcar (lambda (x)
-	            (loop :for new-val := x :then (if (< new-val aguda)
-			            (+ new-val octave-redution)
-			            (- new-val octave-redution))
-		              :until (and (<= grave new-val)
-			            (>= aguda new-val))
-		              :finally (return new-val)))
-  	          notelistloop))
+	  (loop :for new-val := x
+		  :then (if (< new-val aguda)
+			    (+ new-val octave-redution)
+			    (- new-val octave-redution))
+		:until (and (<= grave new-val)
+			    (>= aguda new-val))
+		:finally (return new-val)))
+	notelistloop))
 
 (mapcar (lambda (x)
-	           (loop :for new-val := x :then (if (< new-val aguda)
-			           (+ new-val octave-redution)
-			            (- new-val octave-redution))
-		              :until (and (<= grave new-val)
-			            (>= aguda new-val))
-		            :finally (return new-val)))
-	        notelist)) 
-          
-(print "RANGE-REDUCE: The difference between the inlet2 e inlet3 must be at least 1200 cents"))))
+	  (loop :for new-val := x
+		  :then (if (< new-val aguda)
+			    (+ new-val octave-redution)
+			    (- new-val octave-redution))
+		:until (and (<= grave new-val)
+			    (>= aguda new-val))
+		:finally (return new-val)))
+	notelist)) (print "RANGE-REDUCE: The difference between the inlet2 e inlet3 must be at least 1200 cents"))))
 
 
 ;;; Do the reduction of a list in this way in two octaves (6000 8400)
@@ -458,19 +458,25 @@ THIS OBJECT ARE NOT READY YET. This just work with the fund 6000 and the aguda-n
 (defun cps-fun (notes quantidade) 
 
 (let* 
-(
- (combinations (cond
+
+((combinations (cond
    ((<=  quantidade 0) notes)
    (t (flat-once 
        (cartesian-op notes (combx notes (1- quantidade)) 'x-append)))))
 
- (action1 (loop :for cknloop :in combinations collect (sort-list cknloop)))
 
- (action2 (remove nil (loop :for cknloop2 :in action1 :collect 
-          (if (om= (length (remove-duplicates cknloop2 :test #'equal)) quantidade) (remove-duplicates cknloop2 :test #'equal) nil)))))
+  (hexany (loop for cknloop in combinations collect 
 
-(remove-duplicates action2 :test #'equal)))
+        (let* ((ordem (sort-list cknloop))
+               (iguais (let ((L()))
+                         (loop for x from 0 to (1- (length ordem)) do
+                               (when (not (equal (nth (+ x 1) ordem) (nth x ordem)))
+                                 (push (nth x ordem) L)))
+                         (reverse L))))
+          (if (om= (length iguais) quantidade) iguais nil))))
+  (cknremove (remove nil hexany)))
 
+(remove-duplicates cknremove :test #'equal)))
  ;; Not ready yet
 
 ;; ===================================================
@@ -546,36 +552,38 @@ THIS OBJECT ARE NOT READY YET. This just work with the fund 6000 and the aguda-n
 :icon 006
 :doc "This object show the connections of a CPS of Erv Wilson in a list of ratios and a number of stacking - example: Triads, Tetrads etcs..."
 
-(print "not ready yet"))
+)
 
 ;; ====================== CPS-HEXANY ========================
 
-(defmethod! Hexany ((Hexany list))
+(defmethod! Hexany ((list list))
 :initvals ' ((5 7 13 17))    
 :indoc ' ("List of just four harmonics.")
 :icon 006
 :doc "This object create a Hexany of the theory of Combination Product-Set of the Composer Erv Wilson."
 
-(if (= 4 (length Hexany)) 
+(if (= 4 (length list)) 
 
 (let* 
-(
- (combinations (cond
-   ((<=  2 0) Hexany)
+
+((combinations (cond
+   ((<=  2 0) list)
    (t (flat-once 
-       (cartesian-op Hexany (combx Hexany (1- 2)) 'x-append)))))
-
- (action1 (loop :for cknloop :in combinations collect (sort-list cknloop)))
-
- (action2 (remove nil (loop :for cknloop2 :in action1 :collect 
-          (if (om= (length (remove-duplicates cknloop2 :test #'equal)) 2) (remove-duplicates cknloop2 :test #'equal) nil)))))
-
-(remove-duplicates action2 :test #'equal))
+       (cartesian-op list (combx list (1- 2)) 'x-append)))))
 
 
+  (hexany (loop :for cknloop :in combinations :collect 
 
+        (let* ((ordem (sort-list cknloop))
+               (iguais (let ((L()))
+                         (loop :for x :from 0 :to (1- (length ordem)) :do
+                               (when (not (equal (nth (+ x 1) ordem) (nth x ordem)))
+                                 (push (nth x ordem) L)))
+                         (reverse L))))
+          (if (om= (length iguais) 2) iguais nil))))
+  (cknremove (remove nil hexany)))
 
-
+(remove-duplicates cknremove :test #'equal))
 (print "This is not a Hexany, The CPS Hexany needs 4 numbers: for example 3 7 13 17")))
 
 
@@ -668,12 +676,11 @@ THIS OBJECT ARE NOT READY YET. This just work with the fund 6000 and the aguda-n
  (combinations (cond
    ((<=  3 0) 6-notes)
    (t (flat-once 
-       (cartesian-op 6-notes (combx 6-notes (1- 3)) 'x-append)))))
+       (cartesian-op 6-notes (combx 6-notes (1- 2)) 'x-append)))))
 
  (action1 (loop :for cknloop :in combinations collect (sort-list cknloop)))
 
- (action2 (remove nil (loop :for cknloop2 :in action1 :collect 
-          (if (om= (length (remove-duplicates cknloop2 :test #'equal)) 3) (remove-duplicates cknloop2 :test #'equal) nil)))))
+ (action2 (remove nil (loop :for cknloop2 :in action1 :collect (if (om= (length (remove-duplicates cknloop2 :test #'equal)) 3) (remove-duplicates cknloop2 :test #'equal) nil)))))
 
 (remove-duplicates action2 :test #'equal)))
 
@@ -687,6 +694,8 @@ THIS OBJECT ARE NOT READY YET. This just work with the fund 6000 and the aguda-n
 :icon 006
 :doc "The object eikosany-triads construct the triads of the CPS eikosany. It follows the theory presented by Terumi Narushima in your book Microtonality and the Tuning Systems of Erv Wilson. In the outlet of the left, we have the sub-harmonics triads. In the outlet of the right, we have the harmonic triads."
 
+(print "This object embedded functions by Mikhail Malt")
+
 (values 
 
 ;; subharmonic
@@ -696,7 +705,7 @@ THIS OBJECT ARE NOT READY YET. This just work with the fund 6000 and the aguda-n
 (action2 (loop for cknloop5 in action1 collect (rt-octave-fun
               (let* ((action2-1 (set-difference 6-notes cknloop5))
                      (action2-2 (cps->ratio-fun (cps-fun cknloop5 2))))
-                (loop for cknloop6 in action2-1 collect (om* action2-2 cknloop6))) 2))))
+                (loop for cknloop6 in action2-1 collect (om* action2-2 cknloop6)))))))
 (flat action2 1))
 
 
@@ -704,9 +713,9 @@ THIS OBJECT ARE NOT READY YET. This just work with the fund 6000 and the aguda-n
 
 (let* ((action1 (cps-fun 6-notes 3))
 
-(action2 (loop for cknloop1 in action1 collect (rt-octave-fun
+(action2 (loop for cknloop1 in action1 collect (rt-octave 
           (let* ((action2-1 (cps->ratio-fun (cps-fun (set-difference 6-notes cknloop1) 2))))
-            (loop for cknloop1-1 in action2-1 collect (om* cknloop1 cknloop1-1))) 2))))
+            (loop for cknloop1-1 in action2-1 collect (om* cknloop1 cknloop1-1)))))))
 
 (flat action2 1))))
 
@@ -721,12 +730,9 @@ THIS OBJECT ARE NOT READY YET. This just work with the fund 6000 and the aguda-n
 :doc "The object eikosany-tetrads construct the tetrads of the CPS Eikosany. It follows the theory presented by Terumi Narushima in your book Microtonality and the Tuning Systems of Erv Wilson. In the outlet of the left, we have the sub-harmonics tetrads. In the outlet of the right, we have the harmonic tetrads."
 
 (values 
-;; sub-harmonic
-  (let* (
-      (action1 (cps-fun 6-notes 4))
-        )
-      (loop :for cknloop :in action1 :collect (cps->ratio-fun (cps-fun cknloop 3)))
-  )
+(let* (
+(action1 (cps-fun 6-notes 4)))
+(loop :for cknloop :in action1 :collect (cps->ratio-fun (cps-fun cknloop 3))))
 
 ;; harmonic
 
@@ -734,10 +740,10 @@ THIS OBJECT ARE NOT READY YET. This just work with the fund 6000 and the aguda-n
 (action1 (cps-fun 6-notes 4)))
 
 (loop :for cknloop :in action1 :collect 
-      (rt-octave-fun (let*
+      (rt-octave (let*
           ((action2-1 (set-difference 6-notes cknloop))
           (action2-2 (reduce #'* action2-1)))
-          (om* cknloop action2-2)) 2)))))
+          (om* cknloop action2-2)))))))
 
 
 ;; ===================================================
