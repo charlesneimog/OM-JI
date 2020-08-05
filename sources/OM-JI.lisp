@@ -368,16 +368,18 @@ The numerator and denominator of fractions representing MOS are also co-prime. W
 (
 (octave-reduction (* (+ 1 (truncate (om- aguda grave) 1200)) 1200))
 (aguda-oitava (+ grave octave-reduction))
-(reducao-em-oitava (mapcar (lambda (x)
-	  (loop :for new-val := x
-		  :then (if (< new-val aguda-oitava)
-			    (+ new-val octave-reduction)
-			    (- new-val octave-reduction))
-		:until (and (<= grave new-val)
-			    (>= aguda-oitava new-val))
-		:finally (return new-val)))
-	mos-create))
-(octave-reduction2 (* (truncate (om- aguda grave) 1200) 1200)))
+(reducao-em-oitava 
+
+    (mapcar (lambda (x)
+        (loop :for new-val := x
+          :then (if (< new-val aguda-oitava)
+              (+ new-val octave-reduction)
+              (- new-val octave-reduction))
+        :until (and (<= grave new-val) (>= aguda-oitava new-val)
+              )
+        :finally (return new-val)))
+              mos-create))
+  (octave-reduction2 (* (truncate (om- aguda grave) 1200) 1200)))
 
 
  (mapcar (lambda (x)
@@ -385,13 +387,9 @@ The numerator and denominator of fractions representing MOS are also co-prime. W
 		  :then (if (< new-val aguda)
 			    (+ new-val octave-reduction2)
 			    (- new-val octave-reduction2))
-		:until (and (<= grave new-val)
-			    (>= aguda new-val))
+		:until (and (<= grave new-val) (>= aguda new-val))
 		:finally (return new-val)))
-	reducao-em-oitava))
-
-aguda)))
-
+	reducao-em-oitava)) aguda)))
 
 ;; ===================================================
 
@@ -432,14 +430,12 @@ THIS OBJECT ARE NOT READY YET. This just work with the fund 6000 and the aguda-n
 
 
 (let* ((action1 (loop :for x :in (arithm-ser 1 sobreposition 1) :collect 
-                      (if (om= (length (remove-dup (x->dx (x-append fund (sort-list  
+                      (if (om= (length (remove-dup (x->dx (x-append fund (sort-list          
+                          (mapcar #' (lambda (x) (+ (mod x (- aguda fund)) fund)) 
+                            (loop :for n :in (arithm-ser 1 x 1) :collect (+ fund (* (om- (f->mc (om* (mc->f fund) interval)) fund) n))))
 
-           
-(mapcar #' (lambda (x) (+ (mod x (- aguda fund)) fund)) 
-
-(loop :for n :in (arithm-ser 1 x 1) :collect (+ fund (* (om- (f->mc (om* (mc->f fund) interval)) fund) n))))
-
-) aguda)) 'eq 1)) number_of_interval) x 0))))
+                      ) aguda)) 'eq 1)) number_of_interval) x 0)))
+      )
 
 (remove 0 action1)))
 
@@ -450,7 +446,13 @@ THIS OBJECT ARE NOT READY YET. This just work with the fund 6000 and the aguda-n
 :indoc ' ("This object for make CPS's that are not an Hexany or an Eikosany. " "Number of the combinations of the product.")
 :outdoc ' ("harmonics")
 :icon 006
-:doc "This object makes CPS's that are not an Hexany or an Eikosany. In the first inlet put the harmonic-set. In the second inlet put the number of combinations for each set."
+:doc "This object makes CPS's that are not an Hexany or an Eikosany. In the first inlet put the harmonic-set. In the second inlet put the number of combinations for each set.
+
+Example: 
+      Hebdomekontany: use 8 harmonics and 4 and the 2 inlet.
+      Dekanies: Use 3 harmonics and 5 and the 2 inlet.
+       "
+
 (cps-fun notes quantidade))
 
 ; ====== Functions 
@@ -459,19 +461,19 @@ THIS OBJECT ARE NOT READY YET. This just work with the fund 6000 and the aguda-n
 
 (let* 
 (
- (combinations (cond
-   ((<=  quantidade 0) notes)
-   (t (flat-once 
-       (cartesian-op notes (combx notes (1- quantidade)) 'x-append)))))
+  (combinations (cond
+            ((<=  quantidade 0) notes) 
+            (t (flat-once (cartesian-op notes (combx notes (1- quantidade)) 'x-append)))
+                )
+  )
 
- (action1 (loop :for cknloop :in combinations collect (sort-list cknloop)))
+  (action1 (loop :for cknloop :in combinations collect (sort-list cknloop)))
 
- (action2 (remove nil (loop :for cknloop2 :in action1 :collect 
-          (if (om= (length (remove-duplicates cknloop2 :test #'equal)) quantidade) (remove-duplicates cknloop2 :test #'equal) nil)))))
+  (action2 (remove nil (loop :for cknloop2 :in action1 :collect 
+            (if (om= (length (remove-duplicates cknloop2 :test #'equal)) quantidade) 
+              (remove-duplicates cknloop2 :test #'equal) nil)))))
 
 (remove-duplicates action2 :test #'equal)))
-
- ;; Not ready yet
 
 ;; ===================================================
 
@@ -487,10 +489,11 @@ THIS OBJECT ARE NOT READY YET. This just work with the fund 6000 and the aguda-n
 ; ====== Functions 
 
 (defun cps->ratio-fun (hexany)
-(let* ((action1 
-(loop :for cknloop :in hexany :collect (reduce #'* cknloop))))
+(let* (
+  
+    (action1 (loop :for cknloop :in hexany :collect (reduce #'* cknloop))))
 
-(loop :for cknloop2 :in action1 :collect (/ cknloop2 (expt 2 (floor (log cknloop2 2)))))))
+  (loop :for cknloop2 :in action1 :collect (/ cknloop2 (expt 2 (floor (log cknloop2 2)))))))
 
 ;; ===================================================
 
@@ -616,8 +619,6 @@ THIS OBJECT ARE NOT READY YET. This just work with the fund 6000 and the aguda-n
 
 (loop for cknloop2 in actionmain2 collect (loop for cknloop3 in cknloop2 collect (/ cknloop3 (expt 2 (floor (log cknloop3 2)))))))
 
-
-
 ; ====
 
 (let* ((ratios (loop for cknloop4 in (arithm-ser 1 (length harmonicos) 1) collect 
@@ -644,8 +645,6 @@ THIS OBJECT ARE NOT READY YET. This just work with the fund 6000 and the aguda-n
                              (if (or  (om= result1 result2) (om= result1 result3)) cknloop nil) 
                              (if (or (om= result3 result2) (om= result3 result4)) cknloop nil)) :test #'equal))))))
         
-
-
   (flat (remove nil action1) 1)))
 
 ;; ====================== CPS-EIKOSANY ====================
@@ -866,7 +865,6 @@ THIS OBJECT ARE NOT READY YET. This just work with the fund 6000 and the aguda-n
 
 (om/ (log (/ freq 165) 10) 0.06))
 
-
 ; =================================== Functions of Others OM libraries ================
 
 
@@ -910,7 +908,8 @@ THIS OBJECT ARE NOT READY YET. This just work with the fund 6000 and the aguda-n
 
 (defun cartesian-op (l1 l2 fun) 
 
-  (mapcar #'(lambda (x) (mapcar #'(lambda (y) (funcall fun x y)) (list! l2))) (list! l1)))
+  (mapcar #'(lambda (x) (mapcar #'(lambda (y) (funcall fun x y)) (list! l2))) (list! l1))
+)
 
 (defun combx (vals n)
   (cond
@@ -923,7 +922,8 @@ THIS OBJECT ARE NOT READY YET. This just work with the fund 6000 and the aguda-n
   (if (null lis) 0
       (if (= a (car lis))
           (delete (car lis))
-          (removeIt (cdr lis)))))
+          (removeIt (cdr lis))))
+)
 
 ; ===========================================================================
 
