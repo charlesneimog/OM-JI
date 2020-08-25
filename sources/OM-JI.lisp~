@@ -38,7 +38,7 @@
 
 (if (let ((foo note)) (typep foo 'list-of-lists))
 
-;; Lista de listas
+;; Lista de lsitas
 ;; Lista
    
       (loop :for listadelista :in note :collect (mapcar #' (lambda (x) (+ (mod x range) grave)) listadelista))
@@ -127,10 +127,7 @@
                        (second (mapcar #' (lambda (x) (+ (mod x 1200) 6000)) note))) cents)
                  (om< (om- cents (om* cents 2)) 
                       (om- (first (mapcar #' (lambda (x) (+ (mod x 1200) 6000)) note)) 
-                      (second (mapcar #' (lambda (x) (+ (mod x 1200) 6000)) note))))) note 0)))
-(result4 (remove 0 result3)))
-
-(progn (loop :for x in result4 do (print (x-append "The note" (first x) "(of the first inlet)" "can be modulated using the note" (second x) "(of the second inlet)"))) 'finish)))
+                      (second (mapcar #' (lambda (x) (+ (mod x 1200) 6000)) note))))) note 0)))) (remove 0 result3)))
 
 ;; ===================================================
 
@@ -626,7 +623,7 @@ Example:
 
 (actionmain2 (loop for ckn-loop in actionmain collect (loop for ckn-loop2 in ckn-loop collect (reduce #'* ckn-loop2)))))
 
-(loop :for cknloop2 :in actionmain2 :collect (loop :for cknloop3 in cknloop2 collect (/ cknloop3 (expt 2 (floor (log cknloop3 2)))))))
+(loop for cknloop2 in actionmain2 collect (loop for cknloop3 in cknloop2 collect (/ cknloop3 (expt 2 (floor (log cknloop3 2)))))))
 
 ; ====
 
