@@ -936,7 +936,7 @@ Example:
 
 ; ========================================== OM#-PLAY =======================
 
-(defmethod! play ((ckn VOICE) &optional (a 2) )
+(defmethod! play ((ckn VOICE) &optional (a 1))
 :initvals ' ((nil))       
 :indoc ' ("A player for OM#")
 :outdoc ' ("PLAY")
@@ -995,21 +995,26 @@ Example:
 
 (ckn-action2 (loop :for cknloop :in ckn-action1 :collect (if (= 0 cknloop) (setq a (+ a 1)) nil)))
 
-(ckn-action3 (om+ (om- ckn-action2 (first ckn-action2) ) 1))
+(ckn-action3 
 
+      (let* (
+        (ckn-action3-1 
+          (if (equal nil (first ckn-action2)) 0 (first ckn-action2))))
+        (if (equal nil (first ckn-action2)) (om+ (om- ckn-action2 ckn-action3-1) -1) (om+ (om- ckn-action2 ckn-action3-1) 1))     
+        
+      ))
 
 (ckn-action4 
-(loop :for cknloop-1 :in ckn-action3 :for cknloop-1 :in (dx->x 0 (loop :for y :in true-durations :collect (abs y))) :for cknloop-3 :in true-durations collect          
+(loop :for cknloop-1 :in ckn-action3 :for cknloop-2 :in (dx->x 0 (loop :for y :in true-durations :collect (abs y))) :for cknloop-3 :in true-durations collect          
         (if (plusp cknloop-3) 
             (x-append 
-                     (if (plusp cknloop-3) cknloop-1 nil) "," 
+                     (if (plusp cknloop-3) cknloop-2 nil) "," 
                      (x-append  
                       (choose-fun (get-slot-val (make-value-from-model 'voice ckn nil) "LMIDIC") cknloop-1) 
                       (choose-fun (get-slot-val (make-value-from-model 'voice ckn nil) "lvel") cknloop-1)
                       (if (plusp cknloop-3) cknloop-3 nil) 
                       (choose-fun (get-slot-val (make-value-from-model 'voice CKN nil) "lchan") cknloop-1) ";")) nil))))
-
-
+                      
 (save-as-text ckn-action4 (let* (
  (LISP-FUNCTION (numlist-to-string (x-append 'play (om-random 0 100) '.txt))))
 
