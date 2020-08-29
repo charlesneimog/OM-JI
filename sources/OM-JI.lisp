@@ -934,15 +934,95 @@ Example:
           (removeIt (cdr lis))))
 )
 
+; ========================================== OM#-PLAY =======================
+
+(defmethod! play ((ckn VOICE) &optional (a 2) )
+:initvals ' ((nil))       
+:indoc ' ("A player for OM#")
+:outdoc ' ("PLAY")
+:icon 0000
+:doc "It is a player for OM# in Windows."
+
+(defun normalize-chord-seq (chrdseq)
+  (let* ((xdx (x->dx (lonset chrdseq)))
+         (filt-durs1 (mapcar 'list-min (ldur chrdseq)))
+         (lst-durs (mapcar 'list xdx filt-durs1))
+         (filt-durs2 (mapcar 'list-min lst-durs))
+         (newdurs (loop 
+                   for pt in (lmidic chrdseq)
+                   for drs in filt-durs2
+                   collect (repeat-n drs (length pt)))))
+    (make-instance 'chord-seq 
+                   :lmidic (lmidic chrdseq)
+                   :lonset (lonset chrdseq)
+                   :ldur newdurs)))
+
+(defun choose-fun (notelist chord-n) (nth (om- chord-n 1) notelist))
+
+(defun numlist-to-string (lst) (when lst (concatenate 'string (write-to-string (car lst)) (numlist-to-string (cdr lst)))))
+
+(let* (
+
+(true-durations 
+
+ (let* ((newchrdseq (if (typep ckn 'note) 
+                           (Objfromobjs (Objfromobjs ckn (make-instance 'chord)) (make-instance 'chord-seq))
+                           (Objfromobjs ckn (make-instance 'chord-seq))))
+
+         (newcs (normalize-chord-seq newchrdseq))
+         (onsets (Lonset newcs))
+         (dur (Ldur newcs))
+         (newonsets (if (= 2 (length onsets)) (x->dx  onsets) (butlast (x->dx onsets))))
+         (newdurs (mapcar 'first dur))
+         (resultat1 
+          (x-append 
+          (flat
+           (list (mapcar #'(lambda (x y) (if (= 0 (- x y)) x 
+                                             (list x (- x y))))
+                         newdurs newonsets)
+                 (last newdurs)))
+          (last-elem newdurs)))
+         (resultat2 (butlast
+                     (if (= 0 (first onsets)) resultat1 (cons (* -1 (first onsets)) resultat1)))))
+    
+   (let ((result (remove nil (mapcar #'(lambda (x) (if (not (or (= x 1) (= x -1))) x ))
+          resultat2))))
+         (if (= 2 (length onsets)) (list (car result) (second result)) result))
+   ))
+
+
+(ckn-action1  (loop :for ckn-plus :in true-durations :collect (if (plusp ckn-plus) 0 1)))
+
+(ckn-action2 (loop :for cknloop :in ckn-action1 :collect (if (= 0 cknloop) (setq a (+ a 1)) nil)))
+
+(ckn-action3 (om+ (om- ckn-action2 (first ckn-action2) ) 1))
+
+
+(ckn-action4 
+(loop :for cknloop-1 :in ckn-action3 :for cknloop-1 :in (dx->x 0 (loop :for y :in true-durations :collect (abs y))) :for cknloop-3 :in true-durations collect          
+        (if (plusp cknloop-3) 
+            (x-append 
+                     (if (plusp cknloop-3) cknloop-1 nil) "," 
+                     (x-append  
+                      (choose-fun (get-slot-val (make-value-from-model 'voice ckn nil) "LMIDIC") cknloop-1) 
+                      (choose-fun (get-slot-val (make-value-from-model 'voice ckn nil) "lvel") cknloop-1)
+                      (if (plusp cknloop-3) cknloop-3 nil) 
+                      (choose-fun (get-slot-val (make-value-from-model 'voice CKN nil) "lchan") cknloop-1) ";")) nil))))
+
+
+(save-as-text ckn-action4 (let* (
+ (LISP-FUNCTION (numlist-to-string (x-append 'play (om-random 0 100) '.txt))))
+
+
+(first (list LISP-FUNCTION (osc-send (list "/note" LISP-FUNCTION) "127.0.0.1" 3002)))))))
+
 ; ===========================================================================
 
 
 (print 
  "
                                               OM-JI
-
       by Charles K. Neimog | charlesneimog.com  
-            collab with reddit users 
-      Universidade Federal de Juiz de Fora (2019-2020)
+   Universidade Federal de Juiz de Fora (2019-2020)
 "
-)   
+) 
