@@ -142,7 +142,7 @@
 
 (let* ((result (loop :for cknloop1 :in listnote :collect 
 
-                     (loop for cknloop2 in listnote2 collect (if (om= (+ 
+                     (loop :for cknloop2 :n listnote2 :collect (if (om= (+ 
                                                           (if (< (om- (om- cknloop1 cknloop2) 
                                                                  (approx-m (om- cknloop1 cknloop2) temperamento)) cents) 1 0) 
                                                           (if (> (om- (om- cknloop1 cknloop2) 
@@ -368,7 +368,7 @@ The numerator and denominator of fractions representing MOS are also co-prime. W
 
     ((interval (om- (f->mc (om* (mc->f grave) ratio)) grave))
 
-    (mos-create (loop for n in (arithm-ser 1 sobreposition 1) collect (+ grave (* interval n)))))
+    (mos-create (loop :for n :in (arithm-ser 1 sobreposition 1) :collect (+ grave (* interval n)))))
 
 (x-append grave 
 
@@ -540,7 +540,7 @@ Example:
 
         (let* ((ordem (sort-list cknloop))
                (iguais (let ((L()))
-                         (loop for x from 0 to (1- (length ordem)) do
+                         (loop :for x :from 0 :to (1- (length ordem)) do
                                (when (not (equal (nth (+ x 1) ordem) (nth x ordem)))
                                  (push (nth x ordem) L)))
                          (reverse L)))
@@ -603,7 +603,7 @@ Example:
 
 (values 
 
-(let* ((actionmain (loop for cknloopmain in (arithm-ser 1 (length harmonicos) 1) collect
+(let* ((actionmain (loop :for cknloopmain :in (arithm-ser 1 (length harmonicos) 1) :collect
       (let* 
 ((combinations (cond
    ((<=  2 0) (remove (choose harmonicos cknloopmain) harmonicos))
@@ -611,11 +611,11 @@ Example:
        (cartesian-op (remove (choose harmonicos cknloopmain) harmonicos) (combx (remove (choose harmonicos cknloopmain) harmonicos) (1- 2)) 'x-append)))))
 
 
-  (action1 (loop for cknloop in combinations collect 
+  (action1 (loop :for cknloop :in combinations :collect 
 
         (let* ((ordem (sort-list cknloop))
                (iguais (let ((L()))
-                         (loop for x from 0 to (1- (length ordem)) do
+                         (loop :for x :from 0 :to (1- (length ordem)) :do
                                (when (not (equal (nth (+ x 1) ordem) (nth x ordem)))
                                  (push (nth x ordem) L)))
                          (reverse L)))
@@ -624,17 +624,17 @@ Example:
 
 (remove-duplicates (remove nil action1) :test #'equal))))
 
-(actionmain2 (loop for ckn-loop in actionmain collect (loop for ckn-loop2 in ckn-loop collect (reduce #'* ckn-loop2)))))
+(actionmain2 (loop :for ckn-loop :in actionmain :collect (loop :for ckn-loop2 :in ckn-loop :collect (reduce #'* ckn-loop2)))))
 
-(loop :for cknloop2 :in actionmain2 :collect (loop :for cknloop3 in cknloop2 collect (/ cknloop3 (expt 2 (floor (log cknloop3 2)))))))
+(loop :for cknloop2 :in actionmain2 :collect (loop :for cknloop3 :in cknloop2 :collect (/ cknloop3 (expt 2 (floor (log cknloop3 2)))))))
 
 ; ====
 
-(let* ((ratios (loop for cknloop4 in (arithm-ser 1 (length harmonicos) 1) collect 
+(let* ((ratios (loop :for cknloop4 :in (arithm-ser 1 (length harmonicos) 1) :collect 
        (let* ((choose (nth (om- cknloop4 1) harmonicos)))
          (om* choose (remove choose harmonicos))))))
 
-(loop for cknloop2 in ratios collect (loop for cknloop3 in cknloop2 collect (/ cknloop3 (expt 2 (floor (log cknloop3 2)))))))))
+(loop :for cknloop2 :in ratios :collect (loop :for cknloop3 :in cknloop2 :collect (/ cknloop3 (expt 2 (floor (log cknloop3 2)))))))))
      
 
 ;; ===================================================
@@ -701,10 +701,10 @@ Example:
 
 (let* ((action1 (cps-fun 6-notes 3))
 
-(action2 (loop for cknloop5 in action1 collect (rt-octave-fun
+(action2 (loop :for cknloop5 :in action1 :collect (rt-octave-fun
               (let* ((action2-1 (set-difference 6-notes cknloop5))
                      (action2-2 (cps->ratio-fun (cps-fun cknloop5 2))))
-                (loop for cknloop6 in action2-1 collect (om* action2-2 cknloop6))) 2))))
+                (loop :for cknloop6 :in action2-1 :collect (om* action2-2 cknloop6))) 2))))
 (flat action2 1))
 
 
@@ -712,9 +712,9 @@ Example:
 
 (let* ((action1 (cps-fun 6-notes 3))
 
-(action2 (loop for cknloop1 in action1 collect (rt-octave-fun
+(action2 (loop :for cknloop1 :in action1 :collect (rt-octave-fun
           (let* ((action2-1 (cps->ratio-fun (cps-fun (set-difference 6-notes cknloop1) 2))))
-            (loop for cknloop1-1 in action2-1 collect (om* cknloop1 cknloop1-1))) 2))))
+            (loop :for cknloop1-1 :in action2-1 :collect (om* cknloop1 cknloop1-1))) 2))))
 
 (flat action2 1))))
 
@@ -763,7 +763,7 @@ Example:
                (t nil)))
         (t t)))
 
-(let* ((task1 (loop for cknloop in eikosany collect (if
+(let* ((task1 (loop :for cknloop :in eikosany :collect (if
           
       (om<= 2 (reduce #'+ 
                       (x-append
