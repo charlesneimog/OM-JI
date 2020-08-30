@@ -936,7 +936,7 @@ Example:
 
 ; ========================================== OM#-PLAY =======================
 
-(defmethod! play ((ckn VOICE) &optional (a 1))
+(defmethod! play-om# ((ckn VOICE) &optional (number-2 1))
 :initvals ' ((nil))       
 :indoc ' ("A player for OM#")
 :outdoc ' ("PLAY")
@@ -993,7 +993,7 @@ Example:
 
 (ckn-action1  (loop :for ckn-plus :in true-durations :collect (if (plusp ckn-plus) 0 1)))
 
-(ckn-action2 (loop :for cknloop :in ckn-action1 :collect (if (= 0 cknloop) (setq a (+ a 1)) nil)))
+(ckn-action2 (loop :for cknloop :in ckn-action1 :collect (if (= 0 cknloop) (setq number-2 (+ number-2 1)) nil)))
 
 (ckn-action3 
 
