@@ -32,7 +32,7 @@ See http://charlesneimog.com")
                                                                                                  ))
             (:package (:name "Ben Johnston") (:functions interval-sob arith-mean arith-mean-sob johnston-sob))      
 
-        (:package (:name "Others")
+        (:package (:name "Others") (:functions play-om#)
       (:packages
 
          (:package (:name "Math")

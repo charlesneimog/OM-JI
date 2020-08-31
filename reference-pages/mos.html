@@ -1,64 +1,64 @@
 <html>
-<head><title>MOS - OM-JI Reference Documentation</title>
+<head><title>OM-JI Reference: MOS</title>
 <STYLE TYPE="text/css"><!--  
 
-BODY {background-color: #EEEEEE;
-	  font-family: Verdana;
-font-size: 12;
-color : #0000000;
+body, p, td, li {
+  background-color: #fff;
+  font-family: "Calibri";
+  font-size: 14;
+  color : #222222;
 }
 
 A:link {text-decoration: underline; color : 333366;}
-A:visited {text-decoration: underline; color : 333366;}
-A:active {Verdana; text-decoration: underline; color:333366;}
-A:hover {Verdana; text-decoration: underline; color: 333366;}
 
-H1 {
- color : #333333;
- font-size: 18;
- font-weight: bold
- text-align: left;
-}
-	
-H2 {
- color : #333333;
- font-size: 16;
- font-weight: bold;
+h2 {
+  margin-bottom: 0px;
 }
 
-H3 {
- color : #444444;
- font-size: 12;
- font-weight: bold;
+p {
+  margin-top: 0px;
 }
 
-P,UL,LI, TD {	
- font-size: 11;
- text-indent: 0cm;
- text-align: justify;
+hr {
+  border: .4px dashed;
 }
-.right {text-align: right ;}
-.center {text-align: center ;}
-.top {text-align: top ;}
-   --></style>
+
+table, td {
+  border: 0px;
+  background-color: #f0f0f0;
+}
+
+.frame {
+  width: 80%;
+  max-width: 600px;
+  margin-left: 10%;
+}
+
+.main {
+  border: 1px solid;
+  padding: 20px;
+  background-color: #e5e5e5;
+}
+
+
+ --></style>
 </head>
-<body bgcolor=BBBBBB>
-<br>
-<table align=center bgcolor=FFFFFF width=87%><tr>
-<td>
+<body>
+<div class="frame">
+<div class="header">
+<H1>OM-JI reference pages</H1>
+<b><a href=index.html>Main Index</a> | <a href=ind-alpha.html>Alphabetical Index</a></b>
+<br><br>
+</div>
+<div class="main">
 <h2>MOS</h2>
-<font size=-1>[GENERIC-FUNCTION]</font><br><br>
-</td><td width=130>
-<img src=./omlogo.gif width=100><br>
-<font size=-2 align=right><a href=index.html>OM-JI<br> Function Reference</a></font>
-</td></tr>
-<tr><td colspan=2>
-<font color=882222><b>ARGUMENTS:</b></font><br>
-<table width=100% border=0>
+<font size=-1>[GENERIC-FUNCTION]</font>
+<h3>Function arguments:</h3>
+<table width=100%>
 <tr>
 <td width=40>&nbsp;</td>
 <td>
-- <font color=333366><b>ratio</b></font>
+- <font color=333366><b>RATIO</b></font>
 </td>
 <td>Fundamental note of sobreposition</td>
 <td>[default = 4/3]</td>
@@ -67,7 +67,7 @@ P,UL,LI, TD {
 <tr>
 <td width=40>&nbsp;</td>
 <td>
-- <font color=333366><b>grave</b></font>
+- <font color=333366><b>GRAVE</b></font>
 </td>
 <td>Just Intonation interval</td>
 <td>[default = 6000]</td>
@@ -76,7 +76,7 @@ P,UL,LI, TD {
 <tr>
 <td width=40>&nbsp;</td>
 <td>
-- <font color=333366><b>aguda</b></font>
+- <font color=333366><b>AGUDA</b></font>
 </td>
 <td>High note</td>
 <td>[default = 7200]</td>
@@ -85,16 +85,14 @@ P,UL,LI, TD {
 <tr>
 <td width=40>&nbsp;</td>
 <td>
-- <font color=333366><b>sobreposition</b></font>
+- <font color=333366><b>SOBREPOSITION</b></font>
 </td>
 <td>Number of sobreposition</td>
 <td>[default = 11]</td>
 </tr>
 <tr>
 </table>
-</tr>
-<tr><td colspan=2>
-<br><font color=882222><b>Description:</b></font><p>
+<h3>Description:</h3>
 This object creates a Moment of Symmetry without a octave equivalence. For make the octave equivalence use the object Octave-reduce, choose the range of the this MOS. <br>
 <br>
 MOS is a Theory of the composer Erv Wilson.                  <br>
@@ -106,8 +104,7 @@ These intervals are designated as the small (s) and large (L) intervals (FOR MAK
 The relative number of s and L intervals in an MOS is co-prime, i.e., they share no common factors other than 1. Fractions are used to represent MOS scales: the numerator shows the size of the generator, and the denominator shows the number of notes in the scale. <br>
 <br>
 The numerator and denominator of fractions representing MOS are also co-prime. Wilson organizes these fractions hierarchically on the Scale Tree. MOS are not only scales in their own right but also provide a framework or template for constructing a family of Secondary MOS scales. (in NARUSHIMA - Microtonality and the Tuning Systems of Erv Wilson-Routledge).<br>
-</p><br><br></td></tr>
-<td class=center colspan=2>
-<center><font size=-2>Auto doc generation by OpenMusic 6.17 © 2020 IRCAM</font></center>
-</td></tr></table>
+</div>
+<br><center><font size=-2>Auto doc generation by om-sharp 1.0 - 2020/08/31 14:54:52</font></center>
+</div>
 </body></html>
