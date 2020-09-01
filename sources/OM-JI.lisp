@@ -941,7 +941,9 @@ Example:
 :indoc ' ("A player for OM#")
 :outdoc ' ("PLAY")
 :icon 0000
-:doc "It is a player for OM# in Windows."
+:doc "It is a player for OM#. You can download the Max/MSP patch in:  <https://bit.ly/32K0och>.
+
+For the automatic work the folder out-files of OM# must be in the files preferences of the Max/MSP."
 
 (defun normalize-chord-seq (chrdseq)
   (let* ((xdx (x->dx (lonset chrdseq)))
@@ -1012,14 +1014,15 @@ Example:
                      (x-append  
                       (choose-fun (get-slot-val (make-value-from-model 'voice ckn nil) "LMIDIC") cknloop-1) 
                       (choose-fun (get-slot-val (make-value-from-model 'voice ckn nil) "lvel") cknloop-1)
+                      (choose-fun (get-slot-val (make-value-from-model 'voice CKN nil) "lchan") cknloop-1)
                       (if (plusp cknloop-3) cknloop-3 nil) 
-                      (choose-fun (get-slot-val (make-value-from-model 'voice CKN nil) "lchan") cknloop-1) ";")) nil))))
+                       ";")) nil))))
                       
 (save-as-text ckn-action4 (let* (
  (LISP-FUNCTION (numlist-to-string (x-append 'play (om-random 0 100) '.txt))))
 
 
-(first (list LISP-FUNCTION (osc-send (list "/note" LISP-FUNCTION) "127.0.0.1" 3002)))))))
+(first (list LISP-FUNCTION (osc-send (list "/note" LISP-FUNCTION) "127.0.0.1" 3003)))))))
 
 ; ===========================================================================
 
