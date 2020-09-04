@@ -1016,7 +1016,10 @@ For the automatic work the folder out-files of OM# must be in the files preferen
                       (choose-fun (get-slot-val (make-value-from-model 'voice ckn nil) "lvel") cknloop-1)
                       (choose-fun (get-slot-val (make-value-from-model 'voice CKN nil) "lchan") cknloop-1)
                       (if (plusp cknloop-3) cknloop-3 nil) 
-                       ";")) nil))))
+                       ";")) nil)))
+
+(ckn-last 
+  (osc-send (list "/lastnote" (let* ((cknlast-1 (flat (last (remove nil ckn-action4))))) (om+ (first cknlast-1) (fourth cknlast-1)))) "127.0.0.1" 3004)))
                       
 (save-as-text ckn-action4 (let* (
  (LISP-FUNCTION (numlist-to-string (x-append 'play (om-random 0 100) '.txt))))
