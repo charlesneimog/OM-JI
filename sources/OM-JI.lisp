@@ -779,7 +779,7 @@ Example:
 :initvals ' (6000 2 24)     
 :indoc ' ("inicial-note" "interval: 2 for octave, 3/2 for a fifth division, etc" "divison for the interval, for example: 24 divison of the octave")
 :icon 004
-:doc "create a temperament"
+:doc "Create a temperament."
 
 (let ((Question (print "Temperamented music, really?")))
 
@@ -793,7 +793,11 @@ Example:
 :indoc ' ("number or list of the harmonics/parcials.")
 :outdoc ' ("Prime-decomposition" "Prime-decomposition without the 2 that represents the octave interval")
 :icon 004
-:doc "It does the decomposition of prime numbers. This can be useful with identities by Harry Partch, mainly, when we use the conception of identity by Ben Johnston: 'Each prime number used in deriving a harmonic scale contributes to a characteristic psychoacoustical meaning (JOHNSTON, 2006, p. 27).' Lisp code of https://sholtz9421.wordpress.com/2012/10/08/prime-number-factorization-in-lisp/."
+:doc "It does the decomposition of prime numbers. This can be useful with identities by Harry Partch, mainly, when we use the conception of identity by Ben Johnston: 'Each prime number used in deriving a harmonic scale contributes to a characteristic psychoacoustical meaning (JOHNSTON, 2006, p. 27).'
+
+In this object we can undestand how identities can be connected using the theory of CPS of the Erv Wilson. 
+
+ Lisp code of https://sholtz9421.wordpress.com/2012/10/08/prime-number-factorization-in-lisp/."
 :numouts 2 
 
 (defun factor (n)
@@ -813,7 +817,11 @@ Example:
 :indoc ' ("Number or numbers list.")
 :outdoc ' ("Prime-decomposition" "Prime-decomposition without the number 2. It represents the octave interval")
 :icon 004
-:doc "It does the decomposition of prime numbers. This can be useful with identities by Harry Partch, mainly, when we use the conception of identity by Ben Johnston: 'Each prime number used in deriving a harmonic scale contributes to a characteristic psychoacoustical meaning (JOHNSTON, 2006, p. 27).' Lisp code of https://sholtz9421.wordpress.com/2012/10/08/prime-number-factorization-in-lisp/."
+:doc "It does the decomposition of prime numbers. This can be useful with identities by Harry Partch, mainly, when we use the conception of identity by Ben Johnston: 'Each prime number used in deriving a harmonic scale contributes to a characteristic psychoacoustical meaning (JOHNSTON, 2006, p. 27).'
+
+In this object we can undestand how identities can be connected using the theory of CPS of the Erv Wilson. 
+
+ Lisp code of https://sholtz9421.wordpress.com/2012/10/08/prime-number-factorization-in-lisp/."
 :numouts 2 
 
 (defun factor (n)
@@ -861,7 +869,7 @@ Example:
 :icon 007
 :doc "Convert midicents for the max object gizmo~."
 
-(om* 0.01 (om- note fund)))
+(om* 0.01 (om- note fund))    )
 
 ;; ===================================================
 
