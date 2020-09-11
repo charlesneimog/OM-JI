@@ -1,0 +1,186 @@
+
+(:patch
+ (:name "PARTCH - diamond")
+ (:doc "")
+ (:info
+  (:created "2020/09/11 16:02:13")
+  (:modified "2020/09/11 16:02:36")
+  (:by "om-sharp")
+  (:version 1.0))
+ (:window (:size (793 431)) (:position (104 104)))
+ (:grid nil)
+ (:lock nil)
+ (:boxes
+  (:comment
+   (:x 141)
+   (:y 13)
+   (:w 205)
+   (:h 49)
+   (:fgcolor (:color 0 0 0 1.0))
+   (:bgcolor nil)
+   (:border 0)
+   (:roundness nil)
+   (:text-font (:font (:face "Verdana") (:size 14) (:style :plain)))
+   (:align nil)
+   (:text "Número do limite. Neste caso constroi-se o limite-5.")
+   (:id 0))
+  (:comment
+   (:x 329)
+   (:y 222)
+   (:w 321)
+   (:h 123)
+   (:fgcolor (:color 0 0 0 1.0))
+   (:bgcolor nil)
+   (:border 0)
+   (:roundness nil)
+   (:text-font (:font (:face "Verdana") (:size 14) (:style :plain)))
+   (:align nil)
+   (:text
+    "Otonalidades. 
+Onde: 
+(1 3 5) é a primeira diagonal;
+(1/3 1 5/3) é a terceira diagonal;
+(1/5 3/5 1) é a segunda diagonal.
+")
+   (:id 1))
+  (:comment
+   (:x 32)
+   (:y 224)
+   (:w 288)
+   (:h 89)
+   (:fgcolor (:color 0 0 0 1.0))
+   (:bgcolor nil)
+   (:border 0)
+   (:roundness nil)
+   (:text-font (:font (:face "Verdana") (:size 14) (:style :plain)))
+   (:align nil)
+   (:text
+    "Utonalidades. 
+Onde: 
+(1 1/3 1/5) é a primeira diagonal;
+(3 1 3/5) é a terceira diagonal;
+(5 5/3 1) é a segunda diagonal.
+")
+   (:id 2))
+  (:box
+   (:type :value)
+   (:reference fixnum)
+   (:group-id nil)
+   (:name "aux")
+   (:x 204)
+   (:y 60)
+   (:w 32)
+   (:h 29)
+   (:color
+    (:color-or-nil
+     (:color (:color 1.0S0 1.0S0 1.0S0 1.0))
+     (:t-or-nil t)))
+   (:border nil)
+   (:roundness nil)
+   (:text-font nil)
+   (:align nil)
+   (:lock nil)
+   (:inputs)
+   (:outputs (:output (:name "value") (:reactive nil)))
+   (:value 5)
+   (:id 3))
+  (:comment
+   (:x 288)
+   (:y 104)
+   (:w 252)
+   (:h 60)
+   (:fgcolor (:color 0 0 0 1.0))
+   (:bgcolor nil)
+   (:border 0)
+   (:roundness nil)
+   (:text-font (:font (:face "Verdana") (:size 14) (:style :plain)))
+   (:align nil)
+   (:text
+    "Este objeto constroi a Tonalidade-Diamante segundo a teoria de Partch.")
+   (:id 4))
+  (:box
+   (:type :value)
+   (:reference simple-base-string)
+   (:group-id nil)
+   (:name "TEXT-BOX 2")
+   (:x 295)
+   (:y 187)
+   (:w 226)
+   (:h 29)
+   (:color
+    (:color-or-nil
+     (:color (:color 1.0S0 1.0S0 1.0S0 1.0))
+     (:t-or-nil t)))
+   (:border nil)
+   (:roundness nil)
+   (:text-font nil)
+   (:align nil)
+   (:lock nil)
+   (:inputs
+    (:input
+     (:type :optional)
+     (:name "in")
+     (:value "untitled")
+     (:reactive nil)))
+   (:outputs (:output (:name "value") (:reactive nil)))
+   (:value "((1 3 5) (1/3 1 5/3) (1/5 3/5 1))")
+   (:id 5))
+  (:box
+   (:type :value)
+   (:reference simple-base-string)
+   (:group-id nil)
+   (:name "TEXT-BOX")
+   (:x 23)
+   (:y 186)
+   (:w 222)
+   (:h 29)
+   (:color
+    (:color-or-nil
+     (:color (:color 1.0S0 1.0S0 1.0S0 1.0))
+     (:t-or-nil t)))
+   (:border nil)
+   (:roundness nil)
+   (:text-font nil)
+   (:align nil)
+   (:lock nil)
+   (:inputs
+    (:input
+     (:type :optional)
+     (:name "in")
+     (:value "untitled")
+     (:reactive nil)))
+   (:outputs (:output (:name "value") (:reactive nil)))
+   (:value "((1 1/3 1/5) (3 1 3/5) (5 5/3 1))")
+   (:id 6))
+  (:box
+   (:library "OM-JI")
+   (:type :function)
+   (:reference diamond)
+   (:group-id nil)
+   (:name "diamond")
+   (:x 189)
+   (:y 110)
+   (:w 86)
+   (:h 29)
+   (:color nil)
+   (:border nil)
+   (:roundness nil)
+   (:text-font nil)
+   (:align nil)
+   (:icon :left)
+   (:lock nil)
+   (:lambda nil)
+   (:inputs
+    (:input
+     (:type :standard)
+     (:name "LIMITE")
+     (:value 11)
+     (:reactive nil)))
+   (:outputs
+    (:output (:name "out0") (:reactive nil))
+    (:output (:name "out1") (:reactive nil)))
+   (:id 7)))
+ (:connections
+  (:connection (:from (:box 3 :out 0)) (:to (:box 7 :in 0)))
+  (:connection (:from (:box 7 :out 0)) (:to (:box 6 :in 0)))
+  (:connection (:from (:box 7 :out 1)) (:to (:box 5 :in 0)))))

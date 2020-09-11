@@ -1,0 +1,1632 @@
+
+(:patch
+ (:name "WILSON - eikosany")
+ (:doc "")
+ (:info
+  (:created "2020/09/11 16:03:50")
+  (:modified "2020/09/11 16:04:22")
+  (:by "om-sharp")
+  (:version 1.0))
+ (:window (:size (1382 764)) (:position (0 0)))
+ (:grid nil)
+ (:lock nil)
+ (:boxes
+  (:box
+   (:library "OM-JI")
+   (:type :function)
+   (:reference eikosany-connections)
+   (:group-id nil)
+   (:name "eikosany-connections")
+   (:x 676)
+   (:y 153)
+   (:w 156)
+   (:h 29)
+   (:color nil)
+   (:border nil)
+   (:roundness nil)
+   (:text-font nil)
+   (:align nil)
+   (:icon :left)
+   (:lock nil)
+   (:lambda nil)
+   (:inputs
+    (:input
+     (:type :standard)
+     (:name "VERTICE")
+     (:value (:list 1 3 9))
+     (:reactive nil))
+    (:input
+     (:type :standard)
+     (:name "EIKOSANY")
+     (:value
+      (:list
+       (:list 1 3 5)
+       (:list 1 3 7)
+       (:list 1 5 7)
+       (:list 3 5 7)
+       (:list 1 3 9)
+       (:list 1 5 9)
+       (:list 3 5 9)
+       (:list 1 7 9)
+       (:list 3 7 9)
+       (:list 5 7 9)
+       (:list 1 3 11)
+       (:list 1 5 11)
+       (:list 3 5 11)
+       (:list 1 7 11)
+       (:list 3 7 11)
+       (:list 5 7 11)
+       (:list 1 9 11)
+       (:list 3 9 11)
+       (:list 5 9 11)
+       (:list 7 9 11)))
+     (:reactive nil)))
+   (:outputs (:output (:name "out") (:reactive nil)))
+   (:id 0))
+  (:comment
+   (:x 1174)
+   (:y 245)
+   (:w 100)
+   (:h 60)
+   (:fgcolor (:color 0 0 0 1.0))
+   (:bgcolor nil)
+   (:border 0)
+   (:roundness nil)
+   (:text-font (:font (:face "Verdana") (:size 14) (:style :plain)))
+   (:align nil)
+   (:text "Resultado")
+   (:id 1))
+  (:comment
+   (:x 721)
+   (:y 247)
+   (:w 437)
+   (:h 64)
+   (:fgcolor (:color 0 0 0 1.0))
+   (:bgcolor nil)
+   (:border 0)
+   (:roundness nil)
+   (:text-font (:font (:face "Verdana") (:size 14) (:style :plain)))
+   (:align nil)
+   (:text
+    "((1 3 5) (1 3 7) (1 5 7) (3 5 7) (1 5 9) (1 7 9) (5 7 9) (1 5 11) (1 7 11) (5 7 11))")
+   (:id 2))
+  (:box
+   (:library "OM-JI")
+   (:type :function)
+   (:reference eikosany)
+   (:group-id nil)
+   (:name "eikosany")
+   (:x 777)
+   (:y 63)
+   (:w 86)
+   (:h 29)
+   (:color nil)
+   (:border nil)
+   (:roundness nil)
+   (:text-font nil)
+   (:align nil)
+   (:icon :left)
+   (:lock nil)
+   (:lambda nil)
+   (:inputs
+    (:input
+     (:type :standard)
+     (:name "6-NOTES")
+     (:value (:list 1 3 5 7 9 11))
+     (:reactive nil)))
+   (:outputs (:output (:name "out") (:reactive nil)))
+   (:id 3))
+  (:comment
+   (:x 671)
+   (:y 322)
+   (:w 554)
+   (:h 73)
+   (:fgcolor (:color 0 0 0 1.0))
+   (:bgcolor nil)
+   (:border 0)
+   (:roundness nil)
+   (:text-font (:font (:face "Verdana") (:size 14) (:style :plain)))
+   (:align nil)
+   (:text
+    "Os vértices ((1 3 5) (1 3 7) (1 5 7) (3 5 7) (1 5 9) (1 7 9) (5 7 9) (1 5 11) (1 7 11) (5 7 11)) estão conectados ao vértice (1 5 7). Aqui fica claro que as repretações de Narushima são simplificações. ")
+   (:id 4))
+  (:comment
+   (:x 837)
+   (:y 153)
+   (:w 203)
+   (:h 65)
+   (:fgcolor (:color 0 0 0 1.0))
+   (:bgcolor nil)
+   (:border 0)
+   (:roundness nil)
+   (:text-font (:font (:face "Verdana") (:size 14) (:style :plain)))
+   (:align nil)
+   (:text
+    "O objeto mostra quais vértices estão conectados ao vértice selecionado no inlet 1.")
+   (:id 5))
+  (:box
+   (:type :value)
+   (:reference cons)
+   (:group-id nil)
+   (:name "aux 2")
+   (:x 673)
+   (:y 114)
+   (:w 55)
+   (:h 29)
+   (:color
+    (:color-or-nil
+     (:color (:color 1.0S0 1.0S0 1.0S0 1.0))
+     (:t-or-nil t)))
+   (:border nil)
+   (:roundness nil)
+   (:text-font nil)
+   (:align nil)
+   (:lock nil)
+   (:inputs)
+   (:outputs (:output (:name "value") (:reactive nil)))
+   (:value (:list 1 5 7))
+   (:id 6))
+  (:comment
+   (:x 868)
+   (:y 65)
+   (:w 193)
+   (:h 62)
+   (:fgcolor (:color 0 0 0 1.0))
+   (:bgcolor nil)
+   (:border 0)
+   (:roundness nil)
+   (:text-font (:font (:face "Verdana") (:size 14) (:style :plain)))
+   (:align nil)
+   (:text "O objeto constrói todas as razões de um CPS-Eikosany.")
+   (:id 7))
+  (:box
+   (:type :value)
+   (:reference cons)
+   (:group-id nil)
+   (:name "aux")
+   (:x 759)
+   (:y 26)
+   (:w 91)
+   (:h 29)
+   (:color
+    (:color-or-nil
+     (:color (:color 1.0S0 1.0S0 1.0S0 1.0))
+     (:t-or-nil t)))
+   (:border nil)
+   (:roundness nil)
+   (:text-font nil)
+   (:align nil)
+   (:lock nil)
+   (:inputs)
+   (:outputs (:output (:name "value") (:reactive nil)))
+   (:value (:list 1 3 5 7 9 11))
+   (:id 8))
+  (:comment
+   (:x 534)
+   (:y 248)
+   (:w 187)
+   (:h 61)
+   (:fgcolor (:color 0 0 0 1.0))
+   (:bgcolor nil)
+   (:border 0)
+   (:roundness nil)
+   (:text-font (:font (:face "Verdana") (:size 14) (:style :plain)))
+   (:align nil)
+   (:text "Cada lista de 3 números é um vértice do Eikosany.")
+   (:id 9))
+  (:comment
+   (:x 400)
+   (:y 347)
+   (:w 221)
+   (:h 62)
+   (:fgcolor (:color 0 0 0 1.0))
+   (:bgcolor nil)
+   (:border 0)
+   (:roundness nil)
+   (:text-font (:font (:face "Verdana") (:size 14) (:style :plain)))
+   (:align nil)
+   (:text "Resultado do Eikosany de (1 3 5 7 9 11) em razões.")
+   (:id 10))
+  (:comment
+   (:x 62)
+   (:y 342)
+   (:w 342)
+   (:h 88)
+   (:fgcolor (:color 0 0 0 1.0))
+   (:bgcolor nil)
+   (:border 0)
+   (:roundness nil)
+   (:text-font (:font (:face "Verdana") (:size 14) (:style :plain)))
+   (:align nil)
+   (:text
+    "(15/8 21/16 35/32 105/64 27/16 45/32 135/128 63/32 189/128 315/256 33/32 55/32 165/128 77/64 231/128 385/256 99/64 297/256 495/256 693/512)")
+   (:id 11))
+  (:comment
+   (:x 146)
+   (:y 186)
+   (:w 330)
+   (:h 82)
+   (:fgcolor (:color 0 0 0 1.0))
+   (:bgcolor nil)
+   (:border 0)
+   (:roundness nil)
+   (:text-font (:font (:face "Verdana") (:size 14) (:style :plain)))
+   (:align nil)
+   (:text
+    "((1 3 5) (1 3 7) (1 5 7) (3 5 7) (1 3 9) (1 5 9) (3 5 9) (1 7 9) (3 7 9) (5 7 9) (1 3 11) (1 5 11) (3 5 11) (1 7 11) (3 7 11) (5 7 11) (1 9 11) (3 9 11) (5 9 11) (7 9 11))
+")
+   (:id 12))
+  (:box
+   (:type :value)
+   (:reference cons)
+   (:group-id nil)
+   (:name "aux")
+   (:x 63)
+   (:y 81)
+   (:w 91)
+   (:h 29)
+   (:color
+    (:color-or-nil
+     (:color (:color 1.0S0 1.0S0 1.0S0 1.0))
+     (:t-or-nil t)))
+   (:border nil)
+   (:roundness nil)
+   (:text-font nil)
+   (:align nil)
+   (:lock nil)
+   (:inputs)
+   (:outputs (:output (:name "value") (:reactive nil)))
+   (:value (:list 1 3 5 7 9 11))
+   (:id 13))
+  (:box
+   (:library "OM-JI")
+   (:type :function)
+   (:reference eikosany)
+   (:group-id nil)
+   (:name "eikosany")
+   (:x 84)
+   (:y 117)
+   (:w 86)
+   (:h 29)
+   (:color nil)
+   (:border nil)
+   (:roundness nil)
+   (:text-font nil)
+   (:align nil)
+   (:icon :left)
+   (:lock nil)
+   (:lambda nil)
+   (:inputs
+    (:input
+     (:type :standard)
+     (:name "6-NOTES")
+     (:value (:list 1 3 5 7 9 11))
+     (:reactive nil)))
+   (:outputs (:output (:name "out") (:reactive nil)))
+   (:id 14))
+  (:comment
+   (:x 196)
+   (:y 260)
+   (:w 221)
+   (:h 62)
+   (:fgcolor (:color 0 0 0 1.0))
+   (:bgcolor nil)
+   (:border 0)
+   (:roundness nil)
+   (:text-font (:font (:face "Verdana") (:size 14) (:style :plain)))
+   (:align nil)
+   (:text "O objeto transforma a combinação de harmônicos em razões.")
+   (:id 15))
+  (:box
+   (:library "OM-JI")
+   (:type :function)
+   (:reference cps->ratio)
+   (:group-id nil)
+   (:name "cps->ratio")
+   (:x 83)
+   (:y 256)
+   (:w 95)
+   (:h 29)
+   (:color nil)
+   (:border nil)
+   (:roundness nil)
+   (:text-font nil)
+   (:align nil)
+   (:icon :left)
+   (:lock nil)
+   (:lambda nil)
+   (:inputs
+    (:input
+     (:type :standard)
+     (:name "HEXANY")
+     (:value 1)
+     (:reactive nil)))
+   (:outputs (:output (:name "out") (:reactive nil)))
+   (:id 16))
+  (:comment
+   (:x 174)
+   (:y 118)
+   (:w 193)
+   (:h 62)
+   (:fgcolor (:color 0 0 0 1.0))
+   (:bgcolor nil)
+   (:border 0)
+   (:roundness nil)
+   (:text-font (:font (:face "Verdana") (:size 14) (:style :plain)))
+   (:align nil)
+   (:text "O objeto constrói todas as razões de um CPS-Eikosany.")
+   (:id 17))
+  (:box
+   (:type :abstraction)
+   (:reference
+    (:patch
+     (:name "eikosany triads")
+     (:doc "")
+     (:info
+      (:created nil)
+      (:modified nil)
+      (:by *app-name*)
+      (:version 0))
+     (:window (:size nil) (:position nil))
+     (:grid nil)
+     (:lock nil)
+     (:boxes
+      (:comment
+       (:x 659)
+       (:y 405)
+       (:w 385)
+       (:h 61)
+       (:fgcolor (:color 0 0 0 1.0))
+       (:bgcolor nil)
+       (:border 0)
+       (:roundness nil)
+       (:text-font
+        (:font (:face "Verdana") (:size 14) (:style :plain)))
+       (:align nil)
+       (:text
+        "São 60 tríades subharmônicas e 60 tríades harmônicas para o Eikosany.")
+       (:id 0))
+      (:comment
+       (:x 666)
+       (:y 53)
+       (:w 470)
+       (:h 260)
+       (:fgcolor (:color 0 0 0 1.0))
+       (:bgcolor nil)
+       (:border 0)
+       (:roundness nil)
+       (:text-font
+        (:font (:face "Verdana") (:size 10) (:style :plain)))
+       (:align nil)
+       (:text
+        "((99/64 297/256 495/256) (77/64 231/128 385/256) (63/32 189/128 315/256) (99/64 297/256 693/512) (55/32 165/128 385/256) (45/32 135/128 315/256) (99/64 495/256 693/512) (33/32 165/128 231/128) (27/16 135/128 189/128) (297/256 495/256 693/512) (33/32 55/32 77/64) (27/16 45/32 63/32) (77/64 231/128 693/512) (55/32 165/128 495/256) (35/32 105/64 315/256) (77/64 385/256 693/512) (33/32 165/128 297/256) (21/16 105/64 189/128) (231/128 385/256 693/512) (33/32 55/32 99/64) (21/16 35/32 63/32) (55/32 385/256 495/256) (33/32 231/128 297/256) (15/8 105/64 135/128) (165/128 385/256 495/256) (33/32 77/64 99/64) (15/8 35/32 45/32) (165/128 231/128 297/256) (55/32 77/64 99/64) (15/8 21/16 27/16) (63/32 189/128 693/512) (45/32 135/128 495/256) (35/32 105/64 385/256) (63/32 315/256 693/512) (27/16 135/128 297/256) (21/16 105/64 231/128) (189/128 315/256 693/512) (27/16 45/32 99/64) (21/16 35/32 77/64) (45/32 315/256 495/256) (27/16 189/128 297/256) (15/8 105/64 165/128) (135/128 315/256 495/256) (27/16 63/32 99/64) (15/8 35/32 55/32) (135/128 189/128 297/256) (45/32 63/32 99/64) (15/8 21/16 33/32) (35/32 315/256 385/256) (21/16 189/128 231/128) (15/8 135/128 165/128) (105/64 315/256 385/256) (21/16 63/32 77/64) (15/8 45/32 55/32) (105/64 189/128 231/128) (35/32 63/32 77/64) (15/8 27/16 33/32) (105/64 135/128 165/128) (35/32 45/32 55/32) (21/16 27/16 33/32))")
+       (:id 1))
+      (:comment
+       (:x 206)
+       (:y 45)
+       (:w 439)
+       (:h 221)
+       (:fgcolor (:color 0 0 0 1.0))
+       (:bgcolor nil)
+       (:border 0)
+       (:roundness nil)
+       (:text-font
+        (:font (:face "Verdana") (:size 10) (:style :plain)))
+       (:align nil)
+       (:text
+        "((33/32 55/32 165/128) (27/16 45/32 135/128) (21/16 35/32 105/64) (33/32 77/64 231/128) (27/16 63/32 189/128) (15/8 35/32 105/64) (55/32 77/64 385/256) (45/32 63/32 315/256) (15/8 21/16 105/64) (165/128 231/128 385/256) (135/128 189/128 315/256) (15/8 21/16 35/32) (33/32 99/64 297/256) (21/16 63/32 189/128) (15/8 45/32 135/128) (55/32 99/64 495/256) (35/32 63/32 315/256) (15/8 27/16 135/128) (165/128 297/256 495/256) (105/64 189/128 315/256) (15/8 27/16 45/32) (77/64 99/64 693/512) (35/32 45/32 315/256) (21/16 27/16 189/128) (231/128 297/256 693/512) (105/64 135/128 315/256) (21/16 27/16 63/32) (385/256 495/256 693/512) (105/64 135/128 189/128) (35/32 45/32 63/32) (27/16 99/64 297/256) (21/16 77/64 231/128) (15/8 55/32 165/128) (45/32 99/64 495/256) (35/32 77/64 385/256) (15/8 33/32 165/128) (135/128 297/256 495/256) (105/64 231/128 385/256) (15/8 33/32 55/32) (63/32 99/64 693/512) (35/32 55/32 385/256) (21/16 33/32 231/128) (189/128 297/256 693/512) (105/64 165/128 385/256) (21/16 33/32 77/64) (315/256 495/256 693/512) (105/64 165/128 231/128) (35/32 55/32 77/64) (63/32 77/64 693/512) (45/32 55/32 495/256) (27/16 33/32 297/256) (189/128 231/128 693/512) (135/128 165/128 495/256) (27/16 33/32 99/64) (315/256 385/256 693/512) (135/128 165/128 297/256) (45/32 55/32 99/64) (315/256 385/256 495/256) (189/128 231/128 297/256) (63/32 77/64 99/64))
+")
+       (:id 2))
+      (:box
+       (:library "OM-JI")
+       (:type :function)
+       (:reference eikosany-triads)
+       (:group-id nil)
+       (:name "eikosany-triads")
+       (:x 10)
+       (:y 104)
+       (:w 122)
+       (:h 29)
+       (:color nil)
+       (:border nil)
+       (:roundness nil)
+       (:text-font nil)
+       (:align nil)
+       (:icon :left)
+       (:lock nil)
+       (:lambda nil)
+       (:inputs
+        (:input
+         (:type :standard)
+         (:name "6-NOTES")
+         (:value (:list 1 3 5 7 9 11))
+         (:reactive nil)))
+       (:outputs
+        (:output (:name "out0") (:reactive nil))
+        (:output (:name "out1") (:reactive nil)))
+       (:id 3))
+      (:box
+       (:type :value)
+       (:reference cons)
+       (:group-id nil)
+       (:name "aux 3")
+       (:x 8)
+       (:y 56)
+       (:w 91)
+       (:h 29)
+       (:color
+        (:color-or-nil
+         (:color (:color 1.0S0 1.0S0 1.0S0 1.0))
+         (:t-or-nil t)))
+       (:border nil)
+       (:roundness nil)
+       (:text-font nil)
+       (:align nil)
+       (:lock nil)
+       (:inputs)
+       (:outputs (:output (:name "value") (:reactive nil)))
+       (:value (:list 1 3 5 7 9 11))
+       (:id 4))
+      (:comment
+       (:x 354)
+       (:y 25)
+       (:w 179)
+       (:h 48)
+       (:fgcolor (:color 0 0 0 1.0))
+       (:bgcolor nil)
+       (:border 0)
+       (:roundness nil)
+       (:text-font (:font (:face "Verdana") (:size 14) (:style :bold)))
+       (:align nil)
+       (:text "Tríades sub-harmônicas.")
+       (:id 5))
+      (:box
+       (:type :object)
+       (:reference chord-seq)
+       (:group-id nil)
+       (:name "CHORD-SEQ 2")
+       (:x 12)
+       (:y 395)
+       (:w 307)
+       (:h 86)
+       (:color nil)
+       (:border nil)
+       (:roundness nil)
+       (:text-font nil)
+       (:align :center)
+       (:display :mini-view)
+       (:showname nil)
+       (:show-markers t)
+       (:lock nil)
+       (:lambda nil)
+       (:inputs
+        (:input
+         (:type :standard)
+         (:name "SELF")
+         (:value nil)
+         (:reactive nil))
+        (:input
+         (:type :standard)
+         (:name "LMIDIC")
+         (:value (:list 6000))
+         (:reactive nil))
+        (:input
+         (:type :standard)
+         (:name "LONSET")
+         (:value (:list 0 1000))
+         (:reactive nil))
+        (:input
+         (:type :standard)
+         (:name "LDUR")
+         (:value (:list 1000))
+         (:reactive nil))
+        (:input
+         (:type :standard)
+         (:name "LVEL")
+         (:value (:list 100))
+         (:reactive nil))
+        (:input
+         (:type :key)
+         (:name "loffset")
+         (:value (:list 0))
+         (:reactive nil))
+        (:input
+         (:type :key)
+         (:name "lchan")
+         (:value (:list 9))
+         (:reactive nil))
+        (:input
+         (:type :key)
+         (:name "llegato")
+         (:value 0)
+         (:reactive nil)))
+       (:outputs
+        (:output (:name "SELF") (:reactive nil))
+        (:output (:name "LMIDIC") (:reactive nil))
+        (:output (:name "LONSET") (:reactive nil))
+        (:output (:name "LDUR") (:reactive nil))
+        (:output (:name "LVEL") (:reactive nil))
+        (:output (:name "loffset") (:reactive nil))
+        (:output (:name "lchan") (:reactive nil))
+        (:output (:name "llegato") (:reactive nil)))
+       (:window (:size nil) (:position nil))
+       (:edition-params (:staff :g))
+       (:value
+        (:object
+         (:class chord-seq)
+         (:slots
+          ((:onset 0)
+           (:duration 60000)
+           (:interpol (:number-or-nil (:number 50) (:t-or-nil nil)))
+           (:name "CHORD-SEQ")
+           (:symbolic-date nil)
+           (:symbolic-dur nil)
+           (:symbolic-dur-extent 0)
+           (:extras nil)
+           (:lmidic
+            (:list
+             (:list 6553 7438 6940)
+             (:list 7406 7090 6592)
+             (:list 6971 6655 7357)
+             (:list 6553 6820 7522)
+             (:list 7406 7673 7175)
+             (:list 7588 6655 7357)
+             (:list 7438 6820 7206)
+             (:list 7090 7673 6859)
+             (:list 7588 6971 7357)
+             (:list 6940 7522 7206)
+             (:list 6592 7175 6859)
+             (:list 7588 6971 6655)
+             (:list 6553 7255 6757)
+             (:list 6971 7673 7175)
+             (:list 7588 7090 6592)
+             (:list 7438 7255 7642)
+             (:list 6655 7673 6859)
+             (:list 7588 7406 6592)
+             (:list 6940 6757 7642)
+             (:list 7357 7175 6859)
+             (:list 7588 7406 7090)
+             (:list 6820 7255 7024)
+             (:list 6655 7090 6859)
+             (:list 6971 7406 7175)
+             (:list 7522 6757 7024)
+             (:list 7357 6592 6859)
+             (:list 6971 7406 7673)
+             (:list 7206 7642 7024)
+             (:list 7357 6592 7175)
+             (:list 6655 7090 7673)
+             (:list 7406 7255 6757)
+             (:list 6971 6820 7522)
+             (:list 7588 7438 6940)
+             (:list 7090 7255 7642)
+             (:list 6655 6820 7206)
+             (:list 7588 6553 6940)
+             (:list 6592 6757 7642)
+             (:list 7357 7522 7206)
+             (:list 7588 6553 7438)
+             (:list 7673 7255 7024)
+             (:list 6655 7438 7206)
+             (:list 6971 6553 7522)
+             (:list 7175 6757 7024)
+             (:list 7357 6940 7206)
+             (:list 6971 6553 6820)
+             (:list 6859 7642 7024)
+             (:list 7357 6940 7522)
+             (:list 6655 7438 6820)
+             (:list 7673 6820 7024)
+             (:list 7090 7438 7642)
+             (:list 7406 6553 6757)
+             (:list 7175 7522 7024)
+             (:list 6592 6940 7642)
+             (:list 7406 6553 7255)
+             (:list 6859 7206 7024)
+             (:list 6592 6940 6757)
+             (:list 7090 7438 7255)
+             (:list 6859 7206 7642)
+             (:list 7175 7522 6757)
+             (:list 7673 6820 7255)))
+           (:lonset
+            (:list
+             0
+             1000
+             2000
+             3000
+             4000
+             5000
+             6000
+             7000
+             8000
+             9000
+             10000
+             11000
+             12000
+             13000
+             14000
+             15000
+             16000
+             17000
+             18000
+             19000
+             20000
+             21000
+             22000
+             23000
+             24000
+             25000
+             26000
+             27000
+             28000
+             29000
+             30000
+             31000
+             32000
+             33000
+             34000
+             35000
+             36000
+             37000
+             38000
+             39000
+             40000
+             41000
+             42000
+             43000
+             44000
+             45000
+             46000
+             47000
+             48000
+             49000
+             50000
+             51000
+             52000
+             53000
+             54000
+             55000
+             56000
+             57000
+             58000
+             59000
+             60000))
+           (:ldur (:list 1000 1000 1000))
+           (:lvel (:list 100 100 100))
+           (:loffset (:list 0 0 0))
+           (:lchan (:list 9 9 9))
+           (:lport (:list nil nil nil))
+           (:llegato nil)))))
+       (:id 6))
+      (:box
+       (:library "OM-JI")
+       (:type :function)
+       (:reference rt->mc)
+       (:group-id nil)
+       (:name "rt->mc")
+       (:x 22)
+       (:y 303)
+       (:w 77)
+       (:h 29)
+       (:color nil)
+       (:border nil)
+       (:roundness nil)
+       (:text-font nil)
+       (:align nil)
+       (:icon :left)
+       (:lock nil)
+       (:lambda nil)
+       (:inputs
+        (:input
+         (:type :standard)
+         (:name "RATIO")
+         (:value 11/8)
+         (:reactive nil))
+        (:input
+         (:type :standard)
+         (:name "FUNDAMENTAL")
+         (:value 6000)
+         (:reactive nil)))
+       (:outputs (:output (:name "out") (:reactive nil)))
+       (:id 7))
+      (:comment
+       (:x 74)
+       (:y 310)
+       (:w 173)
+       (:h 61)
+       (:fgcolor (:color 0 0 0 1.0))
+       (:bgcolor nil)
+       (:border 0)
+       (:roundness nil)
+       (:text-font
+        (:font (:face "Verdana") (:size 14) (:style :plain)))
+       (:align nil)
+       (:text "Converte razões para midicents.")
+       (:id 8))
+      (:box
+       (:type :object)
+       (:reference chord-seq)
+       (:group-id nil)
+       (:name "CHORD-SEQ")
+       (:x 322)
+       (:y 395)
+       (:w 307)
+       (:h 86)
+       (:color nil)
+       (:border nil)
+       (:roundness nil)
+       (:text-font nil)
+       (:align :center)
+       (:display :mini-view)
+       (:showname nil)
+       (:show-markers t)
+       (:lock nil)
+       (:lambda nil)
+       (:inputs
+        (:input
+         (:type :standard)
+         (:name "SELF")
+         (:value nil)
+         (:reactive nil))
+        (:input
+         (:type :standard)
+         (:name "LMIDIC")
+         (:value (:list 6000))
+         (:reactive nil))
+        (:input
+         (:type :standard)
+         (:name "LONSET")
+         (:value (:list 0 1000))
+         (:reactive nil))
+        (:input
+         (:type :standard)
+         (:name "LDUR")
+         (:value (:list 1000))
+         (:reactive nil))
+        (:input
+         (:type :standard)
+         (:name "LVEL")
+         (:value (:list 100))
+         (:reactive nil))
+        (:input
+         (:type :key)
+         (:name "loffset")
+         (:value (:list 0))
+         (:reactive nil))
+        (:input
+         (:type :key)
+         (:name "lchan")
+         (:value (:list 9))
+         (:reactive nil))
+        (:input
+         (:type :key)
+         (:name "llegato")
+         (:value 0)
+         (:reactive nil)))
+       (:outputs
+        (:output (:name "SELF") (:reactive nil))
+        (:output (:name "LMIDIC") (:reactive nil))
+        (:output (:name "LONSET") (:reactive nil))
+        (:output (:name "LDUR") (:reactive nil))
+        (:output (:name "LVEL") (:reactive nil))
+        (:output (:name "loffset") (:reactive nil))
+        (:output (:name "lchan") (:reactive nil))
+        (:output (:name "llegato") (:reactive nil)))
+       (:window (:size nil) (:position nil))
+       (:edition-params (:staff :g))
+       (:value
+        (:object
+         (:class chord-seq)
+         (:slots
+          ((:onset 0)
+           (:duration 60000)
+           (:interpol (:number-or-nil (:number 50) (:t-or-nil nil)))
+           (:name "CHORD-SEQ")
+           (:symbolic-date nil)
+           (:symbolic-dur nil)
+           (:symbolic-dur-extent 0)
+           (:extras nil)
+           (:lmidic
+            (:list
+             (:list 6776 6523 6945)
+             (:list 7113 6859 7281)
+             (:list 6925 6671 7094)
+             (:list 6776 7530 6523)
+             (:list 6528 7281 7474)
+             (:list 7540 7094 7286)
+             (:list 7530 6523 6945)
+             (:list 7113 7305 6528)
+             (:list 6925 7118 7540)
+             (:list 6776 7530 6945)
+             (:list 7305 6859 7474)
+             (:list 7118 6671 7286)
+             (:list 7530 7113 6859)
+             (:list 6945 6528 7474)
+             (:list 7094 6676 7622)
+             (:list 7530 6859 7281)
+             (:list 6776 7305 6528)
+             (:list 6925 7454 6676)
+             (:list 7530 7113 7281)
+             (:list 6523 7305 7474)
+             (:list 6671 7454 7622)
+             (:list 6945 7281 7474)
+             (:list 6776 7113 7305)
+             (:list 7540 6676 6869)
+             (:list 6945 6528 7281)
+             (:list 6523 7305 6859)
+             (:list 7286 6869 7622)
+             (:list 6776 7113 6528)
+             (:list 6523 6859 7474)
+             (:list 7118 7454 6869)
+             (:list 6925 6671 7530)
+             (:list 7540 7286 6945)
+             (:list 6676 7622 7281)
+             (:list 6671 7094 7530)
+             (:list 7118 7540 6776)
+             (:list 7454 6676 7113)
+             (:list 6925 7094 7530)
+             (:list 7118 7286 6523)
+             (:list 7454 7622 6859)
+             (:list 7094 7286 6945)
+             (:list 6925 7118 6776)
+             (:list 6676 6869 6528)
+             (:list 7540 7094 6945)
+             (:list 7118 6671 6523)
+             (:list 6869 7622 7474)
+             (:list 6925 7540 6776)
+             (:list 6671 7286 6523)
+             (:list 7454 6869 7305)
+             (:list 7094 7622 7281)
+             (:list 6925 7454 7113)
+             (:list 7540 6869 6528)
+             (:list 7094 6676 7281)
+             (:list 6671 7454 6859)
+             (:list 7286 6869 7474)
+             (:list 6925 6676 7113)
+             (:list 6671 7622 6859)
+             (:list 7118 6869 7305)
+             (:list 7540 6676 6528)
+             (:list 7286 7622 7474)
+             (:list 7118 7454 7305)))
+           (:lonset
+            (:list
+             0
+             1000
+             2000
+             3000
+             4000
+             5000
+             6000
+             7000
+             8000
+             9000
+             10000
+             11000
+             12000
+             13000
+             14000
+             15000
+             16000
+             17000
+             18000
+             19000
+             20000
+             21000
+             22000
+             23000
+             24000
+             25000
+             26000
+             27000
+             28000
+             29000
+             30000
+             31000
+             32000
+             33000
+             34000
+             35000
+             36000
+             37000
+             38000
+             39000
+             40000
+             41000
+             42000
+             43000
+             44000
+             45000
+             46000
+             47000
+             48000
+             49000
+             50000
+             51000
+             52000
+             53000
+             54000
+             55000
+             56000
+             57000
+             58000
+             59000
+             60000))
+           (:ldur (:list 1000 1000 1000))
+           (:lvel (:list 100 100 100))
+           (:loffset (:list 0 0 0))
+           (:lchan (:list 9 9 9))
+           (:lport (:list nil nil nil))
+           (:llegato nil)))))
+       (:id 9))
+      (:box
+       (:library "OM-JI")
+       (:type :function)
+       (:reference rt->mc)
+       (:group-id nil)
+       (:name "rt->mc")
+       (:x 301)
+       (:y 278)
+       (:w 77)
+       (:h 29)
+       (:color nil)
+       (:border nil)
+       (:roundness nil)
+       (:text-font nil)
+       (:align nil)
+       (:icon :left)
+       (:lock nil)
+       (:lambda nil)
+       (:inputs
+        (:input
+         (:type :standard)
+         (:name "RATIO")
+         (:value 11/8)
+         (:reactive nil))
+        (:input
+         (:type :standard)
+         (:name "FUNDAMENTAL")
+         (:value 6500)
+         (:reactive nil)))
+       (:outputs (:output (:name "out") (:reactive nil)))
+       (:id 10))
+      (:comment
+       (:x 810)
+       (:y 25)
+       (:w 179)
+       (:h 48)
+       (:fgcolor (:color 0 0 0 1.0))
+       (:bgcolor nil)
+       (:border 0)
+       (:roundness nil)
+       (:text-font (:font (:face "Verdana") (:size 14) (:style :bold)))
+       (:align nil)
+       (:text "Tríades Harmônicas.")
+       (:id 11))
+      (:box
+       (:type :value)
+       (:reference fixnum)
+       (:group-id nil)
+       (:name "aux")
+       (:x 47)
+       (:y 271)
+       (:w 44)
+       (:h 29)
+       (:color
+        (:color-or-nil
+         (:color (:color 1.0S0 1.0S0 1.0S0 1.0))
+         (:t-or-nil t)))
+       (:border nil)
+       (:roundness nil)
+       (:text-font nil)
+       (:align nil)
+       (:lock nil)
+       (:inputs)
+       (:outputs (:output (:name "value") (:reactive nil)))
+       (:value 6500)
+       (:id 12)))
+     (:connections
+      (:connection
+       (:from (:box 3 :out 0))
+       (:to (:box 7 :in 0))
+       (:attributes
+        (:color (:color 1.0S0 0.0S0 0.0S0 1.0) :style nil :modif nil)))
+      (:connection
+       (:from (:box 3 :out 1))
+       (:to (:box 10 :in 0))
+       (:attributes
+        (:color (:color 0.0S0 0.0S0 1.0S0 1.0) :style nil :modif nil)))
+      (:connection (:from (:box 4 :out 0)) (:to (:box 3 :in 0)))
+      (:connection
+       (:from (:box 7 :out 0))
+       (:to (:box 6 :in 1))
+       (:attributes
+        (:color (:color 1.0S0 0.0S0 0.0S0 1.0) :style nil :modif nil)))
+      (:connection
+       (:from (:box 10 :out 0))
+       (:to (:box 9 :in 1))
+       (:attributes
+        (:color (:color 0.0S0 0.0S0 1.0S0 1.0) :style nil :modif nil)))
+      (:connection (:from (:box 12 :out 0)) (:to (:box 7 :in 1))))))
+   (:group-id nil)
+   (:name "eikosany triads")
+   (:x 402)
+   (:y 534)
+   (:w 121)
+   (:h 48)
+   (:color nil)
+   (:border nil)
+   (:roundness nil)
+   (:text-font nil)
+   (:align :center)
+   (:display :mini-view)
+   (:lock nil)
+   (:lambda nil)
+   (:pre-delay 0)
+   (:inputs)
+   (:outputs)
+   (:id 18))
+  (:box
+   (:type :abstraction)
+   (:reference
+    (:patch
+     (:name "eikosany tetrades")
+     (:doc "")
+     (:info
+      (:created nil)
+      (:modified nil)
+      (:by *app-name*)
+      (:version 0))
+     (:window (:size nil) (:position nil))
+     (:grid nil)
+     (:lock nil)
+     (:boxes
+      (:box
+       (:type :value)
+       (:reference fixnum)
+       (:group-id nil)
+       (:name "aux 2")
+       (:x 315)
+       (:y 161)
+       (:w 44)
+       (:h 29)
+       (:color
+        (:color-or-nil
+         (:color (:color 1.0S0 1.0S0 1.0S0 1.0))
+         (:t-or-nil t)))
+       (:border nil)
+       (:roundness nil)
+       (:text-font nil)
+       (:align nil)
+       (:lock nil)
+       (:inputs)
+       (:outputs (:output (:name "value") (:reactive nil)))
+       (:value 6500)
+       (:id 0))
+      (:box
+       (:library "OM-JI")
+       (:type :function)
+       (:reference eikosany-tetrads)
+       (:group-id nil)
+       (:name "eikosany-tetrads")
+       (:x 26)
+       (:y 83)
+       (:w 130)
+       (:h 29)
+       (:color nil)
+       (:border nil)
+       (:roundness nil)
+       (:text-font nil)
+       (:align nil)
+       (:icon :left)
+       (:lock nil)
+       (:lambda nil)
+       (:inputs
+        (:input
+         (:type :standard)
+         (:name "6-NOTES")
+         (:value (:list 1 3 5 7 9 11))
+         (:reactive nil)))
+       (:outputs
+        (:output (:name "out0") (:reactive nil))
+        (:output (:name "out1") (:reactive nil)))
+       (:id 1))
+      (:comment
+       (:x 657)
+       (:y 287)
+       (:w 385)
+       (:h 61)
+       (:fgcolor (:color 0 0 0 1.0))
+       (:bgcolor nil)
+       (:border 0)
+       (:roundness nil)
+       (:text-font
+        (:font (:face "Verdana") (:size 14) (:style :plain)))
+       (:align nil)
+       (:text
+        "São 15 tétrades subharmônicas e 15 tétrades harmônicas para o Eikosany.")
+       (:id 2))
+      (:comment
+       (:x 674)
+       (:y 55)
+       (:w 484)
+       (:h 109)
+       (:fgcolor (:color 0 0 0 1.0))
+       (:bgcolor nil)
+       (:border 0)
+       (:roundness nil)
+       (:text-font
+        (:font (:face "Verdana") (:size 12) (:style :plain)))
+       (:align nil)
+       (:text
+        "((99/64 297/256 495/256 693/512) (77/64 231/128 385/256 693/512) (55/32 165/128 385/256 495/256) (33/32 165/128 231/128 297/256) (33/32 55/32 77/64 99/64) (63/32 189/128 315/256 693/512) (45/32 135/128 315/256 495/256) (27/16 135/128 189/128 297/256) (27/16 45/32 63/32 99/64) (35/32 105/64 315/256 385/256) (21/16 105/64 189/128 231/128) (21/16 35/32 63/32 77/64) (15/8 105/64 135/128 165/128) (15/8 35/32 45/32 55/32) (15/8 21/16 27/16 33/32))
+")
+       (:id 3))
+      (:comment
+       (:x 206)
+       (:y 50)
+       (:w 443)
+       (:h 112)
+       (:fgcolor (:color 0 0 0 1.0))
+       (:bgcolor nil)
+       (:border 0)
+       (:roundness nil)
+       (:text-font
+        (:font (:face "Verdana") (:size 12) (:style :plain)))
+       (:align nil)
+       (:text
+        " ((15/8 21/16 35/32 105/64) (15/8 27/16 45/32 135/128) (21/16 27/16 63/32 189/128) (35/32 45/32 63/32 315/256) (105/64 135/128 189/128 315/256) (15/8 33/32 55/32 165/128) (21/16 33/32 77/64 231/128) (35/32 55/32 77/64 385/256) (105/64 165/128 231/128 385/256) (27/16 33/32 99/64 297/256) (45/32 55/32 99/64 495/256) (135/128 165/128 297/256 495/256) (63/32 77/64 99/64 693/512) (189/128 231/128 297/256 693/512) (315/256 385/256 495/256 693/512))")
+       (:id 4))
+      (:box
+       (:type :value)
+       (:reference cons)
+       (:group-id nil)
+       (:name "aux 3")
+       (:x 28)
+       (:y 54)
+       (:w 91)
+       (:h 29)
+       (:color
+        (:color-or-nil
+         (:color (:color 1.0S0 1.0S0 1.0S0 1.0))
+         (:t-or-nil t)))
+       (:border nil)
+       (:roundness nil)
+       (:text-font nil)
+       (:align nil)
+       (:lock nil)
+       (:inputs)
+       (:outputs (:output (:name "value") (:reactive nil)))
+       (:value (:list 1 3 5 7 9 11))
+       (:id 5))
+      (:comment
+       (:x 298)
+       (:y 23)
+       (:w 234)
+       (:h 48)
+       (:fgcolor (:color 0 0 0 1.0))
+       (:bgcolor nil)
+       (:border 0)
+       (:roundness nil)
+       (:text-font (:font (:face "Verdana") (:size 14) (:style :bold)))
+       (:align nil)
+       (:text "Tétrades sub-harmônicas.")
+       (:id 6))
+      (:box
+       (:type :object)
+       (:reference chord-seq)
+       (:group-id nil)
+       (:name "CHORD-SEQ 2")
+       (:x 10)
+       (:y 285)
+       (:w 307)
+       (:h 86)
+       (:color nil)
+       (:border nil)
+       (:roundness nil)
+       (:text-font nil)
+       (:align :center)
+       (:display :mini-view)
+       (:showname nil)
+       (:show-markers t)
+       (:lock nil)
+       (:lambda nil)
+       (:inputs
+        (:input
+         (:type :standard)
+         (:name "SELF")
+         (:value nil)
+         (:reactive nil))
+        (:input
+         (:type :standard)
+         (:name "LMIDIC")
+         (:value (:list 6000))
+         (:reactive nil))
+        (:input
+         (:type :standard)
+         (:name "LONSET")
+         (:value (:list 0 1000))
+         (:reactive nil))
+        (:input
+         (:type :standard)
+         (:name "LDUR")
+         (:value (:list 1000))
+         (:reactive nil))
+        (:input
+         (:type :standard)
+         (:name "LVEL")
+         (:value (:list 100))
+         (:reactive nil))
+        (:input
+         (:type :key)
+         (:name "loffset")
+         (:value (:list 0))
+         (:reactive nil))
+        (:input
+         (:type :key)
+         (:name "lchan")
+         (:value (:list 9))
+         (:reactive nil))
+        (:input
+         (:type :key)
+         (:name "llegato")
+         (:value 0)
+         (:reactive nil)))
+       (:outputs
+        (:output (:name "SELF") (:reactive nil))
+        (:output (:name "LMIDIC") (:reactive nil))
+        (:output (:name "LONSET") (:reactive nil))
+        (:output (:name "LDUR") (:reactive nil))
+        (:output (:name "LVEL") (:reactive nil))
+        (:output (:name "loffset") (:reactive nil))
+        (:output (:name "lchan") (:reactive nil))
+        (:output (:name "llegato") (:reactive nil)))
+       (:window (:size nil) (:position nil))
+       (:edition-params (:staff :g))
+       (:value
+        (:object
+         (:class chord-seq)
+         (:slots
+          ((:onset 0)
+           (:duration 15000)
+           (:interpol (:number-or-nil (:number 50) (:t-or-nil nil)))
+           (:name "CHORD-SEQ")
+           (:symbolic-date nil)
+           (:symbolic-dur nil)
+           (:symbolic-dur-extent 0)
+           (:extras nil)
+           (:lmidic
+            (:list
+             (:list 7588 6971 6655 7357)
+             (:list 7588 7406 7090 6592)
+             (:list 6971 7406 7673 7175)
+             (:list 6655 7090 7673 6859)
+             (:list 7357 6592 7175 6859)
+             (:list 7588 6553 7438 6940)
+             (:list 6971 6553 6820 7522)
+             (:list 6655 7438 6820 7206)
+             (:list 7357 6940 7522 7206)
+             (:list 7406 6553 7255 6757)
+             (:list 7090 7438 7255 7642)
+             (:list 6592 6940 6757 7642)
+             (:list 7673 6820 7255 7024)
+             (:list 7175 7522 6757 7024)
+             (:list 6859 7206 7642 7024)))
+           (:lonset
+            (:list
+             0
+             1000
+             2000
+             3000
+             4000
+             5000
+             6000
+             7000
+             8000
+             9000
+             10000
+             11000
+             12000
+             13000
+             14000
+             15000))
+           (:ldur (:list 1000 1000 1000 1000))
+           (:lvel (:list 100 100 100 100))
+           (:loffset (:list 0 0 0 0))
+           (:lchan (:list 9 9 9 9))
+           (:lport (:list nil nil nil nil))
+           (:llegato nil)))))
+       (:id 7))
+      (:box
+       (:library "OM-JI")
+       (:type :function)
+       (:reference rt->mc)
+       (:group-id nil)
+       (:name "rt->mc")
+       (:x 46)
+       (:y 211)
+       (:w 77)
+       (:h 29)
+       (:color nil)
+       (:border nil)
+       (:roundness nil)
+       (:text-font nil)
+       (:align nil)
+       (:icon :left)
+       (:lock nil)
+       (:lambda nil)
+       (:inputs
+        (:input
+         (:type :standard)
+         (:name "RATIO")
+         (:value 11/8)
+         (:reactive nil))
+        (:input
+         (:type :standard)
+         (:name "FUNDAMENTAL")
+         (:value 6000)
+         (:reactive nil)))
+       (:outputs (:output (:name "out") (:reactive nil)))
+       (:id 8))
+      (:comment
+       (:x 98)
+       (:y 218)
+       (:w 173)
+       (:h 61)
+       (:fgcolor (:color 0 0 0 1.0))
+       (:bgcolor nil)
+       (:border 0)
+       (:roundness nil)
+       (:text-font
+        (:font (:face "Verdana") (:size 14) (:style :plain)))
+       (:align nil)
+       (:text "Converte razões para midicents.")
+       (:id 9))
+      (:box
+       (:type :object)
+       (:reference chord-seq)
+       (:group-id nil)
+       (:name "CHORD-SEQ")
+       (:x 328)
+       (:y 286)
+       (:w 307)
+       (:h 86)
+       (:color nil)
+       (:border nil)
+       (:roundness nil)
+       (:text-font nil)
+       (:align :center)
+       (:display :mini-view)
+       (:showname nil)
+       (:show-markers t)
+       (:lock nil)
+       (:lambda nil)
+       (:inputs
+        (:input
+         (:type :standard)
+         (:name "SELF")
+         (:value nil)
+         (:reactive nil))
+        (:input
+         (:type :standard)
+         (:name "LMIDIC")
+         (:value (:list 6000))
+         (:reactive nil))
+        (:input
+         (:type :standard)
+         (:name "LONSET")
+         (:value (:list 0 1000))
+         (:reactive nil))
+        (:input
+         (:type :standard)
+         (:name "LDUR")
+         (:value (:list 1000))
+         (:reactive nil))
+        (:input
+         (:type :standard)
+         (:name "LVEL")
+         (:value (:list 100))
+         (:reactive nil))
+        (:input
+         (:type :key)
+         (:name "loffset")
+         (:value (:list 0))
+         (:reactive nil))
+        (:input
+         (:type :key)
+         (:name "lchan")
+         (:value (:list 9))
+         (:reactive nil))
+        (:input
+         (:type :key)
+         (:name "llegato")
+         (:value 0)
+         (:reactive nil)))
+       (:outputs
+        (:output (:name "SELF") (:reactive nil))
+        (:output (:name "LMIDIC") (:reactive nil))
+        (:output (:name "LONSET") (:reactive nil))
+        (:output (:name "LDUR") (:reactive nil))
+        (:output (:name "LVEL") (:reactive nil))
+        (:output (:name "loffset") (:reactive nil))
+        (:output (:name "lchan") (:reactive nil))
+        (:output (:name "llegato") (:reactive nil)))
+       (:window (:size nil) (:position nil))
+       (:edition-params (:staff :g))
+       (:value
+        (:object
+         (:class chord-seq)
+         (:slots
+          ((:onset 0)
+           (:duration 15000)
+           (:interpol (:number-or-nil (:number 50) (:t-or-nil nil)))
+           (:name "CHORD-SEQ")
+           (:symbolic-date nil)
+           (:symbolic-dur nil)
+           (:symbolic-dur-extent 0)
+           (:extras nil)
+           (:lmidic
+            (:list
+             (:list 7255 6757 7642 7024)
+             (:list 6820 7522 7206 7024)
+             (:list 7438 6940 7206 7642)
+             (:list 6553 6940 7522 6757)
+             (:list 6553 7438 6820 7255)
+             (:list 7673 7175 6859 7024)
+             (:list 7090 6592 6859 7642)
+             (:list 7406 6592 7175 6757)
+             (:list 7406 7090 7673 7255)
+             (:list 6655 7357 6859 7206)
+             (:list 6971 7357 7175 7522)
+             (:list 6971 6655 7673 6820)
+             (:list 7588 7357 6592 6940)
+             (:list 7588 6655 7090 7438)
+             (:list 7588 6971 7406 6553)))
+           (:lonset
+            (:list
+             0
+             1000
+             2000
+             3000
+             4000
+             5000
+             6000
+             7000
+             8000
+             9000
+             10000
+             11000
+             12000
+             13000
+             14000
+             15000))
+           (:ldur (:list 1000 1000 1000 1000))
+           (:lvel (:list 100 100 100 100))
+           (:loffset (:list 0 0 0 0))
+           (:lchan (:list 9 9 9 9))
+           (:lport (:list nil nil nil nil))
+           (:llegato nil)))))
+       (:id 10))
+      (:box
+       (:library "OM-JI")
+       (:type :function)
+       (:reference rt->mc)
+       (:group-id nil)
+       (:name "rt->mc")
+       (:x 291)
+       (:y 191)
+       (:w 77)
+       (:h 29)
+       (:color nil)
+       (:border nil)
+       (:roundness nil)
+       (:text-font nil)
+       (:align nil)
+       (:icon :left)
+       (:lock nil)
+       (:lambda nil)
+       (:inputs
+        (:input
+         (:type :standard)
+         (:name "RATIO")
+         (:value 11/8)
+         (:reactive nil))
+        (:input
+         (:type :standard)
+         (:name "FUNDAMENTAL")
+         (:value 6500)
+         (:reactive nil)))
+       (:outputs (:output (:name "out") (:reactive nil)))
+       (:id 11))
+      (:comment
+       (:x 810)
+       (:y 25)
+       (:w 179)
+       (:h 48)
+       (:fgcolor (:color 0 0 0 1.0))
+       (:bgcolor nil)
+       (:border 0)
+       (:roundness nil)
+       (:text-font (:font (:face "Verdana") (:size 14) (:style :bold)))
+       (:align nil)
+       (:text "Tétrades Harmônicas.")
+       (:id 12))
+      (:box
+       (:type :value)
+       (:reference fixnum)
+       (:group-id nil)
+       (:name "aux")
+       (:x 71)
+       (:y 179)
+       (:w 44)
+       (:h 29)
+       (:color
+        (:color-or-nil
+         (:color (:color 1.0S0 1.0S0 1.0S0 1.0))
+         (:t-or-nil t)))
+       (:border nil)
+       (:roundness nil)
+       (:text-font nil)
+       (:align nil)
+       (:lock nil)
+       (:inputs)
+       (:outputs (:output (:name "value") (:reactive nil)))
+       (:value 6500)
+       (:id 13)))
+     (:connections
+      (:connection
+       (:from (:box 0 :out 0))
+       (:to (:box 11 :in 1))
+       (:attributes
+        (:color (:color 0.0S0 0.0S0 1.0S0 1.0) :style nil :modif nil)))
+      (:connection
+       (:from (:box 1 :out 0))
+       (:to (:box 8 :in 0))
+       (:attributes
+        (:color (:color 1.0S0 0.0S0 0.0S0 1.0) :style nil :modif nil)))
+      (:connection
+       (:from (:box 1 :out 1))
+       (:to (:box 11 :in 0))
+       (:attributes
+        (:color (:color 0.0S0 0.0S0 1.0S0 1.0) :style nil :modif nil)))
+      (:connection (:from (:box 5 :out 0)) (:to (:box 1 :in 0)))
+      (:connection
+       (:from (:box 8 :out 0))
+       (:to (:box 7 :in 1))
+       (:attributes
+        (:color (:color 1.0S0 0.0S0 0.0S0 1.0) :style nil :modif nil)))
+      (:connection
+       (:from (:box 11 :out 0))
+       (:to (:box 10 :in 1))
+       (:attributes
+        (:color (:color 0.0S0 0.0S0 1.0S0 1.0) :style nil :modif nil)))
+      (:connection
+       (:from (:box 13 :out 0))
+       (:to (:box 8 :in 1))
+       (:attributes
+        (:color
+         (:color 1.0S0 0.0S0 0.0S0 1.0)
+         :style
+         nil
+         :modif
+         nil))))))
+   (:group-id nil)
+   (:name "eikosany tetrades")
+   (:x 546)
+   (:y 533)
+   (:w 136)
+   (:h 48)
+   (:color nil)
+   (:border nil)
+   (:roundness nil)
+   (:text-font nil)
+   (:align :center)
+   (:display :mini-view)
+   (:lock nil)
+   (:lambda nil)
+   (:pre-delay 0)
+   (:inputs)
+   (:outputs)
+   (:id 19)))
+ (:connections
+  (:connection (:from (:box 3 :out 0)) (:to (:box 0 :in 1)))
+  (:connection (:from (:box 6 :out 0)) (:to (:box 0 :in 0)))
+  (:connection (:from (:box 8 :out 0)) (:to (:box 3 :in 0)))
+  (:connection (:from (:box 13 :out 0)) (:to (:box 14 :in 0)))
+  (:connection (:from (:box 14 :out 0)) (:to (:box 16 :in 0)))))
