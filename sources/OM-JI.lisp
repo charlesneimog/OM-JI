@@ -47,32 +47,34 @@
 
 ;; ===================================================
 
-(defmethod! range-reduce ((notelist list) (grave number) (aguda number) &optional (octave-r 1))
-:initvals ' ((4800 7200 6000) 6000 7902 1)
-:indoc ' ("List of midicents" "The lowest note." "The highest note." "It must be used in the reduction of the pitch-range. In which, the reduction will be by + or - of 1200 cents (1), 2400 cents (2), 3600 cents (3); etc...")
+(defmethod! range-reduce ((notelist list) (grave number) (aguda number))
+:initvals ' ((4800 7200 6000) 6000 7902)
+:indoc ' ("List of midicents" "The lowest note." "The highest note.")
 :icon 002
 :doc "This object reduce a list of notes in a determinate space. The note of the first inlet will be the more lowest note allowed, and the note of the second inlet will be the more higher note allowed."
 
-(let* ((octave-redution (* 1200 octave-r)))
+(let* 
+  ((octave-redution (* 1200 (ceiling (om/ (om- aguda grave) 1200))))
+  (aguda-first (+ grave octave-redution)))
 (if (om>= (- aguda grave) 1200)
 (if (let ((foo notelist)) (typep foo 'list-of-lists))
 
 (loop :for notelistloop :in notelist :collect
       (mapcar (lambda (x)
-	            (loop :for new-val := x :then (if (< new-val aguda)
+	            (loop :for new-val := x :then (if (< new-val aguda-first)
 			            (+ new-val octave-redution)
 			            (- new-val octave-redution))
 		              :until (and (<= grave new-val)
-			            (>= aguda new-val))
+			            (>= aguda-first new-val))
 		              :finally (return new-val)))
   	          notelistloop))
 
 (mapcar (lambda (x)
-	           (loop :for new-val := x :then (if (< new-val aguda)
+	           (loop :for new-val := x :then (if (< new-val aguda-first)
 			           (+ new-val octave-redution)
 			            (- new-val octave-redution))
 		              :until (and (<= grave new-val)
-			            (>= aguda new-val))
+			            (>= aguda-first new-val))
 		            :finally (return new-val)))
 	        notelist)) 
           
@@ -900,6 +902,18 @@ In this object we can undestand how identities can be connected using the theory
   (* (/ 1200 (log 2)) (log ratio)))
 
 ;; DISSONANCE SENSORY => Mauricio Rodriguez after William A. Sethares
+
+; ================================= list->string =======
+
+(defun list->string (lst)
+  (when lst
+    (concatenate 'string 
+                 (write-to-string (car lst)) (numlist-to-string (cdr lst)))))
+
+                
+;; Code by "https://gist.github.com/tompurl/5174818"
+
+
 
 ;; ================== PASCAL TRIANGULE ======================
 
