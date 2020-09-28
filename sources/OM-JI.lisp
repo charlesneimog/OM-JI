@@ -56,27 +56,53 @@
 (let* 
   ((octave-redution (* 1200 (ceiling (om/ (om- aguda grave) 1200))))
   (aguda-first (+ grave octave-redution)))
+
 (if (om>= (- aguda grave) 1200)
+
+
 (if (let ((foo notelist)) (typep foo 'list-of-lists))
 
-(loop :for notelistloop :in notelist :collect
-      (mapcar (lambda (x)
-	            (loop :for new-val := x :then (if (< new-val aguda-first)
-			            (+ new-val octave-redution)
-			            (- new-val octave-redution))
-		              :until (and (<= grave new-val)
-			            (>= aguda-first new-val))
-		              :finally (return new-val)))
-  	          notelistloop))
+(let* ((redution-octave 
+          (loop :for notelistloop :in notelist :collect
+            (mapcar (lambda (x)
+	              (loop :for new-val := x :then (if (< new-val aguda-first)
+			              (+ new-val octave-redution)
+			              (- new-val octave-redution))
+		                :until (and (<= grave new-val)
+			             (>= aguda-first new-val))
+		                :finally (return new-val)))
+  	            notelistloop))))
 
-(mapcar (lambda (x)
-	           (loop :for new-val := x :then (if (< new-val aguda-first)
-			           (+ new-val octave-redution)
-			            (- new-val octave-redution))
-		              :until (and (<= grave new-val)
-			            (>= aguda-first new-val))
-		            :finally (return new-val)))
-	        notelist)) 
+       
+          (loop :for notelistloop :in redution-octave :collect
+            (mapcar (lambda (x)
+	              (loop :for new-val := x :then (if (< new-val aguda)
+			              (+ new-val 1200)
+			              (- new-val 1200))
+		                :until (and (<= grave new-val)
+			             (>= aguda new-val))
+		                :finally (return new-val)))
+  	            notelistloop)))
+
+(let* ((redution-octave 
+            (mapcar (lambda (x)
+	              (loop :for new-val := x :then (if (< new-val aguda-first)
+			              (+ new-val octave-redution)
+			              (- new-val octave-redution))
+		                :until (and (<= grave new-val)
+			             (>= aguda-first new-val))
+		                :finally (return new-val)))
+  	            notelist)))
+
+            (mapcar (lambda (x)
+	              (loop :for new-val := x :then (if (< new-val aguda)
+			              (+ new-val 1200)
+			              (- new-val 1200))
+		                :until (and (<= grave new-val)
+			             (>= aguda new-val))
+		                :finally (return new-val)))
+  	            redution-octave)))
+       
           
 (print "RANGE-REDUCE: The difference between the inlet2 e inlet3 must be at least 1200 cents"))))
 
@@ -195,7 +221,7 @@ Result: (7 9 458)."
 (rt-octave-fun fraq octave))
 
 
-(defmethod! rt-octave ((fraq ratio) &optional (octave 2))
+(defmethod! rt-octave ((fraq number) &optional (octave 2))
 :initvals ' (3/2 2)
 :indoc ' ("list of ratios" "2 for one octave; 4 for 2 octaves; 8 for 3; etc...") 
 :icon 002
@@ -958,6 +984,14 @@ In this object we can undestand how identities can be connected using the theory
 
 ; ========================================== OM#-PLAY =======================
 
+
+(defun chord->voice (lista-de-notas)
+
+(mktree
+ (loop for i from 1 to (length lista-de-notas)
+  collect (let* () 1/4))
+ (list 4 4)))
+
 (defmethod! play-om# ((ckn VOICE) &optional (number-2 1))
 :initvals ' ((nil))       
 :indoc ' ("A player for OM#")
@@ -982,8 +1016,6 @@ For the automatic work the folder out-files of OM# must be in the files preferen
                    :ldur newdurs)))
 
 (defun choose-fun (notelist chord-n) (nth (om- chord-n 1) notelist))
-
-(defun numlist-to-string (lst) (when lst (concatenate 'string (write-to-string (car lst)) (numlist-to-string (cdr lst)))))
 
 (let* (
 
@@ -1044,7 +1076,7 @@ For the automatic work the folder out-files of OM# must be in the files preferen
   (osc-send (list "/lastnote" (let* ((cknlast-1 (flat (last (remove nil ckn-action4))))) (om+ (first cknlast-1) (fourth cknlast-1)))) "127.0.0.1" 3004)))
                       
 (save-as-text ckn-action4 (let* (
- (LISP-FUNCTION (numlist-to-string (x-append 'play (om-random 0 100) '.txt))))
+ (LISP-FUNCTION (list->string (x-append 'play (om-random 0 100) '.txt))))
 
 
 (first (list LISP-FUNCTION (osc-send (list "/note" LISP-FUNCTION) "127.0.0.1" 3003)))))))
