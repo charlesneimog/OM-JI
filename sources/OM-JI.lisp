@@ -89,7 +89,7 @@
 	              (loop :for new-val := x :then (if (< new-val aguda-first)
 			              (+ new-val octave-redution)
 			              (- new-val octave-redution))
-		                :until (and (<= grave new-val)
+		                :until (and (<= grave new-val) 
 			             (>= aguda-first new-val))
 		                :finally (return new-val)))
   	            notelist)))
@@ -240,7 +240,7 @@ Result: (7 9 458)."
 (loop :for cknloop2 :in fraq :collect (/ cknloop2 (expt octave (floor (log cknloop2 octave)))))))
 
 
-;; =================================== Harry Partch ==========================================
+;; =================================== HARRY PARTCH ==========================================
 (defmethod! Diamond ((limite integer))
 :initvals ' (11)      
 :indoc ' ("Limit-n for the diamond.")
@@ -931,10 +931,10 @@ In this object we can undestand how identities can be connected using the theory
 
 ; ================================= list->string =======
 
-(defun list->string (lst)
-  (when lst
+(defun list->string (ckn-list)
+  (when ckn-list
     (concatenate 'string 
-                 (write-to-string (car lst)) (numlist-to-string (cdr lst)))))
+                 (write-to-string (car ckn-list)) (list->string (cdr ckn-list)))))
 
                 
 ;; Code by "https://gist.github.com/tompurl/5174818"
@@ -992,15 +992,6 @@ In this object we can undestand how identities can be connected using the theory
   collect (let* () 1/4))
  (list 4 4)))
 
-(defmethod! play-om# ((ckn VOICE) &optional (number-2 1))
-:initvals ' ((nil))       
-:indoc ' ("A player for OM#")
-:outdoc ' ("PLAY")
-:icon 0000
-:doc "It is a player for OM#. You can download the Max/MSP patch in:  <https://bit.ly/32K0och>.
-
-For the automatic work the folder out-files of OM# must be in the files preferences of the Max/MSP."
-
 (defun normalize-chord-seq (chrdseq)
   (let* ((xdx (x->dx (lonset chrdseq)))
          (filt-durs1 (mapcar 'list-min (ldur chrdseq)))
@@ -1017,9 +1008,8 @@ For the automatic work the folder out-files of OM# must be in the files preferen
 
 (defun choose-fun (notelist chord-n) (nth (om- chord-n 1) notelist))
 
-(let* (
 
-(true-durations 
+(defun true-durations (ckn)
 
  (let* ((newchrdseq (if (typep ckn 'note) 
                            (Objfromobjs (Objfromobjs ckn (make-instance 'chord)) (make-instance 'chord-seq))
@@ -1047,7 +1037,10 @@ For the automatic work the folder out-files of OM# must be in the files preferen
    ))
 
 
-(ckn-action1  (loop :for ckn-plus :in true-durations :collect (if (plusp ckn-plus) 0 1)))
+(defun voice->text-fun (ckn number-2)
+
+(let* (
+(ckn-action1  (loop :for ckn-plus :in (true-durations ckn) :collect (if (plusp ckn-plus) 0 1)))
 
 (ckn-action2 (loop :for cknloop :in ckn-action1 :collect (if (= 0 cknloop) (setq number-2 (+ number-2 1)) nil)))
 
@@ -1058,19 +1051,34 @@ For the automatic work the folder out-files of OM# must be in the files preferen
           (if (equal nil (first ckn-action2)) 0 (first ckn-action2))))
         (if (equal nil (first ckn-action2)) (om+ (om- ckn-action2 ckn-action3-1) -1) (om+ (om- ckn-action2 ckn-action3-1) 1))     
         
-      ))
+      )))
 
-(ckn-action4 
-(loop :for cknloop-1 :in ckn-action3 :for cknloop-2 :in (dx->x 0 (loop :for y :in true-durations :collect (abs y))) :for cknloop-3 :in true-durations collect          
+(loop :for cknloop-1 :in ckn-action3 :for cknloop-2 :in (dx->x 0 (loop :for y :in (true-durations ckn) :collect (abs y))) :for cknloop-3 :in (true-durations ckn) :collect          
         (if (plusp cknloop-3) 
             (x-append 
-                     (if (plusp cknloop-3) cknloop-2 nil) "," 
-                     (x-append  
-                      (choose-fun (get-slot-val (make-value-from-model 'voice ckn nil) "LMIDIC") cknloop-1) 
-                      (choose-fun (get-slot-val (make-value-from-model 'voice ckn nil) "lvel") cknloop-1)
-                      (choose-fun (get-slot-val (make-value-from-model 'voice CKN nil) "lchan") cknloop-1)
-                      (if (plusp cknloop-3) cknloop-3 nil) 
-                       ";")) nil)))
+               (if (plusp cknloop-3) cknloop-2 nil) "," 
+                  (x-append  
+                  (choose-fun (flat (get-slot-val (make-value-from-model 'voice ckn nil) "LMIDIC")) cknloop-1) 
+                  (choose-fun (flat (get-slot-val (make-value-from-model 'voice ckn nil) "lvel")) cknloop-1)
+                  (choose-fun (flat (get-slot-val (make-value-from-model 'voice ckn nil) "lchan")) cknloop-1)
+                    (if (plusp cknloop-3) cknloop-3 nil) 
+                       ";")) nil))))
+
+
+; ===========================================================================
+
+(defmethod! play-om# ((voice VOICE))
+:initvals ' ((nil))       
+:indoc ' ("A player for OM#")
+:outdoc ' ("PLAY")
+:icon 0000
+:numouts 1
+:doc "It is a player for OM#. You can download the Max/MSP patch in:  <https://bit.ly/32K0och>.
+
+For the automatic work the folder out-files of OM# must be in the files preferences of the Max/MSP."
+
+(let* (
+(ckn-action4 (voice->text-fun voice 1))
 
 (ckn-last 
   (osc-send (list "/lastnote" (let* ((cknlast-1 (flat (last (remove nil ckn-action4))))) (om+ (first cknlast-1) (fourth cknlast-1)))) "127.0.0.1" 3004)))
@@ -1083,6 +1091,19 @@ For the automatic work the folder out-files of OM# must be in the files preferen
 
 ; ===========================================================================
 
+(defmethod! voice->text ((voice VOICE))
+:initvals ' ((nil))       
+:indoc ' ("A player for OM#")
+:outdoc ' ("PLAY")
+:icon 0000
+:numouts 1
+:doc "It is a player for OM#. You can download the Max/MSP patch in:  <https://bit.ly/32K0och>.
+
+For the automatic work the folder out-files of OM# must be in the files preferences of the Max/MSP."
+(let
+ ((tb (make-value 'textbuffer (list (list :contents (voice->text-fun voice 1)))))) (setf (reader tb) :lines-cols) tb))
+
+; ===========================================================================
 
 (print 
  "
