@@ -17,12 +17,12 @@ See http://charlesneimog.com")
 (:symbols 
       (:packages
             (:package (:name "Just-Intonation") (:functions rt->mc range-reduce filter-ac-inst modulation-notes modulation-notes-fund choose rt-octave))
-            (:package (:name "Harry Partch") (:functions Diamond Diamond-Identity otonal-inverse utonal-inverse))
+            (:package (:name "Harry Partch") (:functions Diamond Diamond-Identity chord-inverse))
             (:package (:name "Erv Wilson") (:functions cps->identity cps->ratio)
                   (:packages
 
                         (:package (:name "MOS")
-                        (:functions MOS MOS-verify MOS-check))
+                        (:functions MOS MOS-verify MOS-check MOS-complementary))
       
                         (:package (:name "CPS-Hexany")
                         (:functions Hexany Hexany-triads Hexany-connections))

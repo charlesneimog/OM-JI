@@ -121,7 +121,6 @@
 
 (let* ((filter 
 (loop :for cknloop :in notelist :collect 
-
       (if (om= (om+ 
           (first (list (if (om< (om- cknloop (approx-m cknloop temperament)) approx) 1 0)
                        (if (om> (om- cknloop (approx-m cknloop temperament)) (om- approx (om* approx 2))) 1 0))) 
@@ -170,7 +169,7 @@
 
 (let* ((result (loop :for cknloop1 :in listnote :collect 
 
-                     (loop :for cknloop2 :n listnote2 :collect (if (om= (+ 
+                     (loop :for cknloop2 :in listnote2 :collect (if (om= (+ 
                                                           (if (< (om- (om- cknloop1 cknloop2) 
                                                                  (approx-m (om- cknloop1 cknloop2) temperamento)) cents) 1 0) 
                                                           (if (> (om- (om- cknloop1 cknloop2) 
@@ -178,12 +177,12 @@
                                                                                                   (list cknloop1 cknloop2) 0))))
 (result2 (remove 0 (flat result 1))))
 
-  (loop :for cknloop3 :in result2 :do (print  (let*  
+  (loop :for cknloop3 :in result2 :collect (print  (let*  
                                                ((result3-2 (om- (first cknloop3) (second cknloop3))))
 
   (if 
-      (or (om= result3-2 0) (om= result3-2 1200) (and (om> 10 result3-2) (om< -10 result3-2))) (x-append cknloop3 "are equal")
-      (x-append cknloop3 "will be equal if the second list have has the fundamental with the difference of" (approx-m result3-2 temperamento) 'cents))))) 'end))
+      (or (om= result3-2 0) (om= result3-2 1200) (and (om> cents result3-2) (om< (om- cents (om* cents 2)) result3-2))) (x-append cknloop3 "are equal")
+      (x-append cknloop3 "will be equal if the second list have has the fundamental with the difference of" (approx-m result3-2 temperamento) "cents")))))))
 
 ;; ===================================================
 
@@ -240,6 +239,16 @@ Result: (7 9 458)."
 (loop :for cknloop2 :in fraq :collect (/ cknloop2 (expt octave (floor (log cknloop2 octave)))))))
 
 
+;; ===================================================
+(defmethod! sieve-prime ((sieve list))
+:initvals ' (11)      
+:indoc ' ("Sieve")
+:outdoc ' ("utonality" )
+:icon 002
+:doc "Seleciona os números primos de acordo com a sequencia dos números primos."
+
+(loop :for ckn-loop :in sieve :collect (choose-fun (remove 1 (prime-ser 99999999999 (last-elem (sort-list sieve )))) ckn-loop)))
+
 ;; =================================== HARRY PARTCH ==========================================
 (defmethod! Diamond ((limite integer))
 :initvals ' (11)      
@@ -260,7 +269,6 @@ In the outlet of the left, the result is the utonal-diamond. Outlet of the right
 (let* ((ordem-partch2 (loop :for x :in (sort-list (rt-octave-fun (arithm-ser 1 limite 2) 2)) :collect (numerator x))))
   (loop :for x :in ordem-partch2 :collect (loop :for y :in ordem-partch2 :collect (/ y x))))
 )
-
 )
 
 ;; ===================================================
@@ -279,31 +287,15 @@ In the outlet of the left, the result is the utonal-diamond. Outlet of the right
 
 ;; ===================================================
 -
-(defmethod! otonal-inverse ((otonal list))
+(defmethod! chord-inverse ((chord-list list))
 :initvals ' ((1/1 3/2 5/4))       
 :indoc ' ("otonal chord")
 :icon 003
-:doc "It gives the utonal chord of a otonal chord. In other words, intervals ascendants become intervals descent."
+:doc "It gives the utonal chord of a otonal chord and vice-versa. In other words, intervals ascendants become intervals descent and vice-versa."
 
-(let* (
-
-(task1 (loop :for y :in otonal :collect (denominator y)))
-(task2 (loop :for y :in otonal :collect (numerator y))))
-(om/ task1 task2)))
-
-;; ===================================================
--
-(defmethod! utonal-inverse ((utonal list))
-:initvals ' ((1/1 4/3 6/5))       
-:indoc ' ("Utonal chord.")
-:icon 003
-:doc "It gives the otonal chord of a utonal chord. In other words, intervals descents become intervals ascendants."
-
-(let* (
-
-(task1 (loop :for y :in utonal :collect (numerator y)))
-(task2 (loop :for y :in utonal :collect (denominator y))))
-(om/ task1 task2)))
+(mapcar
+  (lambda (x) (om/ (denominator x) (numerator x)))
+  chord-list))
 
 
 ;; ;; =================================== Ben Johnston ======================================
@@ -379,7 +371,7 @@ This is a procedure used by Ben Johnston in your strings quartets no. 2 and no. 
 (defmethod! MOS ((ratio number)(grave number) (aguda number) (sobreposition number))
 :initvals ' (4/3 6000 7200 11)     
 :indoc ' ("Fundamental note of sobreposition" "Just Intonation interval" "High note" "Number of sobreposition")
-:icon 005
+:icon 'MOS
 :doc "This object creates a Moment of Symmetry without a octave equivalence. For make the octave equivalence use the object Octave-reduce, choose the range of the this MOS. 
 
 MOS is a Theory of the composer Erv Wilson.                  
@@ -391,6 +383,11 @@ These intervals are designated as the small (s) and large (L) intervals (FOR MAK
 The relative number of s and L intervals in an MOS is co-prime, i.e., they share no common factors other than 1. Fractions are used to represent MOS scales: the numerator shows the size of the generator, and the denominator shows the number of notes in the scale. 
 
 The numerator and denominator of fractions representing MOS are also co-prime. Wilson organizes these fractions hierarchically on the Scale Tree. MOS are not only scales in their own right but also provide a framework or template for constructing a family of Secondary MOS scales. (in NARUSHIMA - Microtonality and the Tuning Systems of Erv Wilson-Routledge)."
+
+(mos-fun ratio grave aguda sobreposition))
+
+
+(defun mos-fun (ratio grave aguda sobreposition)
 
 (let*  
 
@@ -433,7 +430,7 @@ The numerator and denominator of fractions representing MOS are also co-prime. W
 (defmethod! MOS-verify ((notelist list))
 :initvals ' ((6754 6308 7062 6616 6178))    
 :indoc ' ("list of notes - object-MOS")
-:icon 005
+:icon 'MOS
 :doc "This object do the verification whether a list of notes is a MOS or not. If yes, informs the internal symmetry of your intervals, s for small intervals and L for Large interval. See Microtonality and the Tuning Systems of Erv Wilson-Routledge of NARUSHIMA."
 
 
@@ -449,7 +446,7 @@ The numerator and denominator of fractions representing MOS are also co-prime. W
 (defmethod! MOS-check ((interval number)(fund number) (aguda number) (sobreposition number) (number_of_interval number))
 :initvals ' (4/3 6000 7200 11 2)     
 :indoc ' ("fundamental note of sobreposition" "Just Intonation interval" "high note" "number of sobreposition" "interval number of the MOS")
-:icon 005
+:icon 'MOS
 :doc "This object creates a Moment of Symmetry without a octave equivalence. For make the octave equivalence use the object Octave-reduce, choose the range of the this MOS. 
 
 MOS is a Theory of the composer Erv Wilson.                  
@@ -475,6 +472,38 @@ THIS OBJECT ARE NOT READY YET. This just work with the fund 6000 and the aguda-n
       )
 
 (remove 0 action1)))
+
+
+;; ===================================================
+
+(defmethod! MOS-complementary ((ratios list) (fundamental number) (num-mix-max list) (range number))
+:initvals '((97/64 19/11) 6700 (8 30) 2)    
+:indoc ' ("list of notes - object-MOS" "fundamental" "test" "test")
+:icon 'MOS
+:doc "(ratios fundamental num-mix-max range)"
+
+(defun mos-verify-fun (notelist)
+(let* 
+    ((action1 (loop for cknloop in (x->dx (sort-list (flat notelist)))
+
+        collect (if (om= cknloop (first (sort-list (remove-dup (x->dx (sort-list (flat notelist))) 'eq 1)))) "s" "L"))))
+
+(if (om= (length (remove-dup (x->dx (sort-list (flat notelist))) 'eq 1)) 2) 1 0)))
+
+(let* (
+    (first-number (first num-mix-max))
+    (second-number (second num-mix-max))
+
+(action1 (loop for ratios-loop in ratios :collect 
+        (loop for ckn-loop in (arithm-ser first-number second-number 1) :collect 
+                (if (and        
+                (om= (mos-verify-fun (mos-fun ratios-loop fundamental (f->mc (om* (mc->f fundamental) range)) ckn-loop)) 1)
+                (om= (mos-verify-fun (mos-fun (om/ range ratios-loop) fundamental (f->mc (om* (mc->f fundamental) range)) ckn-loop)) 1)
+                (equal (x->dx (sort-list (mos ratios-loop fundamental (f->mc (om* (mc->f fundamental) range)) ckn-loop))) 
+                        (reverse (x->dx (sort-list (mos (om/ range ratios-loop) fundamental (f->mc (om* (mc->f fundamental) range)) ckn-loop))))))
+                (print (x-append "interval of" ratios-loop "and its complementary" (om/ range ratios-loop) "stacking" ckn-loop)) nil)))))
+
+'(end)))
 
 ;; ====================== CPS =============================
 
@@ -593,7 +622,7 @@ Example:
 (defmethod! Hexany ((Hexany list))
 :initvals ' ((5 7 13 17))    
 :indoc ' ("List of just four harmonics.")
-:icon 006
+:icon 19971997
 :doc "This object create a Hexany of the theory of Combination Product-Set of the Composer Erv Wilson."
 
 (if (= 4 (length Hexany)) 
@@ -613,9 +642,6 @@ Example:
 (remove-duplicates action2 :test #'equal))
 
 
-
-
-
 (print "This is not a Hexany, The CPS Hexany needs 4 numbers: for example 3 7 13 17")))
 
 
@@ -626,7 +652,7 @@ Example:
 :indoc ' ("harmonicos")
 :outdoc ' ("sub-harmonic" "harmonic")
 :numouts 2 
-:icon 006
+:icon 19971997
 :doc "The object hexany-triads construct the triads of the CPS Hexany. It follows the theory presented by Terumi Narushima in your book Microtonality and the Tuning Systems of Erv Wilson. In the outlet of the left, we have the sub-harmonics triads. In the outlet of the right, we have the harmonic triads."
 
 (values 
@@ -670,7 +696,7 @@ Example:
 (defmethod! Hexany-connections ((harmonico list) (hexany list))
 :initvals ' ((3 13) ((3 5) (3 13) (5 13) (3 21) (5 21) (13 21)))    
 :indoc ' ("list of two harmonics" "list of just four harmonics")
-:icon 006
+:icon 19971997
 :doc "This object shown the Hexany connections of the theory of Combination Product-Set of the Composer Erv Wilson."
 
 (let*
@@ -690,7 +716,7 @@ Example:
 :initvals ' ((1 3 5 7 9 11))      
 :indoc ' ("six harmonic notes | if you don't put 6 notes the result will not be an eikosany.")
 :outdoc ' ("harmonic")
-:icon 006
+:icon 1997
 :doc "This object will construct a Combination-Product-Set (CPS) with 6 numbers or harmonics. This 6 harmonics will form Twenty ratios."
 
 (cps-eikosany-fun 6-notes))
@@ -720,7 +746,7 @@ Example:
 :indoc ' ("three harmonic notes | if you don't put 3 notes the result will not be an eikosany triads.")
 :outdoc ' ("sub-harmonic" "harmonic")
 :numouts 2
-:icon 006
+:icon 1997
 :doc "The object eikosany-triads construct the triads of the CPS eikosany. It follows the theory presented by Terumi Narushima in your book Microtonality and the Tuning Systems of Erv Wilson. In the outlet of the left, we have the sub-harmonics triads. In the outlet of the right, we have the harmonic triads."
 
 (values 
@@ -753,7 +779,7 @@ Example:
 :indoc ' ("three harmonic notes | if you don't put 3 notes the result will not be an eikosany triads.")
 :outdoc ' ("sub-harmonic" "harmonic")
 :numouts 2
-:icon 006
+:icon 1997
 :doc "The object eikosany-tetrads construct the tetrads of the CPS Eikosany. It follows the theory presented by Terumi Narushima in your book Microtonality and the Tuning Systems of Erv Wilson. In the outlet of the left, we have the sub-harmonics tetrads. In the outlet of the right, we have the harmonic tetrads."
 
 (values 
@@ -781,7 +807,7 @@ Example:
 (defmethod! eikosany-connections ((vertice list) (eikosany list))
 :initvals ' ((1 3 9) ((1 3 5) (1 3 7) (1 5 7) (3 5 7) (1 3 9) (1 5 9) (3 5 9) (1 7 9) (3 7 9) (5 7 9) (1 3 11) (1 5 11) (3 5 11) (1 7 11) (3 7 11) (5 7 11) (1 9 11) (3 9 11) (5 9 11) (7 9 11)))    
 :indoc ' ("list of tree harmonics" "list of the cps-eikosany")
-:icon 006
+:icon 1997
 :doc "This object shown the Eikosany connections of the theory of Combination Product-Set of the Composer Erv Wilson."
 
 (defun same-elem-p (lst1 lst2)
@@ -866,9 +892,6 @@ In this object we can undestand how identities can be connected using the theory
 (loop :for x :in harmonic :collect (let* ((action1 (factor x))) (remove 2 action1)))))
 
 
-;; ===================================================
-
-
 ;; ;; =================================== Others =============================================
 
 (defmethod! send-max ((maxlist list))
@@ -899,91 +922,7 @@ In this object we can undestand how identities can be connected using the theory
 
 (om* 0.01 (om- note fund))    )
 
-;; ===================================================
-
-;; By Jordana Dias Paes Possani de Sousa and Charles K. Neimog | copyright © 2020
-(defmethod! apex-vibro ((freq number))
-:initvals ' (440)
-:indoc ' ("valor da frequência") 
-:icon 008
-:doc "It gives the distance between the apice of the coclea and the vibration point of a determinate frequence."
-
-(om/ (log (/ freq 165) 10) 0.06))
-
-; =================================== Functions of Others OM libraries ================
-
-
-; I will put some functions of others Libraries here for do the use more simple for people that don't know how OpenMusic work.
-
-; ===========================================================================
-
-(defun list-of-listp (thing) (and (listp thing) (every #'listp thing)))
-(deftype list-of-lists () '(satisfies list-of-listp))
-
-;; Thanks for Reddit user DREWC for code of list-of-listp and list-of-lists.
-
-; ================================= ratio->cents by Mauricio Rodriguez =======
-
-(defun ratio->cents (ratio)
-  (* (/ 1200 (log 2)) (log ratio)))
-
-;; DISSONANCE SENSORY => Mauricio Rodriguez after William A. Sethares
-
-; ================================= list->string =======
-
-(defun list->string (ckn-list)
-  (when ckn-list
-    (concatenate 'string 
-                 (write-to-string (car ckn-list)) (list->string (cdr ckn-list)))))
-
-                
-;; Code by "https://gist.github.com/tompurl/5174818"
-
-
-
-;; ================== PASCAL TRIANGULE ======================
-
-(defun pascal (n)
-   (genrow n '(1)))
- 
-(defun genrow (n l)
-   (when (< 0 n)
-       (print l)
-       (genrow (1- n) (cons 1 (newrow l)))))
- 
-(defun newrow (l)
-   (if (> 2 (length l))
-      '(1)
-      (cons (+ (car l) (cadr l)) (newrow (cdr l)))))
-
-
-;; https://stackoverflow.com/questions/25903972/pascal-triangle-in-lisp/25904053
-
-
-; =================================== COMBINE BY MIKHAIL MALT (IRCAM 1993-1996) ================
-
-
-(defun cartesian-op (l1 l2 fun) 
-
-  (mapcar #'(lambda (x) (mapcar #'(lambda (y) (funcall fun x y)) (list! l2))) (list! l1))
-)
-
-(defun combx (vals n)
-  (cond
-   ((<=  n 0) vals)
-   (t (flat-once 
-       (cartesian-op vals (combx vals (1- n)) 'x-append))))
-)
-
-(defun removeIt (a lis)
-  (if (null lis) 0
-      (if (= a (car lis))
-          (delete (car lis))
-          (removeIt (cdr lis))))
-)
-
 ; ========================================== OM#-PLAY =======================
-
 
 (defun chord->voice (lista-de-notas)
 
@@ -1065,6 +1004,37 @@ In this object we can undestand how identities can be connected using the theory
                        ";")) nil))))
 
 
+
+
+
+(defun voice->text-max (ckn number-2)
+
+(let* (
+(ckn-action1  (loop :for ckn-plus :in (true-durations ckn) :collect (if (plusp ckn-plus) 0 1)))
+
+(ckn-action2 (loop :for cknloop :in ckn-action1 :collect (if (= 0 cknloop) (setq number-2 (+ number-2 1)) nil)))
+
+(ckn-action3 
+
+      (let* (
+        (ckn-action3-1 
+          (if (equal nil (first ckn-action2)) 0 (first ckn-action2))))
+        (if (equal nil (first ckn-action2)) (om+ (om- ckn-action2 ckn-action3-1) -1) (om+ (om- ckn-action2 ckn-action3-1) 1))     
+        
+      )))
+
+(loop :for cknloop-1 :in ckn-action3 :for cknloop-2 :in (dx->x 0 (loop :for y :in (true-durations ckn) :collect (abs y))) :for cknloop-3 :in (true-durations ckn) :collect          
+        (if (plusp cknloop-3) 
+            (x-append 
+               (if (plusp cknloop-3) cknloop-2 nil)
+                  (x-append  
+                  (choose-fun (get-slot-val (make-value-from-model 'voice ckn nil) "LMIDIC") cknloop-1) 
+                  (choose-fun (get-slot-val (make-value-from-model 'voice ckn nil) "lvel") cknloop-1)
+                  (choose-fun (get-slot-val (make-value-from-model 'voice ckn nil) "lchan") cknloop-1)
+                    (if (plusp cknloop-3) cknloop-3 nil) 
+                       )) nil))))
+
+
 ; ===========================================================================
 
 (defmethod! play-om# ((voice VOICE))
@@ -1077,17 +1047,17 @@ In this object we can undestand how identities can be connected using the theory
 
 For the automatic work the folder out-files of OM# must be in the files preferences of the Max/MSP."
 
-(let* (
-(ckn-action4 (voice->text-fun voice 1))
+  (let* (
+    (ckn-action4 (remove nil (voice->text-max voice 1))))
 
-(ckn-last 
-  (osc-send (list "/lastnote" (let* ((cknlast-1 (flat (last (remove nil ckn-action4))))) (om+ (first cknlast-1) (fourth cknlast-1)))) "127.0.0.1" 3004)))
-                      
-(save-as-text ckn-action4 (let* (
- (LISP-FUNCTION (list->string (x-append 'play (om-random 0 100) '.txt))))
+        (let* (
+          (action1 
+          (progn
+        (osc-send (x-append '/reset 1) "127.0.0.1" 3003)
+       (loop for cknloop in ckn-action4 :collect (osc-send (x-append '/note cknloop) "127.0.0.1" 3003))))
+        (action2 (osc-send (x-append '/note-pause 1) "127.0.0.1" 3003)))  
+      '("play"))))
 
-
-(first (list LISP-FUNCTION (osc-send (list "/note" LISP-FUNCTION) "127.0.0.1" 3003)))))))
 
 ; ===========================================================================
 
@@ -1102,6 +1072,91 @@ For the automatic work the folder out-files of OM# must be in the files preferen
 For the automatic work the folder out-files of OM# must be in the files preferences of the Max/MSP."
 (let
  ((tb (make-value 'textbuffer (list (list :contents (voice->text-fun voice 1)))))) (setf (reader tb) :lines-cols) tb))
+
+ ; ===========================================================================
+ 
+;; By Jordana Dias Paes Possani de Sousa and Charles K. Neimog | copyright © 2020
+(defmethod! apex-vibro ((freq number))
+:initvals ' (440)
+:indoc ' ("valor da frequência") 
+:icon 008
+:doc "It gives the distance between the apice of the coclea and the vibration point of a determinate frequence."
+
+(om/ (log (/ freq 165) 10) 0.06))
+
+; =================================== Functions of Others OM libraries ================
+
+
+; I will put some functions of others Libraries here for do the use more simple for people that don't know how OpenMusic work.
+
+; ===========================================================================
+
+(defun list-of-listp (thing) (and (listp thing) (every #'listp thing)))
+(deftype list-of-lists () '(satisfies list-of-listp))
+
+;; Thanks for Reddit user DREWC for code of list-of-listp and list-of-lists.
+
+; ================================= ratio->cents by Mauricio Rodriguez =======
+
+(defun ratio->cents (ratio)
+  (* (/ 1200 (log 2)) (log ratio)))
+
+;; DISSONANCE SENSORY => Mauricio Rodriguez after William A. Sethares
+
+; ================================= list->string =======
+
+(defun list->string (ckn-list)
+  (when ckn-list
+    (concatenate 'string 
+                 (write-to-string (car ckn-list)) (list->string (cdr ckn-list)))))
+
+                
+;; Code by "https://gist.github.com/tompurl/5174818"
+
+
+
+;; ================== PASCAL TRIANGULE ======================
+
+(defun pascal (n)
+   (genrow n '(1)))
+ 
+(defun genrow (n l)
+   (when (< 0 n)
+       (print l)
+       (genrow (1- n) (cons 1 (newrow l)))))
+ 
+(defun newrow (l)
+   (if (> 2 (length l))
+      '(1)
+      (cons (+ (car l) (cadr l)) (newrow (cdr l)))))
+
+
+;; https://stackoverflow.com/questions/25903972/pascal-triangle-in-lisp/25904053
+
+
+; =================================== COMBINE BY MIKHAIL MALT (IRCAM 1993-1996) ================
+
+
+(defun cartesian-op (l1 l2 fun) 
+
+  (mapcar #'(lambda (x) (mapcar #'(lambda (y) (funcall fun x y)) (list! l2))) (list! l1))
+)
+
+(defun combx (vals n)
+  (cond
+   ((<=  n 0) vals)
+   (t (flat-once 
+       (cartesian-op vals (combx vals (1- n)) 'x-append))))
+)
+
+(defun removeIt (a lis)
+  (if (null lis) 0
+      (if (= a (car lis))
+          (delete (car lis))
+          (removeIt (cdr lis))))
+)
+
+
 
 ; ===========================================================================
 

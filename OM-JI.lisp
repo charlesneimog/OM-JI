@@ -13,10 +13,10 @@
 
 ("Just-intonation" nil nil (rt->mc range-reduce filter-ac-inst modulation-notes modulation-notes-fund choose rt-octave) nil)
 
-("Harry Partch" nil  nil (Diamond Diamond-Identity otonal-inverse utonal-inverse) nil)   
+("Harry Partch" nil  nil (Diamond Diamond-Identity chord-inverse) nil)   
 
 ("Erv Wilson"
-          (("MOS" nil nil (MOS MOS-verify MOS-check) nil)
+          (("MOS" nil nil (MOS MOS-verify MOS-check MOS-complementary) nil)
            ("CPS-Hexany" nil nil (Hexany Hexany-triads hexany-connections) nil)
            ("CPS-Eikosany" nil nil (eikosany eikosany-triads eikosany-tetrads eikosany-connections) nil))
       	    Nil (cps->identity cps->ratio) Nil)
