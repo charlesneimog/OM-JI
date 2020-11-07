@@ -195,7 +195,7 @@ Inlet1: (7 8 9 10 458)
 Inlet2: (1 3 5)
 Result: (7 9 458)."
 
-(nth (om- chord-n 1) notelist))
+(posn-match notelist (om- chord-n 1)))
 
 
 (defmethod! choose ((notelist list) (chord-n list))
@@ -207,7 +207,7 @@ Inlet1: (7 8 9 10 458)
 Inlet2: (1 3 5)
 Result: (7 9 458)."
 
-(loop :for cknloop :in chord-n :collect (nth (om- cknloop 1) notelist)))
+(posn-match notelist (om- chord-n 1)))
 
 ;; ===================================================
 
@@ -368,8 +368,8 @@ This is a procedure used by Ben Johnston in your strings quartets no. 2 and no. 
 
 ;; ====================== MOS =============================
 
-(defmethod! MOS ((ratio number)(grave number) (aguda number) (sobreposition number))
-:initvals ' (4/3 6000 7200 11)     
+(defmethod! MOS ((ratio number)(sobreposition number) (range number))
+:initvals ' (4/3 11 2/1)     
 :indoc ' ("Fundamental note of sobreposition" "Just Intonation interval" "High note" "Number of sobreposition")
 :icon 'MOS
 :doc "This object creates a Moment of Symmetry without a octave equivalence. For make the octave equivalence use the object Octave-reduce, choose the range of the this MOS. 
@@ -384,10 +384,19 @@ The relative number of s and L intervals in an MOS is co-prime, i.e., they share
 
 The numerator and denominator of fractions representing MOS are also co-prime. Wilson organizes these fractions hierarchically on the Scale Tree. MOS are not only scales in their own right but also provide a framework or template for constructing a family of Secondary MOS scales. (in NARUSHIMA - Microtonality and the Tuning Systems of Erv Wilson-Routledge)."
 
-(mos-fun ratio grave aguda sobreposition))
+(mos-fun-ratio ratio sobreposition range))
+
+;=================
+
+(defun mos-fun-ratio (ratio sobreposition range)
+
+(x-append 1 (rt-octave (om^ ratio (arithm-ser 1 sobreposition 1)) range) range))
 
 
-(defun mos-fun (ratio grave aguda sobreposition)
+;=================
+
+
+(defun mos-fun-cents (ratio grave aguda sobreposition)
 
 (let*  
 
@@ -427,25 +436,56 @@ The numerator and denominator of fractions representing MOS are also co-prime. W
 
 ;; ===================================================
 
-(defmethod! MOS-verify ((notelist list))
-:initvals ' ((6754 6308 7062 6616 6178))    
+(defmethod! MOS-verify ((mos list))
+:initvals ' ((1 4/3 16/9 32/27 128/81 256/243 1024/729 4096/2187 8192/6561 32768/19683 65536/59049 262144/177147 2))  
 :indoc ' ("list of notes - object-MOS")
 :icon 'MOS
+:numouts 2
+:outdoc ' ("s or L interval" "The ratio of the intervals")
 :doc "This object do the verification whether a list of notes is a MOS or not. If yes, informs the internal symmetry of your intervals, s for small intervals and L for Large interval. See Microtonality and the Tuning Systems of Erv Wilson-Routledge of NARUSHIMA."
 
+(values 
+    ;OUTPUT1 
+     (mos-verify-fun-ratio mos)
+          
+    ;OUTPUT2
+    
+      (flat (remove nil (loop :for ckn-loop :in (arithm-ser 1 (length (sort-list mos)) 1) :collect
+              (let* (
+                (box-sort-list (sort-list mos))
+                (choose-mos (flat (om/ (choose-fun box-sort-list ckn-loop) (list (choose-fun box-sort-list (om+ ckn-loop 1)))))))
+                (sort-list (remove nil choose-mos))))))))
 
-(let* 
-    ((action1 (loop :for cknloop :in (x->dx (sort-list (flat notelist)))
 
-        :collect (if (om= cknloop (first (sort-list (remove-dup (x->dx (sort-list (flat notelist))) 'eq 1)))) "s" "L"))))
 
-(if (om= (length (remove-dup (x->dx (sort-list (flat notelist))) 'eq 1)) 2) action1 "This is not a MOS")))
+
+(defun mos-verify-fun-ratio (mos)
+
+      (let* (
+
+          (mos-check-action1 
+
+          (flat (remove nil (loop :for ckn-loop :in (arithm-ser 1 (length (sort-list mos)) 1) :collect
+              (let* (
+                (box-sort-list (sort-list mos))
+                (choose-mos (flat (om/ (choose-fun box-sort-list ckn-loop) (list (choose-fun box-sort-list (om+ ckn-loop 1)))))))
+                (sort-list (remove nil choose-mos)))))))
+
+          (mos-check-action2 (sort-list (remove-duplicates mos-check-action1 :test #'equal)))
+
+          (mos-check-action3 (om= (length mos-check-action2) 2))
+
+          (mos-check-action4 (loop :for cknloop :in mos-check-action1 :collect
+                                  (if (om= cknloop (last-elem (sort-list (flat mos-check-action2)))) "s" "L"))))
+
+          (if mos-check-action3 mos-check-action4 "This is not a MOS")))
+
 
 ;; ===================================================
 
-(defmethod! MOS-check ((interval number)(fund number) (aguda number) (sobreposition number) (number_of_interval number))
-:initvals ' (4/3 6000 7200 11 2)     
-:indoc ' ("fundamental note of sobreposition" "Just Intonation interval" "high note" "number of sobreposition" "interval number of the MOS")
+(defmethod! MOS-check ((ratio number)(sobreposition number) (range number) &optional (intervals 2))
+:initvals ' (4/3 60 2)     
+:indoc ' ("Just Intonation interval" "sobreposition" "range of check")
 :icon 'MOS
 :doc "This object creates a Moment of Symmetry without a octave equivalence. For make the octave equivalence use the object Octave-reduce, choose the range of the this MOS. 
 
@@ -458,52 +498,58 @@ These intervals are designated as the small (s) and large (L) intervals (FOR MAK
 The relative number of s and L intervals in an MOS is co-prime, i.e., they share no common factors other than 1. Fractions are used to represent MOS scales: the numerator shows the size of the generator, and the denominator shows the number of notes in the scale. 
 
 The numerator and denominator of fractions representing MOS are also co-prime. Wilson organizes these fractions hierarchically on the Scale Tree. MOS are not only scales in their own right but also provide a framework or template for constructing a family of Secondary MOS scales. (in NARUSHIMA - Microtonality and the Tuning Systems of Erv Wilson-Routledge).
+"
 
 
-THIS OBJECT ARE NOT READY YET. This just work with the fund 6000 and the aguda-note 7200."
+(let* (
+(action1-main 
+
+(mapcar (lambda (sobreposition-mos) 
+
+(let* (
+
+(action1 
+(sort-list (remove nil (flat (let* (
+
+(action1 (mos-fun-ratio ratio sobreposition-mos range)))
+
+(loop :for ckn-loop :in (arithm-ser 1 (length (sort-list action1)) 1) :collect
+    (let* (
+      (box-sort-list (sort-list action1))
+      (choose-mos (flat (om/ (choose-fun box-sort-list ckn-loop) (list (choose-fun box-sort-list (om+ ckn-loop 1)))))))
+      (sort-list (remove nil choose-mos)))))))))
+
+(action2 (remove-duplicates action1 :test #'equal))
+
+(action3 (om= (length action2) intervals)))
+
+(if action3 sobreposition-mos nil))) (arithm-ser 1 sobreposition 1))))
+
+(remove nil action1-main)))
 
 
-(let* ((action1 (loop :for x :in (arithm-ser 1 sobreposition 1) :collect 
-                      (if (om= (length (remove-dup (x->dx (x-append fund (sort-list          
-                          (mapcar #' (lambda (x) (+ (mod x (- aguda fund)) fund)) 
-                            (loop :for n :in (arithm-ser 1 x 1) :collect (+ fund (* (om- (f->mc (om* (mc->f fund) interval)) fund) n))))
-
-                      ) aguda)) 'eq 1)) number_of_interval) x 0)))
-      )
-
-(remove 0 action1)))
 
 
 ;; ===================================================
 
-(defmethod! MOS-complementary ((ratios list) (fundamental number) (num-mix-max list) (range number))
-:initvals '((97/64 19/11) 6700 (8 30) 2)    
-:indoc ' ("list of notes - object-MOS" "fundamental" "test" "test")
+(defmethod! MOS-complementary ((ratio ratio) (range number) (sobreposition number))
+:initvals '(3/2 4 50)    
+:indoc ' ("ratio tested" "range (2 for octave) (3 for 10ª + 2¢) etc" "number maximum of sobreposition")
 :icon 'MOS
 :doc "(ratios fundamental num-mix-max range)"
 
-(defun mos-verify-fun (notelist)
-(let* 
-    ((action1 (loop for cknloop in (x->dx (sort-list (flat notelist)))
-
-        collect (if (om= cknloop (first (sort-list (remove-dup (x->dx (sort-list (flat notelist))) 'eq 1)))) "s" "L"))))
-
-(if (om= (length (remove-dup (x->dx (sort-list (flat notelist))) 'eq 1)) 2) 1 0)))
-
 (let* (
-    (first-number (first num-mix-max))
-    (second-number (second num-mix-max))
+(process (loop :for cknloop :in (arithm-ser 2 sobreposition 1) :collect 
 
-(action1 (loop for ratios-loop in ratios :collect 
-        (loop for ckn-loop in (arithm-ser first-number second-number 1) :collect 
-                (if (and        
-                (om= (mos-verify-fun (mos-fun ratios-loop fundamental (f->mc (om* (mc->f fundamental) range)) ckn-loop)) 1)
-                (om= (mos-verify-fun (mos-fun (om/ range ratios-loop) fundamental (f->mc (om* (mc->f fundamental) range)) ckn-loop)) 1)
-                (equal (x->dx (sort-list (mos ratios-loop fundamental (f->mc (om* (mc->f fundamental) range)) ckn-loop))) 
-                        (reverse (x->dx (sort-list (mos (om/ range ratios-loop) fundamental (f->mc (om* (mc->f fundamental) range)) ckn-loop))))))
-                (print (x-append "interval of" ratios-loop "and its complementary" (om/ range ratios-loop) "stacking" ckn-loop)) nil)))))
+    (let* ( 
+        (action1 (mos-fun-ratio ratio cknloop range))
+        (action2 (mos-fun-ratio (om/ range ratio) cknloop range))
+        (action3 (mos-verify-fun-ratio action1))
+        (action4 (mos-verify-fun-ratio action2)))
+        (if (equal action4 (reverse action3))
+(print (x-append "interval of" ratio "and its complementary" (om/ range ratio) "stacking" cknloop "times are complementary in the range" range)) nil)))))
 
-'(end)))
+'end))
 
 ;; ====================== CPS =============================
 
