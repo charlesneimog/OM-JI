@@ -2,9 +2,7 @@
 This Library desires to create an environment for the microtonal music composition, mainly for Just Intonation composition. This library constructs the theory of Harry Partch, Erv Wilson, and Ben Johnston. 
 
 
-![Modulation notes](https://pin.it/2nJycHl)
-
-![alt text](https://pin.it/2nJycHl)
+![Modulation notes](blob:https://br.pinterest.com/90edad89-5d39-4ab0-8904-142a17d4324f)
 
 *It is compatible with OpenMusic and OM#*. 
 
