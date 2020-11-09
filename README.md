@@ -11,8 +11,9 @@ See http://charlesneimog.com/
 
 **Choose**: Este objeto é responsável por fazer a escolha de um elemento dentro de uma lista. No inlet1 temos uma lista de notas ou uma lista de listas. E no inlet2 o número da lista ou número que queremos. É possível selecionar duas estruturas colocando mais números no inlet2. 
 
-**Range-reduce**: Este objeto é responsável por reduzir os dados em midicents a uma certa extensão. No intlet1 colocamos a lista de notas que será reduzida. No inlet2 a nota mais grave da redução e no inlet3 a nota mais aguda. Caso a diferença entre esses inlets for menor que 1200¢ a avaliação dará erro e apresentará a seguinte mensagem: “RANGE-REDUCE: The diference between the inlet2 e inlet3 must be at least 1200 cents.” De forma a orientar o uso de tal biblioteca pois caso haja menos de 1200¢ o objeto entraria em um loop eterno.
+![Choose](https://github.com/charlesneimog/OM-JI/blob/master/resources/Imagens/choose.png)
 
+**Range-reduce**: Este objeto é responsável por reduzir os dados em midicents a uma certa extensão. No intlet1 colocamos a lista de notas que será reduzida. No inlet2 a nota mais grave da redução e no inlet3 a nota mais aguda. Caso a diferença entre esses inlets for menor que 1200¢ a avaliação dará erro e apresentará a seguinte mensagem: “RANGE-REDUCE: The diference between the inlet2 e inlet3 must be at least 1200 cents.” De forma a orientar o uso de tal biblioteca pois caso haja menos de 1200¢ o objeto entraria em um loop eterno.
 
 ![Range Reduce](https://github.com/charlesneimog/OM-JI/blob/master/resources/Imagens/Range%20Reduce.png)
 
@@ -20,9 +21,14 @@ See http://charlesneimog.com/
 
 ![Modulation Notes](https://github.com/charlesneimog/OM-JI/blob/master/resources/Imagens/Modulations%20notes.png)
 
-**Modulation-notes-fund**: Este objeto mostrará as notas que serão iguais caso haja mudança das notas de referência da segunda estrutura de afinação (inlet 2). Os inlet’s 1, 2 e 3 seguem as mesmas instruções que os inlet’s do objeto modulation-notes. No inlet 4 devemos dizer se o objeto levará em conta possíveis fundamentais nas notas temperadas em semitom (2), quarto de tom (4), oitavo de tom (8), etc. Com este objeto, temos auxilio ao decidir uma fundamental nos baseando em alturas que serão iguais em estruturas diferentes. Por exemplo, se obra Arabesque | 19 11 97 tivesse sido composta após a implementação deste objeto, veríamos, por exemplo, que a estrutura de Ben Johnston teria mais notas em comum com a estrutura de Partch caso sua fundamental fosse em E, C#-50¢, C#+50¢ ou E+50¢ e não em C#. Pois com essas fundamentais teríamos 3 notas em comum com a estrutura de Partch enquanto que em C# temos somente uma nota em comum. Abaixo demonstramos o patch que visa comparar estruturas e mostrar quantas vezes uma mesma alteração aparece.
 
 
 # Algumas aplicações com a OM-Sieves
 
-Criar estruturas de alturas simetricas para a construção de timbres. 
+Criar estruturas de alturas simétricas para a construção de timbres. 
+
+![Range Reduce](https://github.com/charlesneimog/OM-JI/blob/master/resources/Imagens/Conte%C3%BAdo%20espectral%20simetrica%20.png).
+
+O conteúdo intervalar deste timbre é palíndromo. Temos os seguintes intervalos:(924¢ 231¢ 462¢ 694¢ 231¢ 694¢ 231¢ 694¢ 462¢ 231¢ 924¢).
+
+Exemplos sonoros de processamento com o timbre acima mencionado. 
