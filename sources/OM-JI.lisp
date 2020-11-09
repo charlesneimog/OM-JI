@@ -703,15 +703,15 @@ Example:
 
 (values 
 
-(let* ((actionmain (loop :for cknloopmain :in (arithm-ser 1 (length harmonicos) 1) :collect
-      (let* 
-((combinations (cond
-   ((<=  2 0) (remove (choose harmonicos cknloopmain) harmonicos))
-   (t (flat-once 
-       (cartesian-op (remove (choose harmonicos cknloopmain) harmonicos) (combx (remove (choose harmonicos cknloopmain) harmonicos) (1- 2)) 'x-append)))))
+(let* (
+  
+  (actionmain (loop :for cknloopmain :in (arithm-ser 1 (length harmonicos) 1) :collect
+      (let* (
+        
+    (combinations (cond ((<=  2 0) (remove (choose harmonicos cknloopmain) harmonicos))
+   (t (flat-once (cartesian-op (remove (choose harmonicos cknloopmain) harmonicos) (combx (remove (choose harmonicos cknloopmain) harmonicos) (1- 2)) 'x-append)))))
 
-
-  (action1 (loop :for cknloop :in combinations :collect 
+    (action1 (loop :for cknloop :in combinations :collect 
 
         (let* ((ordem (sort-list cknloop))
                (iguais (let ((L()))
@@ -1049,10 +1049,6 @@ In this object we can undestand how identities can be connected using the theory
                     (if (plusp cknloop-3) cknloop-3 nil) 
                        ";")) nil))))
 
-
-
-
-
 (defun voice->text-max (ckn number-2)
 
 (let* (
@@ -1159,8 +1155,6 @@ For the automatic work the folder out-files of OM# must be in the files preferen
                 
 ;; Code by "https://gist.github.com/tompurl/5174818"
 
-
-
 ;; ================== PASCAL TRIANGULE ======================
 
 (defun pascal (n)
@@ -1212,4 +1206,4 @@ For the automatic work the folder out-files of OM# must be in the files preferen
       by Charles K. Neimog | charlesneimog.com  
    Universidade Federal de Juiz de Fora (2019-2020)
 "
-) 
+)
