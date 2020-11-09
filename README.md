@@ -27,8 +27,13 @@ See http://charlesneimog.com/
 
 Criar estruturas de alturas simétricas para a construção de timbres. 
 
-![Range Reduce](https://github.com/charlesneimog/OM-JI/blob/master/resources/Imagens/Conte%C3%BAdo%20espectral%20simetrica%20.png).
+![Conteúdo Espectral Simétrico](https://github.com/charlesneimog/OM-JI/blob/master/resources/Imagens/Conte%C3%BAdo%20espectral%20simetrica%20.png).
 
 O conteúdo intervalar deste timbre é palíndromo. Temos os seguintes intervalos:(924¢ 231¢ 462¢ 694¢ 231¢ 694¢ 231¢ 694¢ 462¢ 231¢ 924¢).
 
 Exemplos sonoros de processamento com o timbre acima mencionado. https://bit.ly/3p8MOJZ
+
+
+![Patch em OM#](https://github.com/charlesneimog/OM-JI/blob/master/resources/Imagens/Change%20the%20partials%20of%20the%20timbre.png).
+
+![Ressíntese no MAX/MSP](https://github.com/charlesneimog/OM-JI/blob/master/resources/Imagens/Exemplo%20no%20Max-MSP.png).
