@@ -31,4 +31,4 @@ Criar estruturas de alturas simétricas para a construção de timbres.
 
 O conteúdo intervalar deste timbre é palíndromo. Temos os seguintes intervalos:(924¢ 231¢ 462¢ 694¢ 231¢ 694¢ 231¢ 694¢ 462¢ 231¢ 924¢).
 
-Exemplos sonoros de processamento com o timbre acima mencionado. 
+Exemplos sonoros de processamento com o timbre acima mencionado. https://bit.ly/3p8MOJZ
