@@ -7,7 +7,7 @@ This Library desires to create an environment for the microtonal music compositi
 
 See http://charlesneimog.com/ 
  
-**Biblioteca desenvolvida no Programa de Pós Graduação em Artes, Culturas e Linguagens com apoio da Univerdade Federal de Juiz de Fora (UFJF).**
+**Biblioteca desenvolvida no Programa de Pós Graduação em Artes, Culturas e Linguagens (PPGACL) com apoio da Univerdade Federal de Juiz de Fora (UFJF).**
 
 **Choose**: Este objeto é responsável por fazer a escolha de um elemento dentro de uma lista. No inlet1 temos uma lista de notas ou uma lista de listas. E no inlet2 o número da lista ou número que queremos. É possível selecionar duas estruturas colocando mais números no inlet2. 
 
