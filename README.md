@@ -22,3 +22,8 @@ See: https://github.com/cac-t-u-s/om-sharp and https://github.com/openmusic-proj
 ![Modulation Notes](https://github.com/charlesneimog/OM-JI/blob/master/resources/Imagens/Modulations%20notes.png)
 
 **Modulation-notes-fund**: Este objeto mostrará as notas que serão iguais caso haja mudança das notas de referência da segunda estrutura de afinação (inlet 2). Os inlet’s 1, 2 e 3 seguem as mesmas instruções que os inlet’s do objeto modulation-notes. No inlet 4 devemos dizer se o objeto levará em conta possíveis fundamentais nas notas temperadas em semitom (2), quarto de tom (4), oitavo de tom (8), etc. Com este objeto, temos auxilio ao decidir uma fundamental nos baseando em alturas que serão iguais em estruturas diferentes. Por exemplo, se obra Arabesque | 19 11 97 tivesse sido composta após a implementação deste objeto, veríamos, por exemplo, que a estrutura de Ben Johnston teria mais notas em comum com a estrutura de Partch caso sua fundamental fosse em E, C#-50¢, C#+50¢ ou E+50¢ e não em C#. Pois com essas fundamentais teríamos 3 notas em comum com a estrutura de Partch enquanto que em C# temos somente uma nota em comum. Abaixo demonstramos o patch que visa comparar estruturas e mostrar quantas vezes uma mesma alteração aparece.
+
+
+# Algumas aplicações com a OM-Sieves
+
+Criar estruturas de alturas simetricas para a construção de timbres. 
