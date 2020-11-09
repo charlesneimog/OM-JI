@@ -1,14 +1,13 @@
 # OM-JI
 This Library desires to create an environment for the microtonal music composition, mainly for Just Intonation composition. This library constructs the theory of Harry Partch, Erv Wilson, and Ben Johnston. 
 
+<a rel="license" href="http://creativecommons.org/licenses/by-nc/4.0/"><img alt="Licença Creative Commons" style="border-width:0" src="https://i.creativecommons.org/l/by-nc/4.0/80x15.png" /></a><br />Este obra está licenciado com uma Licença <a rel="license" href="http://creativecommons.org/licenses/by-nc/4.0/">Creative Commons Atribuição-NãoComercial 4.0 Internacional</a>.
 
-*It is compatible with OpenMusic and OM#*. 
+**It is compatible with OpenMusic and OM#**. 
 
 See http://charlesneimog.com/ 
-
-See: https://github.com/cac-t-u-s/om-sharp and https://github.com/openmusic-project/
  
-<a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-nc-sa/4.0/88x31.png" /></a><br />This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/">Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License</a>.
+**Biblioteca desenvolvida no Programa de Pós Graduação em Artes, Culturas e Linguagens com apoio da Univerdade Federal de Juiz de Fora (UFJF).**
 
 **Choose**: Este objeto é responsável por fazer a escolha de um elemento dentro de uma lista. No inlet1 temos uma lista de notas ou uma lista de listas. E no inlet2 o número da lista ou número que queremos. É possível selecionar duas estruturas colocando mais números no inlet2. 
 
