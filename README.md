@@ -1,6 +1,9 @@
 # OM-JI
 This Library desires to create an environment for the microtonal music composition, mainly for Just Intonation composition. This library constructs the theory of Harry Partch, Erv Wilson, and Ben Johnston. 
 
+
+![teste](blob:https://br.pinterest.com/90edad89-5d39-4ab0-8904-142a17d4324f)
+
 *It is compatible with OpenMusic and OM#*. 
 
 See http://charlesneimog.com/ 
