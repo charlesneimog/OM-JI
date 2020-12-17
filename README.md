@@ -1,7 +1,8 @@
 # OM-JI
 This Library desires to create an environment for the microtonal music composition, mainly for Just Intonation composition. This library constructs the theory of Harry Partch, Erv Wilson, and Ben Johnston. 
 
-![Version](https://img.shields.io/badge/version-1.0-green.svg?style=flat-square) ![License](https://img.shields.io/badge/license-GPL3-blue.svg?style=flat-square) ![Language](https://img.shields.io/badge/language-Lisp-yellow.svg?style=flat-square) 
+![Version](https://img.shields.io/badge/version-1.0-green.svg?style=flat-square) ![License](https://img.shields.io/badge/license-GPL3-blue.svg?style=flat-square) ![Language](https://img.shields.io/badge/language-Lisp-yellow.svg?style=flat-square) [![HitCount](http://hits.dwyl.com/charlesneimog/om-ji.svg)](http://hits.dwyl.com/charlesneimog/om-ji)
+
 
 **It is compatible with OpenMusic and OM#**. 
 
