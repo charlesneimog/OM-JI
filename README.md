@@ -4,7 +4,7 @@ This Library desires to create an environment for the microtonal music compositi
 ![Version](https://img.shields.io/badge/version-1.0-green.svg?style=flat-square) ![License](https://img.shields.io/badge/license-GPL3-blue.svg?style=flat-square) ![Language](https://img.shields.io/badge/language-Lisp-yellow.svg?style=flat-square) [![HitCount](http://hits.dwyl.com/charlesneimog/om-ji.svg)](http://hits.dwyl.com/charlesneimog/om-ji)
 
 
-**It is compatible with OpenMusic and OM#**. 
+**It is compatible with [OpenMusic](https://github.com/openmusic-project/openmusic/releases) and [OM-Sharp](https://github.com/cac-t-u-s/om-sharp/releases/)**. 
 
 See http://charlesneimog.com/ 
  
