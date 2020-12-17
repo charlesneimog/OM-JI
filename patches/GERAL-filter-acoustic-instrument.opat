@@ -554,11 +554,11 @@
    (:text-font (:font (:face "Verdana") (:size 12) (:style :plain)))
    (:align nil)
    (:text
-    "Este objeto 'filtra' uma lista de notas de modo a exibir somente notas que respeitam os critério do inlet 2 e 3. Sua utilidade e exibir notas de um contexto ultra-microtonal que podem ser usadas em instrumentos acústicos, visto que na maioria dos tratados de técnica extendida há sugestões de digitações para 1/2, 1/4 e 1/8 de tom. 
+    "Este objeto 'filtra' uma lista de notas de modo a exibir somente notas que respeitam os critÃ©rio do inlet 2 e 3. Sua utilidade e exibir notas de um contexto ultra-microtonal que podem ser usadas em instrumentos acÃºsticos, visto que na maioria dos tratados de tÃ©cnica extendida hÃ¡ sugestÃµes de digitaÃ§Ãµes para 1/2, 1/4 e 1/8 de tom. 
 
 INLET 1: Lista de midicents.
 
-INLET 2: Aproximação em cents. 
+INLET 2: AproximaÃ§Ã£o em cents. 
 
 INLET 3: 2 para semitom, 4 para 1/4 de tom, 8 para 1/8 de tom e assim sucessivamente. ")
    (:id 4))

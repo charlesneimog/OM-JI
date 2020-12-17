@@ -888,30 +888,6 @@ Example:
 
 ;; ;; =================================== Math =============================================
 
-(defmethod! Prime-decomposition ((harmonic number))
-:initvals ' (9)     
-:indoc ' ("number or list of the harmonics/parcials.")
-:outdoc ' ("Prime-decomposition" "Prime-decomposition without the 2 that represents the octave interval")
-:icon 004
-:doc "It does the decomposition of prime numbers. This can be useful with identities by Harry Partch, mainly, when we use the conception of identity by Ben Johnston: 'Each prime number used in deriving a harmonic scale contributes to a characteristic psychoacoustical meaning (JOHNSTON, 2006, p. 27).'
-
-In this object we can undestand how identities can be connected using the theory of CPS of the Erv Wilson. 
-
- Lisp code of https://sholtz9421.wordpress.com/2012/10/08/prime-number-factorization-in-lisp/."
-:numouts 2 
-
-(defun factor (n)
-  "Return a list of factors of N."
-  (when (> n 1)
-    (loop with max-d = (isqrt n)
-	  for d = 2 then (if (evenp d) (+ d 1) (+ d 2)) do
-	  (cond ((> d max-d) (return (list n))) ; n is prime
-		((zerop (rem n d)) (return (cons d (factor (truncate n d)))))))))
-
-(values 
- ((factor harmonic)) 
- (let* ((action1 (factor harmonic))) (remove 2 action1))))
-
 (defmethod! Prime-decomposition ((harmonic list))
 :initvals ' ((9 18 172))     
 :indoc ' ("Number or numbers list.")
@@ -935,7 +911,10 @@ In this object we can undestand how identities can be connected using the theory
 
 (values 
 (loop :for x :in harmonic :collect (factor x))
-(loop :for x :in harmonic :collect (let* ((action1 (factor x))) (remove 2 action1)))))
+(loop :for x :in harmonic :collect (let* (
+                                        (action1 (factor x))
+                                        (action2 (remove 2 action1)))
+                                        (if (equal nil action2) '(1) action2)))))
 
 
 ;; ;; =================================== Others =============================================
@@ -944,7 +923,7 @@ In this object we can undestand how identities can be connected using the theory
 :initvals ' (6000 2 24)     
 :indoc ' ("list")
 :icon 007
-:doc "Send for MAX/MSP. This work with a list not list of lists. See the patch CKN-OSCreceive in https://github.com/charlesneimog/UFJF-PPGACL/tree/master/MAX-MSP%20Patches"
+:doc "Send for MAX/MSP. This work with a list not list of lists. See the patch CKN-OSCreceive in charlesneimog.com"
 
 (osc-send (x-append "om/max" maxlist) "127.0.0.1" 7839))
 
@@ -1172,6 +1151,24 @@ For the automatic work the folder out-files of OM# must be in the files preferen
 
 
 ;; https://stackoverflow.com/questions/25903972/pascal-triangle-in-lisp/25904053
+
+; =================================== NUMBER ================
+
+(defun classify (n)
+  (when (and (integerp n) (plusp n))
+    (let ((alq-sum (aliquot-sum n)))
+      (cond ((> alq-sum n) "abundant")
+            ((< alq-sum n) "deficient")
+            (T "perfect")))))
+
+(defun aliquot-sum (n)
+  (apply #'+ (factor-list n)))
+
+(defun factor-list (n)
+  (loop for i from 1 below n 
+     when (zerop (mod n i)) collecting i))
+
+
 
 
 ; =================================== COMBINE BY MIKHAIL MALT (IRCAM 1993-1996) ================
