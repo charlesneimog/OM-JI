@@ -175,7 +175,7 @@
 
   (if 
       (or (om= result3-2 0) (om= result3-2 1200) (and (om> cents result3-2) (om< (om- cents (om* cents 2)) result3-2))) (x-append cknloop3 "are equal")
-      (x-append cknloop3 "will be equal if the second list have has the fundamental with the difference of" (approx-m result3-2 temperamento) "cents"))))))
+      (x-append cknloop3 "will be equal if the second list have has the fundamental with the difference of" (approx-m result3-2 temperamento) "cents"))))) "Check the listener")
 
 ;;;; ========
 

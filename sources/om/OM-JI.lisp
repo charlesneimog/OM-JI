@@ -154,26 +154,50 @@
 
 (defmethod! om::modulation-notes-fund ((listnote list) (listnote2 list) (cents integer) (temperamento integer))
 :initvals ' ((6000 6530) (7203 5049) 10 4)
-:indoc ' ("First notelist of the comparation" "Second notelist of the comparation" "Aproximação de escala temperada 1/2 1/4 1/8 de tom" "temperament! 2 for 2-DEO 4 for 24-DEO") 
+:indoc ' ("First notelist of the comparation" "Second notelist of the comparation" "Aproximação de escala temperada 1/2 1/4 1/8 de tom" "temperament! 2 for 2-DEO 4 for 24-DEO")
+:numouts 2
 :icon 002
+
 :doc "Filter of notes that can be used to do the modulation between tuning regions changing the fundamental of the second list (second inlet). This object is an update of the object called modulation-notes'"
 
+(values 
 (let* ((result (loop :for cknloop1 :in listnote :collect 
 
-                     (loop :for cknloop2 :in listnote2 :collect (if (= (+ 
-                                                          (if (< (- (- cknloop1 cknloop2) 
-                                                                 (approx-m (- cknloop1 cknloop2) temperamento)) cents) 1 0) 
-                                                          (if (> (- (- cknloop1 cknloop2) 
-                                                                 (approx-m (- cknloop1 cknloop2) temperamento)) (- cents (* cents 2))) 1 0)) 2) 
+                     (loop :for cknloop2 :in listnote2 :collect (if (om= (+ 
+                                                          (if (< (om- (om- cknloop1 cknloop2) 
+                                                                 (approx-m (om- cknloop1 cknloop2) temperamento)) cents) 1 0) 
+                                                          (if (> (om- (om- cknloop1 cknloop2) 
+                                                                 (approx-m (om- cknloop1 cknloop2) temperamento)) (om- cents (* cents 2))) 1 0)) 2) 
                                                                                                   (list cknloop1 cknloop2) 0))))
 (result2 (remove 0 (flat result 1))))
 
-  (loop :for cknloop3 :in result2 :collect (print  (let*  
-                                               ((result3-2 (- (first cknloop3) (second cknloop3))))
+  (loop :for cknloop3 :in result2 :do (print  (let*  
+                                               ((result3-2 (om- (first cknloop3) (second cknloop3))))
 
   (if 
-      (or (= result3-2 0) (= result3-2 1200) (and (< cents result3-2) (< (- cents (* cents 2)) result3-2))) (om::x-append cknloop3 "are equal")
-      (om::x-append cknloop3 "will be equal if the fundamental of the second tuning have has the difference of" (approx-m result3-2 temperamento) "cents")))))))
+      (or (om= result3-2 0) (om= result3-2 1200) (and (om> cents result3-2) (om< (om- cents (om* cents 2)) result3-2))) (x-append cknloop3 "are equal")
+      (x-append cknloop3 "will be equal if the second list have has the fundamental with the difference of" (approx-m result3-2 temperamento) "cents"))))) "Check the listener")
+
+;;;; ========
+
+(let* ((result (loop :for cknloop1 :in listnote :collect 
+
+                     (loop :for cknloop2 :in listnote2 :collect (if (om= (+ 
+                                                          (if (< (om- (om- cknloop1 cknloop2) 
+                                                                 (approx-m (om- cknloop1 cknloop2) temperamento)) cents) 1 0) 
+                                                          (if (> (om- (om- cknloop1 cknloop2) 
+                                                                 (approx-m (om- cknloop1 cknloop2) temperamento)) (om- cents (* cents 2))) 1 0)) 2) 
+                                                                                                  (list cknloop1 cknloop2) 0))))
+(result2 (remove 0 (flat result 1)))
+
+(result3 (loop :for cknloop3 :in result2 :collect (let*  
+                                               ((result3-2 (om- (first cknloop3) (second cknloop3))))
+
+  (if 
+      (or (om= result3-2 0) (om= result3-2 1200) (and (om> cents result3-2) (om< (om- cents (om* cents 2)) result3-2))) (x-append cknloop3 "are equal")
+      (x-append cknloop3 "will be equal if the fundamental of the second tuning have has the difference of" (approx-m result3-2 temperamento) "cents"))))))
+
+(om::sort-list (remove nil (mapcar (lambda (x) (fourth x)) result3))))))
 
 ;; ===================================================
 
@@ -382,7 +406,7 @@ The numerator and denominator of fractions representing MOS are also co-prime. W
 
 (defun mos-fun-ratio (ratio sobreposition range)
 
-(om::x-append 1 (rt-octave (om::om^ ratio (arithm-ser 1 sobreposition 1)) range) range))
+(om::x-append 1 (rt-octave-fun (om::om^ ratio (arithm-ser 1 sobreposition 1)) range) range))
 
 
 ;=================
@@ -392,7 +416,7 @@ The numerator and denominator of fractions representing MOS are also co-prime. W
 
 (let*  
 
-    ((interval (- (f->mc (* (mc->f grave) ratio)) grave))
+    ((interval (- (f->mc (om::om* (mc->f grave) ratio)) grave))
 
     (mos-create (loop :for n :in (arithm-ser 1 sobreposition 1) :collect (+ grave (* interval n)))))
 
@@ -401,7 +425,7 @@ The numerator and denominator of fractions representing MOS are also co-prime. W
 
 (let* 
 (
-(octave-reduction (* (+ 1 (truncate (- aguda grave) 1200)) 1200))
+(octave-reduction (om::om* (+ 1 (truncate (- aguda grave) 1200)) 1200))
 (aguda-oitava (+ grave octave-reduction))
 (reducao-em-oitava 
 
@@ -414,7 +438,7 @@ The numerator and denominator of fractions representing MOS are also co-prime. W
               )
         :finally (return new-val)))
               mos-create))
-  (octave-reduction2 (* (truncate (- aguda grave) 1200) 1200)))
+  (octave-reduction2 (om::om* (truncate (- aguda grave) 1200) 1200)))
 
 
  (mapcar (lambda (x)
