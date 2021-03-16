@@ -4,68 +4,22 @@
  (:doc "")
  (:info
   (:created "2020/09/11 16:05:59")
-  (:modified "2020/09/11 16:06:11")
+  (:modified "2021/03/15 13:50:27")
   (:by "om-sharp")
-  (:version 1.0))
- (:window (:size (1382 784)) (:position (0 0)))
+  (:version 1.02))
+ (:window (:size (1400 856)) (:position (0 0)))
  (:grid nil)
  (:lock nil)
  (:boxes
-  (:box
-   (:library "OM-JI")
-   (:type :function)
-   (:reference mos-check)
-   (:group-id nil)
-   (:name "mos-check")
-   (:x 242)
-   (:y 185)
-   (:w 427)
-   (:h 29)
-   (:color nil)
-   (:border nil)
-   (:roundness nil)
-   (:text-font nil)
-   (:align nil)
-   (:icon :left)
-   (:lock nil)
-   (:lambda nil)
-   (:inputs
-    (:input
-     (:type :standard)
-     (:name "INTERVAL")
-     (:value 4/3)
-     (:reactive nil))
-    (:input
-     (:type :standard)
-     (:name "FUND")
-     (:value 6000)
-     (:reactive nil))
-    (:input
-     (:type :standard)
-     (:name "AGUDA")
-     (:value 7200)
-     (:reactive nil))
-    (:input
-     (:type :standard)
-     (:name "SOBREPOSITION")
-     (:value 11)
-     (:reactive nil))
-    (:input
-     (:type :standard)
-     (:name "NUMBER_OF_INTERVAL")
-     (:value 2)
-     (:reactive nil)))
-   (:outputs (:output (:name "out") (:reactive nil)))
-   (:id 0))
   (:box
    (:type :value)
    (:reference ratio)
    (:group-id nil)
    (:name "aux 9")
-   (:x 262)
-   (:y 136)
-   (:w 37)
-   (:h 29)
+   (:x 246)
+   (:y 142)
+   (:w 50)
+   (:h 38)
    (:color
     (:color-or-nil
      (:color (:color 1.0S0 1.0S0 1.0S0 1.0))
@@ -78,95 +32,25 @@
    (:inputs)
    (:outputs (:output (:name "value") (:reactive nil)))
    (:value 4/3)
+   (:id 0))
+  (:comment
+   (:x 341)
+   (:y 53)
+   (:w 110)
+   (:h 62)
+   (:fgcolor (:color 0 0 0 1.0))
+   (:bgcolor nil)
+   (:border 0)
+   (:roundness nil)
+   (:text-font (:font (:face "Verdana") (:size 12) (:style :plain)))
+   (:align nil)
+   (:text "Maior nÃºmero de sobreposiÃ§Ã£o.")
    (:id 1))
-  (:box
-   (:type :value)
-   (:reference fixnum)
-   (:group-id nil)
-   (:name "aux 8")
-   (:x 351)
-   (:y 137)
-   (:w 44)
-   (:h 29)
-   (:color
-    (:color-or-nil
-     (:color (:color 1.0S0 1.0S0 1.0S0 1.0))
-     (:t-or-nil t)))
-   (:border nil)
-   (:roundness nil)
-   (:text-font nil)
-   (:align nil)
-   (:lock nil)
-   (:inputs)
-   (:outputs (:output (:name "value") (:reactive nil)))
-   (:value 6000)
-   (:id 2))
-  (:box
-   (:type :value)
-   (:reference fixnum)
-   (:group-id nil)
-   (:name "aux 7")
-   (:x 434)
-   (:y 137)
-   (:w 44)
-   (:h 29)
-   (:color
-    (:color-or-nil
-     (:color (:color 1.0S0 1.0S0 1.0S0 1.0))
-     (:t-or-nil t)))
-   (:border nil)
-   (:roundness nil)
-   (:text-font nil)
-   (:align nil)
-   (:lock nil)
-   (:inputs)
-   (:outputs (:output (:name "value") (:reactive nil)))
-   (:value 7200)
-   (:id 3))
   (:comment
-   (:x 500)
-   (:y 86)
-   (:w 96)
-   (:h 47)
-   (:fgcolor (:color 0 0 0 1.0))
-   (:bgcolor nil)
-   (:border 0)
-   (:roundness nil)
-   (:text-font (:font (:face "Verdana") (:size 12) (:style :plain)))
-   (:align nil)
-   (:text "Maior número de sobreposição.")
-   (:id 4))
-  (:comment
-   (:x 421)
-   (:y 84)
-   (:w 73)
-   (:h 48)
-   (:fgcolor (:color 0 0 0 1.0))
-   (:bgcolor nil)
-   (:border 0)
-   (:roundness nil)
-   (:text-font (:font (:face "Verdana") (:size 12) (:style :plain)))
-   (:align nil)
-   (:text "Nota mais aguda em midicents.")
-   (:id 5))
-  (:comment
-   (:x 338)
-   (:y 83)
+   (:x 231)
+   (:y 91)
    (:w 78)
-   (:h 47)
-   (:fgcolor (:color 0 0 0 1.0))
-   (:bgcolor nil)
-   (:border 0)
-   (:roundness nil)
-   (:text-font (:font (:face "Verdana") (:size 12) (:style :plain)))
-   (:align nil)
-   (:text "Nota mais grave em midicents.")
-   (:id 6))
-  (:comment
-   (:x 260)
-   (:y 83)
-   (:w 78)
-   (:h 47)
+   (:h 44)
    (:fgcolor (:color 0 0 0 1.0))
    (:bgcolor nil)
    (:border 0)
@@ -174,12 +58,12 @@
    (:text-font (:font (:face "Verdana") (:size 12) (:style :plain)))
    (:align nil)
    (:text "Intervalo gerador")
-   (:id 7))
+   (:id 2))
   (:comment
-   (:x 597)
-   (:y 83)
+   (:x 476)
+   (:y 29)
    (:w 238)
-   (:h 68)
+   (:h 98)
    (:fgcolor (:color 0 0 0 1.0))
    (:bgcolor nil)
    (:border 0)
@@ -187,18 +71,18 @@
    (:text-font (:font (:face "Verdana") (:size 12) (:style :plain)))
    (:align nil)
    (:text
-    "Caso o compositor queria experimentar outras configurações de intervalos que não 2.
+    "Caso o compositor queria experimentar outras configuraÃ§Ãµes de intervalos que nÃ£o 2.
 ")
-   (:id 8))
+   (:id 3))
   (:box
    (:type :value)
    (:reference fixnum)
    (:group-id nil)
    (:name "aux 6")
-   (:x 593)
-   (:y 155)
+   (:x 414)
+   (:y 124)
    (:w 32)
-   (:h 29)
+   (:h 38)
    (:color
     (:color-or-nil
      (:color (:color 1.0S0 1.0S0 1.0S0 1.0))
@@ -210,17 +94,17 @@
    (:lock nil)
    (:inputs)
    (:outputs (:output (:name "value") (:reactive nil)))
-   (:value 2)
-   (:id 9))
+   (:value 4)
+   (:id 4))
   (:box
    (:type :value)
    (:reference fixnum)
    (:group-id nil)
    (:name "aux 5")
-   (:x 516)
-   (:y 148)
+   (:x 357)
+   (:y 115)
    (:w 32)
-   (:h 29)
+   (:h 38)
    (:color
     (:color-or-nil
      (:color (:color 1.0S0 1.0S0 1.0S0 1.0))
@@ -233,12 +117,12 @@
    (:inputs)
    (:outputs (:output (:name "value") (:reactive nil)))
    (:value 23)
-   (:id 10))
+   (:id 5))
   (:comment
-   (:x 676)
-   (:y 184)
+   (:x 800)
+   (:y 94)
    (:w 305)
-   (:h 67)
+   (:h 128)
    (:fgcolor (:color 0 0 0 1.0))
    (:bgcolor nil)
    (:border 0)
@@ -246,17 +130,17 @@
    (:text-font (:font (:face "Verdana") (:size 14) (:style :plain)))
    (:align nil)
    (:text
-    "O objeto vai checar todas as sobreposição de 1 até 23 para ver quais são MOS seguindo o intervalo gerador 4/3 com a nota mais grave 6000 e nota mais aguda 7200.")
-   (:id 11))
+    "O objeto vai checar todas as sobreposiÃ§Ã£o de 1 atÃ© 23 para ver quais sÃ£o MOS seguindo o intervalo gerador 4/3 com a nota mais grave 6000 e nota mais aguda 7200.")
+   (:id 6))
   (:box
    (:type :value)
-   (:reference simple-base-string)
+   (:reference cons)
    (:group-id nil)
    (:name "TEXT-BOX 2")
-   (:x 259)
-   (:y 270)
+   (:x 248)
+   (:y 243)
    (:w 238)
-   (:h 29)
+   (:h 38)
    (:color
     (:color-or-nil
      (:color (:color 1.0S0 1.0S0 1.0S0 1.0))
@@ -273,13 +157,13 @@
      (:value "untitled")
      (:reactive nil)))
    (:outputs (:output (:name "value") (:reactive nil)))
-   (:value "(1 2 4 6 11 16)")
-   (:id 12))
+   (:value (:list 1 2 3 4 8 13 18 23))
+   (:id 7))
   (:comment
    (:x 503)
    (:y 274)
    (:w 171)
-   (:h 79)
+   (:h 88)
    (:fgcolor (:color 0 0 0 1.0))
    (:bgcolor nil)
    (:border 0)
@@ -287,18 +171,46 @@
    (:text-font (:font (:face "Verdana") (:size 14) (:style :plain)))
    (:align nil)
    (:text
-    "Configurações com 1, 2, 4, 6, 11 ou 16 sobreposições serão MOS.")
-   (:id 13))
+    "ConfiguraÃ§Ãµes com 1, 2, 4, 6, 11 ou 16 sobreposiÃ§Ãµes serÃ£o MOS.")
+   (:id 8))
+  (:box
+   (:type :value)
+   (:reference cons)
+   (:group-id nil)
+   (:name "TEXT-BOX")
+   (:x 754)
+   (:y 453)
+   (:w 405)
+   (:h 38)
+   (:color
+    (:color-or-nil
+     (:color (:color 1.0S0 1.0S0 1.0S0 1.0))
+     (:t-or-nil t)))
+   (:border nil)
+   (:roundness nil)
+   (:text-font nil)
+   (:align nil)
+   (:lock nil)
+   (:inputs
+    (:input
+     (:type :optional)
+     (:name "in")
+     (:value "untitled")
+     (:reactive nil)))
+   (:outputs (:output (:name "value") (:reactive nil)))
+   (:value
+    (:list "s" "s" "L" "s" "s" "L" "s" "s" "L" "s" "s" "L" "s" "L"))
+   (:id 9))
   (:box
    (:library "OM-JI")
    (:type :function)
-   (:reference mos)
+   (:reference (:symbol "MOS-CHECK" "OM-JI"))
    (:group-id nil)
-   (:name "mos")
-   (:x 781)
-   (:y 303)
-   (:w 158)
-   (:h 29)
+   (:name "mos-check")
+   (:x 240)
+   (:y 195)
+   (:w 264)
+   (:h 38)
    (:color nil)
    (:border nil)
    (:roundness nil)
@@ -315,30 +227,88 @@
      (:reactive nil))
     (:input
      (:type :standard)
-     (:name "GRAVE")
-     (:value 6000)
+     (:name "SOBREPOSITION")
+     (:value 60)
      (:reactive nil))
     (:input
      (:type :standard)
-     (:name "AGUDA")
-     (:value 7200)
+     (:name "RANGE")
+     (:value 2)
+     (:reactive nil))
+    (:input
+     (:type :optional)
+     (:name "intervals")
+     (:value nil)
+     (:reactive nil)))
+   (:outputs (:output (:name "out") (:reactive nil)))
+   (:id 10))
+  (:box
+   (:type :value)
+   (:reference fixnum)
+   (:group-id nil)
+   (:name "aux 6")
+   (:x 484)
+   (:y 134)
+   (:w 32)
+   (:h 38)
+   (:color
+    (:color-or-nil
+     (:color (:color 1.0S0 1.0S0 1.0S0 1.0))
+     (:t-or-nil t)))
+   (:border nil)
+   (:roundness nil)
+   (:text-font nil)
+   (:align nil)
+   (:lock nil)
+   (:inputs)
+   (:outputs (:output (:name "value") (:reactive nil)))
+   (:value 2)
+   (:id 11))
+  (:box
+   (:library "OM-JI")
+   (:type :function)
+   (:reference (:symbol "MOS" "OM-JI"))
+   (:group-id nil)
+   (:name "mos")
+   (:x 828)
+   (:y 298)
+   (:w 76)
+   (:h 38)
+   (:color nil)
+   (:border nil)
+   (:roundness nil)
+   (:text-font nil)
+   (:align nil)
+   (:icon :left)
+   (:lock nil)
+   (:lambda nil)
+   (:inputs
+    (:input
+     (:type :standard)
+     (:name "RATIO")
+     (:value 4/3)
      (:reactive nil))
     (:input
      (:type :standard)
      (:name "SOBREPOSITION")
      (:value 11)
+     (:reactive nil))
+    (:input
+     (:type :standard)
+     (:name "RANGE")
+     (:value 2)
      (:reactive nil)))
    (:outputs (:output (:name "out") (:reactive nil)))
-   (:id 14))
+   (:id 12))
   (:box
    (:type :value)
    (:reference ratio)
    (:group-id nil)
-   (:name "aux 4")
-   (:x 765)
-   (:y 268)
-   (:w 37)
-   (:h 29)
+   (:name "value box")
+   (:x 790)
+   (:y 250)
+   (:w 48)
+   (:h 38)
    (:color
     (:color-or-nil
      (:color (:color 1.0S0 1.0S0 1.0S0 1.0))
@@ -351,16 +321,16 @@
    (:inputs)
    (:outputs (:output (:name "value") (:reactive nil)))
    (:value 4/3)
-   (:id 15))
+   (:id 13))
   (:box
    (:type :value)
    (:reference fixnum)
    (:group-id nil)
-   (:name "aux 3")
-   (:x 818)
-   (:y 269)
-   (:w 44)
-   (:h 29)
+   (:name "value box")
+   (:x 847)
+   (:y 252)
+   (:w 40)
+   (:h 38)
    (:color
     (:color-or-nil
      (:color (:color 1.0S0 1.0S0 1.0S0 1.0))
@@ -372,39 +342,17 @@
    (:lock nil)
    (:inputs)
    (:outputs (:output (:name "value") (:reactive nil)))
-   (:value 6000)
-   (:id 16))
+   (:value 13)
+   (:id 14))
   (:box
    (:type :value)
    (:reference fixnum)
    (:group-id nil)
-   (:name "aux 2")
-   (:x 869)
-   (:y 267)
-   (:w 44)
-   (:h 29)
-   (:color
-    (:color-or-nil
-     (:color (:color 1.0S0 1.0S0 1.0S0 1.0))
-     (:t-or-nil t)))
-   (:border nil)
-   (:roundness nil)
-   (:text-font nil)
-   (:align nil)
-   (:lock nil)
-   (:inputs)
-   (:outputs (:output (:name "value") (:reactive nil)))
-   (:value 7200)
-   (:id 17))
-  (:box
-   (:type :value)
-   (:reference fixnum)
-   (:group-id nil)
-   (:name "aux")
-   (:x 914)
-   (:y 269)
+   (:name "value box")
+   (:x 898)
+   (:y 255)
    (:w 32)
-   (:h 29)
+   (:h 38)
    (:color
     (:color-or-nil
      (:color (:color 1.0S0 1.0S0 1.0S0 1.0))
@@ -416,18 +364,18 @@
    (:lock nil)
    (:inputs)
    (:outputs (:output (:name "value") (:reactive nil)))
-   (:value 16)
-   (:id 18))
+   (:value 4)
+   (:id 15))
   (:box
    (:library "OM-JI")
    (:type :function)
-   (:reference mos-verify)
+   (:reference (:symbol "MOS-VERIFY" "OM-JI"))
    (:group-id nil)
    (:name "mos-verify")
-   (:x 828)
-   (:y 385)
-   (:w 97)
-   (:h 29)
+   (:x 781)
+   (:y 373)
+   (:w 134)
+   (:h 38)
    (:color nil)
    (:border nil)
    (:roundness nil)
@@ -439,48 +387,189 @@
    (:inputs
     (:input
      (:type :standard)
-     (:name "NOTELIST")
-     (:value (:list 6754 6308 7062 6616 6178))
+     (:name "MOS")
+     (:value
+      (:list
+       1
+       4/3
+       16/9
+       32/27
+       128/81
+       256/243
+       1024/729
+       4096/2187
+       8192/6561
+       32768/19683
+       65536/59049
+       262144/177147
+       2))
      (:reactive nil)))
-   (:outputs (:output (:name "out") (:reactive nil)))
-   (:id 19))
+   (:outputs
+    (:output (:name "out0") (:reactive nil))
+    (:output (:name "out1") (:reactive nil)))
+   (:id 16))
   (:box
-   (:type :value)
-   (:reference simple-base-string)
+   (:type :object)
+   (:reference chord)
    (:group-id nil)
-   (:name "TEXT-BOX")
-   (:x 270)
-   (:y 349)
-   (:w 218)
-   (:h 29)
-   (:color
-    (:color-or-nil
-     (:color (:color 1.0S0 1.0S0 1.0S0 1.0))
-     (:t-or-nil t)))
+   (:name nil)
+   (:x 261)
+   (:y 544)
+   (:w 469)
+   (:h 174)
+   (:color nil)
+   (:border nil)
+   (:roundness nil)
+   (:text-font nil)
+   (:align :center)
+   (:display :mini-view)
+   (:showname nil)
+   (:show-markers t)
+   (:lock nil)
+   (:lambda nil)
+   (:inputs
+    (:input
+     (:type :standard)
+     (:name "SELF")
+     (:value nil)
+     (:reactive nil))
+    (:input
+     (:type :standard)
+     (:name "LMIDIC")
+     (:value (:list 6000))
+     (:reactive nil))
+    (:input
+     (:type :standard)
+     (:name "LVEL")
+     (:value (:list 80))
+     (:reactive nil))
+    (:input
+     (:type :standard)
+     (:name "LOFFSET")
+     (:value (:list 0))
+     (:reactive nil))
+    (:input
+     (:type :standard)
+     (:name "LDUR")
+     (:value (:list 1000))
+     (:reactive nil)))
+   (:outputs
+    (:output (:name "SELF") (:reactive nil))
+    (:output (:name "LMIDIC") (:reactive nil))
+    (:output (:name "LVEL") (:reactive nil))
+    (:output (:name "LOFFSET") (:reactive nil))
+    (:output (:name "LDUR") (:reactive nil)))
+   (:window (:size (1394 680)) (:position (128 128)))
+   (:edition-params (:chord-mode :arp-up))
+   (:value
+    (:object
+     (:class chord)
+     (:slots
+      ((:symbolic-date nil)
+       (:symbolic-dur nil)
+       (:symbolic-dur-extent 0)
+       (:extras nil)
+       (:onset 0)
+       (:item-time nil)
+       (:item-internal-time nil)
+       (:item-type nil)
+       (:attributes nil)
+       (:lmidic
+        (:list
+         6000
+         6498
+         6996
+         7494
+         7992
+         6090
+         6588
+         7086
+         7584
+         8082
+         6180
+         6678
+         7177
+         7675
+         8400))
+       (:lvel (:list 80 80 80 80 80 80 80 80 80 80 80 80 80 80 80))
+       (:loffset (:list 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0))
+       (:ldur
+        (:list
+         1000
+         1000
+         1000
+         1000
+         1000
+         1000
+         1000
+         1000
+         1000
+         1000
+         1000
+         1000
+         1000
+         1000
+         1000))
+       (:lchan (:list 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1))
+       (:lport
+        (:list
+         nil
+         nil
+         nil
+         nil
+         nil
+         nil
+         nil
+         nil
+         nil
+         nil
+         nil
+         nil
+         nil
+         nil
+         nil))))))
+   (:id 17))
+  (:box
+   (:library "OM-JI")
+   (:type :function)
+   (:reference (:symbol "RT->MC" "OM-JI"))
+   (:group-id nil)
+   (:name "rt->mc")
+   (:x 453)
+   (:y 473)
+   (:w 102)
+   (:h 38)
+   (:color nil)
    (:border nil)
    (:roundness nil)
    (:text-font nil)
    (:align nil)
+   (:icon :left)
    (:lock nil)
+   (:lambda nil)
    (:inputs
     (:input
-     (:type :optional)
-     (:name "in")
-     (:value "untitled")
+     (:type :standard)
+     (:name "RATIO")
+     (:value 11/8)
+     (:reactive nil))
+    (:input
+     (:type :standard)
+     (:name "FUNDAMENTAL")
+     (:value 6000)
      (:reactive nil)))
-   (:outputs (:output (:name "value") (:reactive nil)))
-   (:value "(L L L s L L s L L L s L L s L L s)")
-   (:id 20)))
+   (:outputs (:output (:name "out") (:reactive nil)))
+   (:id 18)))
  (:connections
-  (:connection (:from (:box 0 :out 0)) (:to (:box 12 :in 0)))
-  (:connection (:from (:box 1 :out 0)) (:to (:box 0 :in 0)))
-  (:connection (:from (:box 2 :out 0)) (:to (:box 0 :in 1)))
-  (:connection (:from (:box 3 :out 0)) (:to (:box 0 :in 2)))
-  (:connection (:from (:box 9 :out 0)) (:to (:box 0 :in 4)))
-  (:connection (:from (:box 10 :out 0)) (:to (:box 0 :in 3)))
-  (:connection (:from (:box 14 :out 0)) (:to (:box 19 :in 0)))
-  (:connection (:from (:box 15 :out 0)) (:to (:box 14 :in 0)))
-  (:connection (:from (:box 16 :out 0)) (:to (:box 14 :in 1)))
-  (:connection (:from (:box 17 :out 0)) (:to (:box 14 :in 2)))
-  (:connection (:from (:box 18 :out 0)) (:to (:box 14 :in 3)))
-  (:connection (:from (:box 19 :out 0)) (:to (:box 20 :in 0)))))
+  (:connection (:from (:box 0 :out 0)) (:to (:box 10 :in 0)))
+  (:connection (:from (:box 4 :out 0)) (:to (:box 10 :in 2)))
+  (:connection (:from (:box 5 :out 0)) (:to (:box 10 :in 1)))
+  (:connection (:from (:box 10 :out 0)) (:to (:box 7 :in 0)))
+  (:connection (:from (:box 11 :out 0)) (:to (:box 10 :in 3)))
+  (:connection (:from (:box 12 :out 0)) (:to (:box 16 :in 0)))
+  (:connection (:from (:box 12 :out 0)) (:to (:box 18 :in 0)))
+  (:connection (:from (:box 13 :out 0)) (:to (:box 12 :in 0)))
+  (:connection (:from (:box 14 :out 0)) (:to (:box 12 :in 1)))
+  (:connection (:from (:box 15 :out 0)) (:to (:box 12 :in 2)))
+  (:connection (:from (:box 16 :out 0)) (:to (:box 9 :in 0)))
+  (:connection (:from (:box 18 :out 0)) (:to (:box 17 :in 1)))))

@@ -1,10 +1,10 @@
 ;; Functions by Charles K. Neimog (2019 - 2020) | Universidade Federal de Juiz de Fora | charlesneimog.com
 
-(in-package :om)
+(in-package :om-ji)
 
 ;; ======================================== Just-Intonation ==============================
 
-(defmethod! rt->mc ((ratio list) (fundamental number))
+(defmethod! om::rt->mc ((ratio list) (fundamental number))
 :initvals ' ((1/1 11/8 7/4) (6000))
 :indoc ' ("Convert list of ratios to midicent." "This will be a note. This note will be the fundamental (reference note) of the list of ratios.") 
 :icon 002
@@ -17,7 +17,7 @@
 
 ;; =================
 
-(defmethod! rt->mc ((ratio number) (fundamental number))
+(defmethod! om::rt->mc ((ratio number) (fundamental number))
 :initvals ' (11/8 6000)
 :indoc ' ("Convert list of ratios for midicent." "This will be a note. This note will be the fundamental of the list of ratios.") 
 :icon 002
@@ -27,14 +27,14 @@
 
 ;; ===================================================
 
-(defmethod! octave-reduce ((note list) (octave number))
+(defmethod! om::octave-reduce ((note list) (octave number))
 :initvals ' ((4800 7200 6000) 1)
 :indoc ' ("List of midicents."  "Octaves of this reduction.")
 :icon 002
 :doc "This object reduces a list of notes in a determinate space of octaves. The note of the first inlet will be the more down note allowed, and in the second inlet must be the octaves of the higher notes that will be allowed." 
 
 (let* ((range (* octave 1200))
-(grave (first (sort-list note))))
+(grave (first (om::sort-list note))))
 
 (if (let ((foo note)) (typep foo 'list-of-lists))
 
@@ -42,22 +42,22 @@
 ;; Lista
    
       (loop :for listadelista :in note :collect (mapcar #' (lambda (x) (+ (mod x range) grave)) listadelista))
-      (mapcar #' (lambda (x) (+ (mod x range) grave)) note))))
+      (mapcar (lambda (x) (+ (mod x range) grave)) note))))
 
 
 ;; ===================================================
 
-(defmethod! range-reduce ((notelist list) (grave number) (aguda number))
+(defmethod! om::range-reduce ((notelist list) (grave number) (aguda number))
 :initvals ' ((4800 7200 6000) 6000 7902)
 :indoc ' ("List of midicents" "The lowest note." "The highest note.")
 :icon 002
 :doc "This object reduce a list of notes in a determinate space. The note of the first inlet will be the more lowest note allowed, and the note of the second inlet will be the more higher note allowed."
 
 (let* 
-  ((octave-redution (* 1200 (ceiling (om/ (om- aguda grave) 1200))))
+  ((octave-redution (* 1200 (ceiling (/ (- aguda grave) 1200))))
   (aguda-first (+ grave octave-redution)))
 
-(if (om>= (- aguda grave) 1200)
+(if (>= (- aguda grave) 1200)
 
 
 (if (let ((foo notelist)) (typep foo 'list-of-lists))
@@ -113,55 +113,46 @@
 
 ;; ===================================================
 
-(defmethod! filter-ac-inst ((notelist list) (approx integer) (temperament integer))
+(defmethod! om::filter-ac-inst ((notelist list) (approx integer) (temperament integer))
 :initvals ' ((6000 6530 7203 5049) 10 2)
 :indoc ' ("List of notes (THIS OBJECT DON'T READ LISTS OF LIST.)" "Cents aproximation of a tempered note." "Tempered scale used to compare the note list.") 
 :icon 002
 :doc "Filter of notes that can be played by an acoustic instrument with quarte tones, eight-tones, or others."
 
-(let* ((filter 
-(loop :for cknloop :in notelist :collect 
-      (if (om= (om+ 
-          (first (list (if (om< (om- cknloop (approx-m cknloop temperament)) approx) 1 0)
-                       (if (om> (om- cknloop (approx-m cknloop temperament)) (om- approx (om* approx 2))) 1 0))) 
-
-              (second (list 
-                       (if (om<  (om- cknloop (approx-m cknloop temperament)) approx) 1 0) 
-
-                       (if (om> (om- cknloop (approx-m cknloop temperament)) (om- approx (om* approx 2))) 1 0)))) 2) cknloop 0))))
-
-
-(list-filter #'(lambda (x) (om= x 0)) filter 'reject)))
+ (let* (
+  (action1 
+  (loop :for cknloop :in notelist :collect (if (>= approx (abs (- (om::approx-m cknloop temperament) cknloop))) cknloop nil))))
+  (remove nil action1)))
 
 ;; ===================================================
 
-(defmethod! modulation-notes ((listnote list) (listnote2 list) (cents integer))
+(defmethod! om::modulation-notes ((listnote list) (listnote2 list) (cents integer))
 :initvals ' ((6000 6530) (7203 5049) 2)
 :indoc ' ("First notelist of the comparation." "Second notelist of the comparation." "Approximation in cents, in which the object will consider the notes as equal. For example, with the number 5, the object will consider 6000 and 6005 as equal notes.")
 :icon 002
 :doc "Filter of notes that can be used to do the modulation between tuning regions. This idea appears in the reading of Daniel James Huey (2017) doctoral dissertation. He claims: 'This dissertation shows the importance of common tones between pitches of two tuning areas, and it highlights consonant intervals between the fundamental pitches of the tuning areas as a means of producing a sense of continuity.'"
 
 (let* ((result (loop :for cknloop1 :in listnote :collect (loop :for cknloop2 :in listnote2 :collect 
-      (if (om= (+ 
-          (if (< (om- (om- cknloop1 cknloop2) (approx-m (om- cknloop1 cknloop2) 2)) cents) 1 0) 
-          (if (> (om- (om- cknloop1 cknloop2) (approx-m (om- cknloop1 cknloop2) 2)) (om- cents (* cents 2))) 1 0)) 2) (list cknloop1 cknloop2) 0)))) 
+      (if (= (+ 
+          (if (< (- (- cknloop1 cknloop2) (approx-m (- cknloop1 cknloop2) 2)) cents) 1 0) 
+          (if (> (- (- cknloop1 cknloop2) (approx-m (- cknloop1 cknloop2) 2)) (- cents (* cents 2))) 1 0)) 2) (list cknloop1 cknloop2) 0)))) 
 
 (result2 (remove 0 (flat result 1)))
 
 (result3 (loop :for note :in result2 :collect 
-        (if (and (om< (om- 
+        (if (and (< (- 
                        (first (mapcar #' (lambda (x) (+ (mod x 1200) 6000)) note)) 
                        (second (mapcar #' (lambda (x) (+ (mod x 1200) 6000)) note))) cents)
-                 (om< (om- cents (om* cents 2)) 
-                      (om- (first (mapcar #' (lambda (x) (+ (mod x 1200) 6000)) note)) 
+                 (< (- cents (* cents 2)) 
+                      (- (first (mapcar #' (lambda (x) (+ (mod x 1200) 6000)) note)) 
                       (second (mapcar #' (lambda (x) (+ (mod x 1200) 6000)) note))))) note 0)))
 (result4 (remove 0 result3)))
 
-(progn (loop :for x in result4 do (print (x-append "The note" (first x) "(of the first inlet)" "can be modulated using the note" (second x) "(of the second inlet)"))) 'finish)))
+(progn (loop :for x in result4 do (print (om::x-append "The note" (first x) "(of the first inlet)" "can be modulated using the note" (second x) "(of the second inlet)"))) 'finish)))
 
 ;; ===================================================
 
-(defmethod! modulation-notes-fund ((listnote list) (listnote2 list) (cents integer) (temperamento integer))
+(defmethod! om::modulation-notes-fund ((listnote list) (listnote2 list) (cents integer) (temperamento integer))
 :initvals ' ((6000 6530) (7203 5049) 10 4)
 :indoc ' ("First notelist of the comparation" "Second notelist of the comparation" "Aproximação de escala temperada 1/2 1/4 1/8 de tom" "temperament! 2 for 2-DEO 4 for 24-DEO") 
 :icon 002
@@ -169,20 +160,20 @@
 
 (let* ((result (loop :for cknloop1 :in listnote :collect 
 
-                     (loop :for cknloop2 :in listnote2 :collect (if (om= (+ 
-                                                          (if (< (om- (om- cknloop1 cknloop2) 
-                                                                 (approx-m (om- cknloop1 cknloop2) temperamento)) cents) 1 0) 
-                                                          (if (> (om- (om- cknloop1 cknloop2) 
-                                                                 (approx-m (om- cknloop1 cknloop2) temperamento)) (om- cents (* cents 2))) 1 0)) 2) 
+                     (loop :for cknloop2 :in listnote2 :collect (if (= (+ 
+                                                          (if (< (- (- cknloop1 cknloop2) 
+                                                                 (approx-m (- cknloop1 cknloop2) temperamento)) cents) 1 0) 
+                                                          (if (> (- (- cknloop1 cknloop2) 
+                                                                 (approx-m (- cknloop1 cknloop2) temperamento)) (- cents (* cents 2))) 1 0)) 2) 
                                                                                                   (list cknloop1 cknloop2) 0))))
 (result2 (remove 0 (flat result 1))))
 
   (loop :for cknloop3 :in result2 :collect (print  (let*  
-                                               ((result3-2 (om- (first cknloop3) (second cknloop3))))
+                                               ((result3-2 (- (first cknloop3) (second cknloop3))))
 
   (if 
-      (or (om= result3-2 0) (om= result3-2 1200) (and (om> cents result3-2) (om< (om- cents (om* cents 2)) result3-2))) (x-append cknloop3 "are equal")
-      (x-append cknloop3 "will be equal if the second list have has the fundamental with the difference of" (approx-m result3-2 temperamento) "cents")))))))
+      (or (= result3-2 0) (= result3-2 1200) (and (< cents result3-2) (< (- cents (* cents 2)) result3-2))) (om::x-append cknloop3 "are equal")
+      (om::x-append cknloop3 "will be equal if the fundamental of the second tuning have has the difference of" (approx-m result3-2 temperamento) "cents")))))))
 
 ;; ===================================================
 
@@ -195,8 +186,9 @@ Inlet1: (7 8 9 10 458)
 Inlet2: (1 3 5)
 Result: (7 9 458)."
 
-(posn-match notelist (om- chord-n 1)))
+(posn-match notelist (om::om- chord-n 1)))
 
+;; =============
 
 (defmethod! choose ((notelist list) (chord-n list))
 :initvals ' ((1 2 3 4 5 6 7 8 9 10) (1 7 9))
@@ -207,11 +199,11 @@ Inlet1: (7 8 9 10 458)
 Inlet2: (1 3 5)
 Result: (7 9 458)."
 
-(posn-match notelist (om- chord-n 1)))
+(posn-match notelist (om::om- chord-n 1)))
 
 ;; ===================================================
 
-(defmethod! rt-octave ((fraq list) &optional (octave 2))
+(defmethod! om::rt-octave ((fraq list) &optional (octave 2))
 :initvals ' ((1/3 1 5/3) 2)
 :indoc ' ("List of ratios" "2 for one octave; 4 for 2 octaves; 8 for 3; etc...") 
 :icon 002
@@ -220,7 +212,7 @@ Result: (7 9 458)."
 (rt-octave-fun fraq octave))
 
 
-(defmethod! rt-octave ((fraq number) &optional (octave 2))
+(defmethod! om::rt-octave ((fraq number) &optional (octave 2))
 :initvals ' (3/2 2)
 :indoc ' ("list of ratios" "2 for one octave; 4 for 2 octaves; 8 for 3; etc...") 
 :icon 002
@@ -240,17 +232,17 @@ Result: (7 9 458)."
 
 
 ;; ===================================================
-(defmethod! sieve-prime ((sieve list))
+(defmethod! om::sieve-prime ((sieve list))
 :initvals ' (11)      
 :indoc ' ("Sieve")
 :outdoc ' ("utonality" )
 :icon 002
 :doc "Seleciona os números primos de acordo com a sequencia dos números primos."
 
-(loop :for ckn-loop :in sieve :collect (choose-fun (remove 1 (prime-ser 99999999999 (last-elem (sort-list sieve )))) ckn-loop)))
+(loop :for ckn-loop :in sieve :collect (choose-fun (remove 1 (om::prime-ser 99999999999 (last-elem (om::sort-list sieve )))) ckn-loop)))
 
 ;; =================================== HARRY PARTCH ==========================================
-(defmethod! Diamond ((limite integer))
+(defmethod! om::Diamond ((limite integer))
 :initvals ' (11)      
 :indoc ' ("Limit-n for the diamond.")
 :outdoc ' ("utonality" "otonality")
@@ -263,17 +255,17 @@ Result: (7 9 458)."
 In the outlet of the left, the result is the utonal-diamond. Outlet of the right is the otonality-diamond."
 
 (values 
-(let* ((ordem-partch (loop :for x :in (sort-list (rt-octave-fun (arithm-ser 1 limite 2) 2)) :collect (numerator x))))
+(let* ((ordem-partch (loop :for x :in (om::sort-list (rt-octave-fun (arithm-ser 1 limite 2) 2)) :collect (numerator x))))
   (loop :for x :in ordem-partch :collect (loop :for y :in ordem-partch :collect (/ x y))))
 
-(let* ((ordem-partch2 (loop :for x :in (sort-list (rt-octave-fun (arithm-ser 1 limite 2) 2)) :collect (numerator x))))
+(let* ((ordem-partch2 (loop :for x :in (om::sort-list (rt-octave-fun (arithm-ser 1 limite 2) 2)) :collect (numerator x))))
   (loop :for x :in ordem-partch2 :collect (loop :for y :in ordem-partch2 :collect (/ y x))))
 )
 )
 
 ;; ===================================================
 
-(defmethod! Diamond-Identity ((identity list))
+(defmethod! om::Diamond-Identity ((identity list))
 :initvals ' ((11 19 97))       
 :indoc ' ("limit-n for the diamond")
 :outdoc ' ("utonality" "otonality")
@@ -287,20 +279,20 @@ In the outlet of the left, the result is the utonal-diamond. Outlet of the right
 
 ;; ===================================================
 -
-(defmethod! chord-inverse ((chord-list list))
+(defmethod! om::chord-inverse ((chord-list list))
 :initvals ' ((1/1 3/2 5/4))       
 :indoc ' ("otonal chord")
 :icon 003
 :doc "It gives the utonal chord of a otonal chord and vice-versa. In other words, intervals ascendants become intervals descent and vice-versa."
 
 (mapcar
-  (lambda (x) (om/ (denominator x) (numerator x)))
+  (lambda (x) (/ (denominator x) (numerator x)))
   chord-list))
 
 
 ;; ;; =================================== Ben Johnston ======================================
 
-(defmethod! interval-sob ((ratio number) (sieve list))
+(defmethod! om::interval-sob ((ratio number) (sieve list))
 :initvals '(11/8 (2 3 7 11 12))     
 :indoc '("Just Intonation interval" "List of sobreposition")
 :icon 001
@@ -312,21 +304,21 @@ OBS.: It was constructed using ascendant ratios intervals (the numerator is grea
 
 (values 
 
-(let* ((sobreposition (om^ ratio sieve))
+(let* ((sobreposition (om::om^ ratio sieve))
 (task1 (loop :for y :in sobreposition :collect (denominator y)))
 (task2 (loop :for y :in sobreposition :collect (numerator y))))
-(om/ task1 task2))
+(/ task1 task2))
 
-(let* ((sobreposition (om^ ratio sieve))
+(let* ((sobreposition (om::om^ ratio sieve))
 (task1 (loop :for y :in sobreposition :collect (numerator y)))
 (task2 (loop :for y :in sobreposition :collect (denominator y))))
-(om/ task1 task2))
+(/ task1 task2))
 
 ))
 
 ;; ===================================================
 
-(defmethod! arith-mean ((grave number) (agudo number))
+(defmethod! om::arith-mean ((grave number) (agudo number))
 :initvals ' (1/1 2/1)
 :indoc ' ("first ratio" "second ratio")
 :icon 001
@@ -338,7 +330,7 @@ This is a procedure used by Ben Johnston in your strings quartets no. 2 and no. 
 
 ;; ===================================================
 
-(defmethod! arith-mean-sob ((grave number) (agudo number))
+(defmethod! om::arith-mean-sob ((grave number) (agudo number))
 :initvals ' (1/1 5/4)
 :indoc ' ("First ratio" "Second ratio")
 :icon 001
@@ -346,11 +338,11 @@ This is a procedure used by Ben Johnston in your strings quartets no. 2 and no. 
 
 This is a procedure used by Ben Johnston in your strings quartets no. 2 and no. 3. See the article Scalar Order as a Compositional Resource (1964)."
 
-(x-append grave (/ agudo (/ (+ grave agudo) 2)) (* grave (/ (+ grave agudo) 2)) agudo))
+(om::x-append grave (/ agudo (/ (+ grave agudo) 2)) (* grave (/ (+ grave agudo) 2)) agudo))
 
 ;; ===================================================
 
-(defmethod! johnston-sob ((ratio number) (sobreposition number) (fundamental number))
+(defmethod! om::johnston-sob ((ratio number) (sobreposition number) (fundamental number))
 :initvals ' (3/2 3 7200)
 :indoc ' ("first ratio" "sobreposition number" "fundamental")
 :icon 001
@@ -359,16 +351,16 @@ This is a procedure used by Ben Johnston in your strings quartets no. 2 and no. 
 (let* (
 (utonal-sobr (/ (denominator ratio) (numerator ratio)))
 (sobr (arithm-ser 1 sobreposition 1))
-(otonal (loop :for n :in (om^ ratio sobr) collect (f->mc (om* (mc->f fundamental) n))))
-(utonal (loop :for n :in (om^ utonal-sobr sobr) collect (f->mc (om* (mc->f fundamental) n)))))
-(x-append utonal fundamental otonal)))
+(otonal (loop :for n :in (om::om^ ratio sobr) collect (f->mc (* (mc->f fundamental) n))))
+(utonal (loop :for n :in (om::om^ utonal-sobr sobr) collect (f->mc (* (mc->f fundamental) n)))))
+(om::x-append utonal fundamental otonal)))
 
 
 ;; =================================== Erv Wilson =========================================
 
 ;; ====================== MOS =============================
 
-(defmethod! MOS ((ratio number)(sobreposition number) (range number))
+(defmethod! om::MOS ((ratio number)(sobreposition number) (range number))
 :initvals ' (4/3 11 2/1)     
 :indoc ' ("Fundamental note of sobreposition" "Just Intonation interval" "High note" "Number of sobreposition")
 :icon 'MOS
@@ -390,7 +382,7 @@ The numerator and denominator of fractions representing MOS are also co-prime. W
 
 (defun mos-fun-ratio (ratio sobreposition range)
 
-(x-append 1 (rt-octave (om^ ratio (arithm-ser 1 sobreposition 1)) range) range))
+(om::x-append 1 (rt-octave (om::om^ ratio (arithm-ser 1 sobreposition 1)) range) range))
 
 
 ;=================
@@ -400,16 +392,16 @@ The numerator and denominator of fractions representing MOS are also co-prime. W
 
 (let*  
 
-    ((interval (om- (f->mc (om* (mc->f grave) ratio)) grave))
+    ((interval (- (f->mc (* (mc->f grave) ratio)) grave))
 
     (mos-create (loop :for n :in (arithm-ser 1 sobreposition 1) :collect (+ grave (* interval n)))))
 
-(x-append grave 
+(om::x-append grave 
 
 
 (let* 
 (
-(octave-reduction (* (+ 1 (truncate (om- aguda grave) 1200)) 1200))
+(octave-reduction (* (+ 1 (truncate (- aguda grave) 1200)) 1200))
 (aguda-oitava (+ grave octave-reduction))
 (reducao-em-oitava 
 
@@ -422,7 +414,7 @@ The numerator and denominator of fractions representing MOS are also co-prime. W
               )
         :finally (return new-val)))
               mos-create))
-  (octave-reduction2 (* (truncate (om- aguda grave) 1200) 1200)))
+  (octave-reduction2 (* (truncate (- aguda grave) 1200) 1200)))
 
 
  (mapcar (lambda (x)
@@ -436,7 +428,7 @@ The numerator and denominator of fractions representing MOS are also co-prime. W
 
 ;; ===================================================
 
-(defmethod! MOS-verify ((mos list))
+(defmethod! om::MOS-verify ((mos list))
 :initvals ' ((1 4/3 16/9 32/27 128/81 256/243 1024/729 4096/2187 8192/6561 32768/19683 65536/59049 262144/177147 2))  
 :indoc ' ("list of notes - object-MOS")
 :icon 'MOS
@@ -450,11 +442,11 @@ The numerator and denominator of fractions representing MOS are also co-prime. W
           
     ;OUTPUT2
     
-      (flat (remove nil (loop :for ckn-loop :in (arithm-ser 1 (length (sort-list mos)) 1) :collect
+      (flat (remove nil (loop :for ckn-loop :in (arithm-ser 1 (length (om::sort-list mos)) 1) :collect
               (let* (
-                (box-sort-list (sort-list mos))
-                (choose-mos (flat (om/ (choose-fun box-sort-list ckn-loop) (list (choose-fun box-sort-list (om+ ckn-loop 1)))))))
-                (sort-list (remove nil choose-mos))))))))
+                (box-sort-list (om::sort-list mos))
+                (choose-mos (flat (/ (choose-fun box-sort-list ckn-loop) (list (choose-fun box-sort-list (+ ckn-loop 1)))))))
+                (om::sort-list (remove nil choose-mos))))))))
 
 
 
@@ -465,25 +457,25 @@ The numerator and denominator of fractions representing MOS are also co-prime. W
 
           (mos-check-action1 
 
-          (flat (remove nil (loop :for ckn-loop :in (arithm-ser 1 (length (sort-list mos)) 1) :collect
+          (flat (remove nil (loop :for ckn-loop :in (arithm-ser 1 (length (om::sort-list mos)) 1) :collect
               (let* (
-                (box-sort-list (sort-list mos))
-                (choose-mos (flat (om/ (choose-fun box-sort-list ckn-loop) (list (choose-fun box-sort-list (om+ ckn-loop 1)))))))
-                (sort-list (remove nil choose-mos)))))))
+                (box-sort-list (om::sort-list mos))
+                (choose-mos (flat (/ (choose-fun box-sort-list ckn-loop) (list (choose-fun box-sort-list (+ ckn-loop 1)))))))
+                (om::sort-list (remove nil choose-mos)))))))
 
-          (mos-check-action2 (sort-list (remove-duplicates mos-check-action1 :test #'equal)))
+          (mos-check-action2 (om::sort-list (remove-duplicates mos-check-action1 :test #'equal)))
 
-          (mos-check-action3 (om= (length mos-check-action2) 2))
+          (mos-check-action3 (= (length mos-check-action2) 2))
 
           (mos-check-action4 (loop :for cknloop :in mos-check-action1 :collect
-                                  (if (om= cknloop (last-elem (sort-list (flat mos-check-action2)))) "s" "L"))))
+                                  (if (= cknloop (last-elem (om::sort-list (flat mos-check-action2)))) "s" "L"))))
 
           (if mos-check-action3 mos-check-action4 "This is not a MOS")))
 
 
 ;; ===================================================
 
-(defmethod! MOS-check ((ratio number)(sobreposition number) (range number) &optional (intervals 2))
+(defmethod! om::MOS-check ((ratio number)(sobreposition number) (range number) &optional (intervals 2))
 :initvals ' (4/3 60 2)     
 :indoc ' ("Just Intonation interval" "sobreposition" "range of check")
 :icon 'MOS
@@ -509,19 +501,19 @@ The numerator and denominator of fractions representing MOS are also co-prime. W
 (let* (
 
 (action1 
-(sort-list (remove nil (flat (let* (
+(om::sort-list (remove nil (flat (let* (
 
 (action1 (mos-fun-ratio ratio sobreposition-mos range)))
 
-(loop :for ckn-loop :in (arithm-ser 1 (length (sort-list action1)) 1) :collect
+(loop :for ckn-loop :in (arithm-ser 1 (length (om::sort-list action1)) 1) :collect
     (let* (
-      (box-sort-list (sort-list action1))
-      (choose-mos (flat (om/ (choose-fun box-sort-list ckn-loop) (list (choose-fun box-sort-list (om+ ckn-loop 1)))))))
-      (sort-list (remove nil choose-mos)))))))))
+      (box-sort-list (om::sort-list action1))
+      (choose-mos (flat (/ (choose-fun box-sort-list ckn-loop) (list (choose-fun box-sort-list (+ ckn-loop 1)))))))
+      (om::sort-list (remove nil choose-mos)))))))))
 
 (action2 (remove-duplicates action1 :test #'equal))
 
-(action3 (om= (length action2) intervals)))
+(action3 (= (length action2) intervals)))
 
 (if action3 sobreposition-mos nil))) (arithm-ser 1 sobreposition 1))))
 
@@ -532,7 +524,7 @@ The numerator and denominator of fractions representing MOS are also co-prime. W
 
 ;; ===================================================
 
-(defmethod! MOS-complementary ((ratio ratio) (range number) (sobreposition number))
+(defmethod! om::MOS-complementary ((ratio ratio) (range number) (sobreposition number))
 :initvals '(3/2 4 50)    
 :indoc ' ("ratio tested" "range (2 for octave) (3 for 10ª + 2¢) etc" "number maximum of sobreposition")
 :icon 'MOS
@@ -543,17 +535,17 @@ The numerator and denominator of fractions representing MOS are also co-prime. W
 
     (let* ( 
         (action1 (mos-fun-ratio ratio cknloop range))
-        (action2 (mos-fun-ratio (om/ range ratio) cknloop range))
+        (action2 (mos-fun-ratio (/ range ratio) cknloop range))
         (action3 (mos-verify-fun-ratio action1))
         (action4 (mos-verify-fun-ratio action2)))
         (if (equal action4 (reverse action3))
-(print (x-append "interval of" ratio "and its complementary" (om/ range ratio) "stacking" cknloop "times are complementary in the range" range)) nil)))))
+(print (om::x-append "interval of" ratio "and its complementary" (/ range ratio) "stacking" cknloop "times are complementary in the range" range)) nil)))))
 
 'end))
 
 ;; ====================== CPS =============================
 
-(defmethod! cps ((notes list) (quantidade number))
+(defmethod! om::cps ((notes list) (quantidade number))
 :initvals ' ((1 3 5 7 9 11) 3)
 :indoc ' ("This object for make CPS's that are not an Hexany or an Eikosany. " "Number of the combinations of the product.")
 :outdoc ' ("harmonics")
@@ -575,21 +567,21 @@ Example:
 (
   (combinations (cond
             ((<=  quantidade 0) notes) 
-            (t (flat-once (cartesian-op notes (combx notes (1- quantidade)) 'x-append)))
+            (t (flat-once (cartesian-op notes (combx notes (1- quantidade)) 'om::x-append)))
                 )
   )
 
-  (action1 (loop :for cknloop :in combinations collect (sort-list cknloop)))
+  (action1 (loop :for cknloop :in combinations collect (om::sort-list cknloop)))
 
   (action2 (remove nil (loop :for cknloop2 :in action1 :collect 
-            (if (om= (length (remove-duplicates cknloop2 :test #'equal)) quantidade) 
+            (if (= (length (remove-duplicates cknloop2 :test #'equal)) quantidade) 
               (remove-duplicates cknloop2 :test #'equal) nil)))))
 
 (remove-duplicates action2 :test #'equal)))
 
 ;; ===================================================
 
-(defmethod! cps->ratio ((hexany list))
+(defmethod! om::cps->ratio ((hexany list))
 :initvals ' (1 3 5 7)      
 :indoc ' ("harmonicos")
 :outdoc ' ("List of the combinations of the product/harmonics.")
@@ -609,7 +601,7 @@ Example:
 
 ;; ===================================================
 
-(defmethod! cps->identity ((cps list))
+(defmethod! om::cps->identity ((cps list))
 :initvals ' (1 3 5 7)      
 :indoc ' ("Combination products set of a Hexany, Eikosany or others.")
 :outdoc ' ("Identities")
@@ -620,7 +612,7 @@ Example:
 
 ;; ===================================================
 
-(defmethod! cps-chords ((vals list) (n number))
+(defmethod! om::cps-chords ((vals list) (n number))
 :initvals ' ((1 3 5 7) 4)      
 :indoc ' ("Hexa" "chord-notes")
 :outdoc ' ("chords")
@@ -637,17 +629,15 @@ Example:
 (combinations (let ((n (1- n)))
     (combx ckn-action n)))
 
+(action1 (loop :for cknloop :in combinations :collect 
 
-
-  (action1 (loop :for cknloop :in combinations :collect 
-
-        (let* ((ordem (sort-list cknloop))
+        (let* ((ordem (om::sort-list cknloop))
                (iguais (let ((L()))
                          (loop :for x :from 0 :to (1- (length ordem)) do
                                (when (not (equal (nth (+ x 1) ordem) (nth x ordem)))
                                  (push (nth x ordem) L)))
                          (reverse L)))
-          (final (if (om= (length iguais) n) iguais nil))) (remove nil final)))))
+          (final (if (= (length iguais) n) iguais nil))) (remove nil final)))))
 
 
 (remove-duplicates (remove nil action1) :test #'equal)))
@@ -655,7 +645,7 @@ Example:
 
 ;; ===================================================
 
-(defmethod! CPS-connections ((lista list) (ratio number) (stacking number))
+(defmethod! om::CPS-connections ((lista list) (ratio number) (stacking number))
 :initvals ' ((209/128 1843/1024 133/128 1067/1024 77/64 679/512) 3 4)    
 :indoc ' ("list of ratio of a Hexany, Eikosany or others Wilson's CPS" "choose a ratio for the list in inlet1" "3 for triads; 4 for tetrads; etc")
 :icon 006
@@ -665,7 +655,7 @@ Example:
 
 ;; ====================== CPS-HEXANY ========================
 
-(defmethod! Hexany ((Hexany list))
+(defmethod! om::Hexany ((Hexany list))
 :initvals ' ((5 7 13 17))    
 :indoc ' ("List of just four harmonics.")
 :icon 19971997
@@ -678,12 +668,12 @@ Example:
  (combinations (cond
    ((<=  2 0) Hexany)
    (t (flat-once 
-       (cartesian-op Hexany (combx Hexany (1- 2)) 'x-append)))))
+       (cartesian-op Hexany (combx Hexany (1- 2)) 'om::x-append)))))
 
- (action1 (loop :for cknloop :in combinations collect (sort-list cknloop)))
+ (action1 (loop :for cknloop :in combinations collect (om::sort-list cknloop)))
 
  (action2 (remove nil (loop :for cknloop2 :in action1 :collect 
-          (if (om= (length (remove-duplicates cknloop2 :test #'equal)) 2) (remove-duplicates cknloop2 :test #'equal) nil)))))
+          (if (= (length (remove-duplicates cknloop2 :test #'equal)) 2) (remove-duplicates cknloop2 :test #'equal) nil)))))
 
 (remove-duplicates action2 :test #'equal))
 
@@ -693,7 +683,7 @@ Example:
 
 ;; ===================================================
 
-(defmethod! Hexany-triads ((harmonicos list))
+(defmethod! om::Hexany-triads ((harmonicos list))
 :initvals ' (1 3 5 7)      
 :indoc ' ("harmonicos")
 :outdoc ' ("sub-harmonic" "harmonic")
@@ -709,17 +699,17 @@ Example:
       (let* (
         
     (combinations (cond ((<=  2 0) (remove (choose harmonicos cknloopmain) harmonicos))
-   (t (flat-once (cartesian-op (remove (choose harmonicos cknloopmain) harmonicos) (combx (remove (choose harmonicos cknloopmain) harmonicos) (1- 2)) 'x-append)))))
+   (t (flat-once (cartesian-op (remove (choose harmonicos cknloopmain) harmonicos) (combx (remove (choose harmonicos cknloopmain) harmonicos) (1- 2)) 'om::x-append)))))
 
     (action1 (loop :for cknloop :in combinations :collect 
 
-        (let* ((ordem (sort-list cknloop))
+        (let* ((ordem (om::sort-list cknloop))
                (iguais (let ((L()))
                          (loop :for x :from 0 :to (1- (length ordem)) :do
                                (when (not (equal (nth (+ x 1) ordem) (nth x ordem)))
                                  (push (nth x ordem) L)))
                          (reverse L)))
-          (final (if (om= (length iguais) 2) iguais nil))) (remove nil final)))))
+          (final (if (= (length iguais) 2) iguais nil))) (remove nil final)))))
 
 
 (remove-duplicates (remove nil action1) :test #'equal))))
@@ -731,15 +721,15 @@ Example:
 ; ====
 
 (let* ((ratios (loop :for cknloop4 :in (arithm-ser 1 (length harmonicos) 1) :collect 
-       (let* ((choose (nth (om- cknloop4 1) harmonicos)))
-         (om* choose (remove choose harmonicos))))))
+       (let* ((choose (nth (- cknloop4 1) harmonicos)))
+         (* choose (remove choose harmonicos))))))
 
 (loop :for cknloop2 :in ratios :collect (loop :for cknloop3 :in cknloop2 :collect (/ cknloop3 (expt 2 (floor (log cknloop3 2)))))))))
      
 
 ;; ===================================================
 
-(defmethod! Hexany-connections ((harmonico list) (hexany list))
+(defmethod! om::Hexany-connections ((harmonico list) (hexany list))
 :initvals ' ((3 13) ((3 5) (3 13) (5 13) (3 21) (5 21) (13 21)))    
 :indoc ' ("list of two harmonics" "list of just four harmonics")
 :icon 19971997
@@ -751,14 +741,14 @@ Example:
        
              (remove nil 
                      (remove-duplicates (list
-                             (if (or  (om= result1 result2) (om= result1 result3)) cknloop nil) 
-                             (if (or (om= result3 result2) (om= result3 result4)) cknloop nil)) :test #'equal))))))
+                             (if (or  (= result1 result2) (= result1 result3)) cknloop nil) 
+                             (if (or (= result3 result2) (= result3 result4)) cknloop nil)) :test #'equal))))))
         
   (flat (remove nil action1) 1)))
 
 ;; ====================== CPS-EIKOSANY ====================
 
-(defmethod! eikosany ((6-notes list))
+(defmethod! om::eikosany ((6-notes list))
 :initvals ' ((1 3 5 7 9 11))      
 :indoc ' ("six harmonic notes | if you don't put 6 notes the result will not be an eikosany.")
 :outdoc ' ("harmonic")
@@ -776,18 +766,18 @@ Example:
  (combinations (cond
    ((<=  3 0) 6-notes)
    (t (flat-once 
-       (cartesian-op 6-notes (combx 6-notes (1- 3)) 'x-append)))))
+       (cartesian-op 6-notes (combx 6-notes (1- 3)) 'om::x-append)))))
 
- (action1 (loop :for cknloop :in combinations collect (sort-list cknloop)))
+ (action1 (loop :for cknloop :in combinations collect (om::sort-list cknloop)))
 
  (action2 (remove nil (loop :for cknloop2 :in action1 :collect 
-          (if (om= (length (remove-duplicates cknloop2 :test #'equal)) 3) (remove-duplicates cknloop2 :test #'equal) nil)))))
+          (if (= (length (remove-duplicates cknloop2 :test #'equal)) 3) (remove-duplicates cknloop2 :test #'equal) nil)))))
 
 (remove-duplicates action2 :test #'equal)))
 
 ;; ===================================================
 
-(defmethod! eikosany-triads ((6-notes list))
+(defmethod! om::eikosany-triads ((6-notes list))
 :initvals ' ((1 3 5 7 9 11))      
 :indoc ' ("three harmonic notes | if you don't put 3 notes the result will not be an eikosany triads.")
 :outdoc ' ("sub-harmonic" "harmonic")
@@ -804,7 +794,7 @@ Example:
 (action2 (loop :for cknloop5 :in action1 :collect (rt-octave-fun
               (let* ((action2-1 (set-difference 6-notes cknloop5))
                      (action2-2 (cps->ratio-fun (cps-fun cknloop5 2))))
-                (loop :for cknloop6 :in action2-1 :collect (om* action2-2 cknloop6))) 2))))
+                (loop :for cknloop6 :in action2-1 :collect (* action2-2 cknloop6))) 2))))
 (flat action2 1))
 
 
@@ -814,13 +804,13 @@ Example:
 
 (action2 (loop :for cknloop1 :in action1 :collect (rt-octave-fun
           (let* ((action2-1 (cps->ratio-fun (cps-fun (set-difference 6-notes cknloop1) 2))))
-            (loop :for cknloop1-1 :in action2-1 :collect (om* cknloop1 cknloop1-1))) 2))))
+            (loop :for cknloop1-1 :in action2-1 :collect (* cknloop1 cknloop1-1))) 2))))
 
 (flat action2 1))))
 
 ;; ===================================================
 
-(defmethod! eikosany-tetrads ((6-notes list))
+(defmethod! om::eikosany-tetrads ((6-notes list))
 :initvals ' ((1 3 5 7 9 11))      
 :indoc ' ("three harmonic notes | if you don't put 3 notes the result will not be an eikosany triads.")
 :outdoc ' ("sub-harmonic" "harmonic")
@@ -845,12 +835,12 @@ Example:
       (rt-octave-fun (let*
           ((action2-1 (set-difference 6-notes cknloop))
           (action2-2 (reduce #'* action2-1)))
-          (om* cknloop action2-2)) 2)))))
+          (* cknloop action2-2)) 2)))))
 
 
 ;; ===================================================
 
-(defmethod! eikosany-connections ((vertice list) (eikosany list))
+(defmethod! om::eikosany-connections ((vertice list) (eikosany list))
 :initvals ' ((1 3 9) ((1 3 5) (1 3 7) (1 5 7) (3 5 7) (1 3 9) (1 5 9) (3 5 9) (1 7 9) (3 7 9) (5 7 9) (1 3 11) (1 5 11) (3 5 11) (1 7 11) (3 7 11) (5 7 11) (1 9 11) (3 9 11) (5 9 11) (7 9 11)))    
 :indoc ' ("list of tree harmonics" "list of the cps-eikosany")
 :icon 1997
@@ -865,8 +855,8 @@ Example:
 
 (let* ((task1 (loop :for cknloop :in eikosany :collect (if
           
-      (om<= 2 (reduce #'+ 
-                      (x-append
+      (<= 2 (reduce #'+ 
+                      (om::x-append
               (if (same-elem-p (list (first vertice)) cknloop) 1 nil)
               (if (same-elem-p (list (second vertice)) cknloop) 1 nil)
               (if (same-elem-p (list (third vertice)) cknloop) 1 nil))))
@@ -875,7 +865,7 @@ Example:
 
 ;; ;; =================================== Temperament =======================================
 
-(defmethod! mk-temperament ((fund number)(ratio number) (division number))
+(defmethod! om::mk-temperament ((fund number)(ratio number) (division number))
 :initvals ' (6000 2 24)     
 :indoc ' ("inicial-note" "interval: 2 for octave, 3/2 for a fifth division, etc" "divison for the interval, for example: 24 divison of the octave")
 :icon 004
@@ -883,12 +873,12 @@ Example:
 
 (let ((Question (print "Temperamented music, really?")))
 
-(x-append fund (f->mc (om* (mc->f fund) (om^ (expt ratio (om/ 1 division)) (arithm-ser 1 division 1)))))))
+(om::x-append fund (f->mc (* (mc->f fund) (om::om^ (expt ratio (/ 1 division)) (arithm-ser 1 division 1)))))))
 
 
 ;; ;; =================================== Math =============================================
 
-(defmethod! Prime-decomposition ((harmonic list))
+(defmethod! om::Prime-decomposition ((harmonic list))
 :initvals ' ((9 18 172))     
 :indoc ' ("Number or numbers list.")
 :outdoc ' ("Prime-decomposition" "Prime-decomposition without the number 2. It represents the octave interval")
@@ -897,7 +887,7 @@ Example:
 
 In this object we can undestand how identities can be connected using the theory of CPS of the Erv Wilson. 
 
- Lisp code of https://sholtz9421.wordpress.com/2012/10/08/prime-number-factorization-in-lisp/."
+ Lisp code of https://sholtz9421.wordpress.c/2012/10/08/prime-number-factorization-in-lisp/."
 :numouts 2 
 
 (defun factor (n)
@@ -919,17 +909,17 @@ In this object we can undestand how identities can be connected using the theory
 
 ;; ;; =================================== Others =============================================
 
-(defmethod! send-max ((maxlist list))
+(defmethod! om::send-max ((maxlist list))
 :initvals ' (6000 2 24)     
 :indoc ' ("list")
 :icon 007
 :doc "Send for MAX/MSP. This work with a list not list of lists. See the patch CKN-OSCreceive in charlesneimog.com"
 
-(osc-send (x-append "om/max" maxlist) "127.0.0.1" 7839))
+(om::osc-send (om::x-append "/max" maxlist) "127.0.0.1" 7839))
 
 ;; ===================================================
 
-(defmethod! midicents->midi ((maxlist list))
+(defmethod! om::midicents->midi ((maxlist list))
 :initvals ' (6000)     
 :indoc ' ("list of midicents")
 :icon 007
@@ -939,13 +929,13 @@ In this object we can undestand how identities can be connected using the theory
 
 ;; ===================================================
 
-(defmethod! gizmo ((note list) (fund number))
+(defmethod! om::gizmo ((note list) (fund number))
 :initvals ' ((6386) (6000))    
 :indoc ' ("list of midicents" "fund of the gizmo")
 :icon 007
 :doc "Convert midicents for the max object gizmo~."
 
-(om* 0.01 (om- note fund))    )
+(* 0.01 (- note fund))    )
 
 ; ========================================== OM#-PLAY =======================
 
@@ -957,35 +947,35 @@ In this object we can undestand how identities can be connected using the theory
  (list 4 4)))
 
 (defun normalize-chord-seq (chrdseq)
-  (let* ((xdx (x->dx (lonset chrdseq)))
-         (filt-durs1 (mapcar 'list-min (ldur chrdseq)))
+  (let* ((xdx (om::x->dx (om::lonset chrdseq)))
+         (filt-durs1 (mapcar 'list-min (om::ldur chrdseq)))
          (lst-durs (mapcar 'list xdx filt-durs1))
          (filt-durs2 (mapcar 'list-min lst-durs))
          (newdurs (loop 
-                   for pt in (lmidic chrdseq)
-                   for drs in filt-durs2
+                   :for pt :in (om::lmidic chrdseq)
+                   :for drs :in filt-durs2
                    collect (repeat-n drs (length pt)))))
     (make-instance 'chord-seq 
-                   :lmidic (lmidic chrdseq)
-                   :lonset (lonset chrdseq)
+                   :lmidic (om::lmidic chrdseq)
+                   :lonset (om::lonset chrdseq)
                    :ldur newdurs)))
 
-(defun choose-fun (notelist chord-n) (nth (om- chord-n 1) notelist))
+(defun choose-fun (notelist chord-n) (nth (- chord-n 1) notelist))
 
 
 (defun true-durations (ckn)
 
  (let* ((newchrdseq (if (typep ckn 'note) 
-                           (Objfromobjs (Objfromobjs ckn (make-instance 'chord)) (make-instance 'chord-seq))
-                           (Objfromobjs ckn (make-instance 'chord-seq))))
+                           (om::Objfromobjs (om::Objfromobjs ckn (make-instance 'chord)) (make-instance 'chord-seq))
+                           (om::Objfromobjs ckn (make-instance 'chord-seq))))
 
          (newcs (normalize-chord-seq newchrdseq))
-         (onsets (Lonset newcs))
-         (dur (Ldur newcs))
-         (newonsets (if (= 2 (length onsets)) (x->dx  onsets) (butlast (x->dx onsets))))
+         (onsets (om::Lonset newcs))
+         (dur (om::Ldur newcs))
+         (newonsets (if (= 2 (length onsets)) (om::x->dx  onsets) (butlast (om::x->dx onsets))))
          (newdurs (mapcar 'first dur))
          (resultat1 
-          (x-append 
+          (om::x-append 
           (flat
            (list (mapcar #'(lambda (x y) (if (= 0 (- x y)) x 
                                              (list x (- x y))))
@@ -1013,52 +1003,52 @@ In this object we can undestand how identities can be connected using the theory
       (let* (
         (ckn-action3-1 
           (if (equal nil (first ckn-action2)) 0 (first ckn-action2))))
-        (if (equal nil (first ckn-action2)) (om+ (om- ckn-action2 ckn-action3-1) -1) (om+ (om- ckn-action2 ckn-action3-1) 1))     
+        (if (equal nil (first ckn-action2)) (om::om+ (om::om- ckn-action2 ckn-action3-1) -1) (om::om+ (om::om- ckn-action2 ckn-action3-1) 1))     
         
       )))
 
-(loop :for cknloop-1 :in ckn-action3 :for cknloop-2 :in (dx->x 0 (loop :for y :in (true-durations ckn) :collect (abs y))) :for cknloop-3 :in (true-durations ckn) :collect          
+(loop :for cknloop-1 :in ckn-action3 :for cknloop-2 :in (om::dx->x 0 (loop :for y :in (true-durations ckn) :collect (om::abs y))) :for cknloop-3 :in (true-durations ckn) :collect          
         (if (plusp cknloop-3) 
-            (x-append 
+            (om::x-append 
                (if (plusp cknloop-3) cknloop-2 nil) "," 
-                  (x-append  
-                  (choose-fun (flat (get-slot-val (make-value-from-model 'voice ckn nil) "LMIDIC")) cknloop-1) 
-                  (choose-fun (flat (get-slot-val (make-value-from-model 'voice ckn nil) "lvel")) cknloop-1)
-                  (choose-fun (flat (get-slot-val (make-value-from-model 'voice ckn nil) "lchan")) cknloop-1)
+                  (om::x-append  
+                  (choose-fun (flat (om::get-slot-val (om::make-value-from-model 'voice ckn nil) "LMIDIC")) cknloop-1) 
+                  (choose-fun (flat (om::get-slot-val (om::make-value-from-model 'voice ckn nil) "lvel")) cknloop-1)
+                  (choose-fun (flat (om::get-slot-val (om::make-value-from-model 'voice ckn nil) "lchan")) cknloop-1)
                     (if (plusp cknloop-3) cknloop-3 nil) 
                        ";")) nil))))
 
 (defun voice->text-max (ckn number-2)
 
 (let* (
-(ckn-action1  (loop :for ckn-plus :in (true-durations ckn) :collect (if (plusp ckn-plus) 0 1)))
+(ckn-action1  (print (loop :for ckn-plus :in (true-durations ckn) :collect (if (plusp ckn-plus) 0 1))))
 
-(ckn-action2 (loop :for cknloop :in ckn-action1 :collect (if (= 0 cknloop) (setq number-2 (+ number-2 1)) nil)))
+(ckn-action2 (print (loop :for cknloop :in ckn-action1 :collect (if (om::om= 0 cknloop) (setq number-2 (om::om+ number-2 1)) nil))))
 
 (ckn-action3 
 
-      (let* (
+      (print (let* (
         (ckn-action3-1 
           (if (equal nil (first ckn-action2)) 0 (first ckn-action2))))
-        (if (equal nil (first ckn-action2)) (om+ (om- ckn-action2 ckn-action3-1) -1) (om+ (om- ckn-action2 ckn-action3-1) 1))     
+        (if (equal nil (first ckn-action2)) (om::om+ (om::om- ckn-action2 ckn-action3-1) -1) (om::om+ (om::om- ckn-action2 ckn-action3-1) 1))     
         
-      )))
+      ))))
 
-(loop :for cknloop-1 :in ckn-action3 :for cknloop-2 :in (dx->x 0 (loop :for y :in (true-durations ckn) :collect (abs y))) :for cknloop-3 :in (true-durations ckn) :collect          
+(loop :for cknloop-1 :in ckn-action3 :for cknloop-2 :in (om::dx->x 0 (loop :for y :in (true-durations ckn) :collect (abs y))) :for cknloop-3 :in (true-durations ckn) :collect          
         (if (plusp cknloop-3) 
-            (x-append 
+            (om::x-append 
                (if (plusp cknloop-3) cknloop-2 nil)
-                  (x-append  
-                  (choose-fun (get-slot-val (make-value-from-model 'voice ckn nil) "LMIDIC") cknloop-1) 
-                  (choose-fun (get-slot-val (make-value-from-model 'voice ckn nil) "lvel") cknloop-1)
-                  (choose-fun (get-slot-val (make-value-from-model 'voice ckn nil) "lchan") cknloop-1)
+                  (om::x-append  
+                  (choose-fun (om::get-slot-val (om::make-value-from-model 'voice ckn nil) "LMIDIC") cknloop-1) 
+                  (choose-fun (om::get-slot-val (om::make-value-from-model 'voice ckn nil) "lvel") cknloop-1)
+                  (choose-fun (om::get-slot-val (om::make-value-from-model 'voice ckn nil) "lchan") cknloop-1)
                     (if (plusp cknloop-3) cknloop-3 nil) 
                        )) nil))))
 
 
 ; ===========================================================================
 
-(defmethod! play-om# ((voice VOICE))
+(defmethod! om::play-om# ((voice VOICE))
 :initvals ' ((nil))       
 :indoc ' ("A player for OM#")
 :outdoc ' ("PLAY")
@@ -1072,17 +1062,16 @@ For the automatic work the folder out-files of OM# must be in the files preferen
     (ckn-action4 (remove nil (voice->text-max voice 1))))
 
         (let* (
-          (action1 
-          (progn
-        (osc-send (x-append '/reset 1) "127.0.0.1" 3003)
-       (loop for cknloop in ckn-action4 :collect (osc-send (x-append '/note cknloop) "127.0.0.1" 3003))))
-        (action2 (osc-send (x-append '/note-pause 1) "127.0.0.1" 3003)))  
+            (action1 
+                (progn (om::osc-send (om::x-append '/reset 1) "127.0.0.1" 3003)
+                 (loop for cknloop in ckn-action4 :collect (om::osc-send (om::x-append '/note cknloop) "127.0.0.1" 3003))))
+            (action2 (om::osc-send (om::x-append '/note-pause 1) "127.0.0.1" 3003)))
       '("play"))))
 
 
 ; ===========================================================================
 
-(defmethod! voice->text ((voice VOICE))
+(defmethod! om::voice->text ((voice VOICE))
 :initvals ' ((nil))       
 :indoc ' ("A player for OM#")
 :outdoc ' ("PLAY")
@@ -1092,18 +1081,19 @@ For the automatic work the folder out-files of OM# must be in the files preferen
 
 For the automatic work the folder out-files of OM# must be in the files preferences of the Max/MSP."
 (let
- ((tb (make-value 'textbuffer (list (list :contents (voice->text-fun voice 1)))))) (setf (reader tb) :lines-cols) tb))
+ ((tb (om::make-value 'textbuffer (list (list :contents (voice->text-fun voice 1)))))) 
+ (setf (om::reader tb) :lines-cols) tb))
 
  ; ===========================================================================
  
 ;; By Jordana Dias Paes Possani de Sousa and Charles K. Neimog | copyright © 2020
-(defmethod! apex-vibro ((freq number))
+(defmethod! om::apex-vibro ((freq number))
 :initvals ' (440)
 :indoc ' ("valor da frequência") 
 :icon 008
 :doc "It gives the distance between the apice of the coclea and the vibration point of a determinate frequence."
 
-(om/ (log (/ freq 165) 10) 0.06))
+(/ (log (/ freq 165) 10) 0.06))
 
 ; =================================== Functions of Others OM libraries ================
 
@@ -1132,7 +1122,7 @@ For the automatic work the folder out-files of OM# must be in the files preferen
                  (write-to-string (car ckn-list)) (list->string (cdr ckn-list)))))
 
                 
-;; Code by "https://gist.github.com/tompurl/5174818"
+;; Code by "https://gist.github.c/tompurl/5174818"
 
 ;; ================== PASCAL TRIANGULE ======================
 
@@ -1150,7 +1140,7 @@ For the automatic work the folder out-files of OM# must be in the files preferen
       (cons (+ (car l) (cadr l)) (newrow (cdr l)))))
 
 
-;; https://stackoverflow.com/questions/25903972/pascal-triangle-in-lisp/25904053
+;; https://stackoverflow.c/questions/25903972/pascal-triangle-in-lisp/25904053
 
 ; =================================== NUMBER ================
 
@@ -1183,7 +1173,7 @@ For the automatic work the folder out-files of OM# must be in the files preferen
   (cond
    ((<=  n 0) vals)
    (t (flat-once 
-       (cartesian-op vals (combx vals (1- n)) 'x-append))))
+       (cartesian-op vals (combx vals (1- n)) 'om::x-append))))
 )
 
 (defun removeIt (a lis)
@@ -1199,7 +1189,7 @@ For the automatic work the folder out-files of OM# must be in the files preferen
 
 (print 
  "
-                                              OM-JI
+                                              -JI
       by Charles K. Neimog | charlesneimog.com  
    Universidade Federal de Juiz de Fora (2019-2020)
 "

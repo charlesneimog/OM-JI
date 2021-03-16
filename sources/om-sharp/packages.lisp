@@ -6,7 +6,6 @@
 
 (in-package :om)
 
-(defpackage "OM-JUST-INTONATION"
-  (:use "COMMON-LISP" "CL-USER" "OM")
-  (:nicknames :om-ji))
+(defpackage :om-ji
+  (:use "OM" "COMMON-LISP" "CL-USER"))
 
