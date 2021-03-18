@@ -148,7 +148,7 @@
                       (second (mapcar #' (lambda (x) (+ (mod x 1200) 6000)) note))))) note 0)))
 (result4 (remove 0 result3)))
 
-(progn (loop :for x in result4 do (print (om::x-append "The note" (first x) "(of the first inlet)" "can be modulated using the note" (second x) "(of the second inlet)"))) "Check the listener")))
+(loop :for x :in result4 :do (print (concatenate 'string "The pitch " (list->string (list (first x)) " (of the tuning connected in the first inlet) " "can be modulated using the pitch " (list->string (list (second x))) " (of the tuning connected in the first inlet)."))) "Check the listener")))
 
 ;; ===================================================
 
@@ -174,8 +174,9 @@
                                                ((result3-2 (om- (first cknloop3) (second cknloop3))))
 
   (if 
-      (or (om= result3-2 0) (om= result3-2 1200) (and (om> cents result3-2) (om< (om- cents (om* cents 2)) result3-2))) (x-append cknloop3 "are equal")
-      (x-append cknloop3 "will be equal if the second list have has the fundamental with the difference of" (approx-m result3-2 temperamento) "cents"))))) "Check the listener")
+      (or (om= result3-2 0) (om= result3-2 1200) (and (om> cents result3-2) (om< (om- cents (om* cents 2)) result3-2))) 
+      (concatenate 'string (list->string (list (first cknloop3))) " and " (list->string (list (second cknloop3))) " are equal.")
+       (concatenate 'string (list->string (list (first cknloop3))) " and " (list->string (list (second cknloop3))) " will be equal if the fundamental of the second Tuning have has the fundamental with the difference of " (list->string (list (approx-m result3-2 temperamento))) " cents."))))) "Check the listener")
 
 ;;;; ========
 
@@ -189,14 +190,17 @@
                                                                                                   (list cknloop1 cknloop2) 0))))
 (result2 (remove 0 (flat result 1)))
 
-(result3 (loop :for cknloop3 :in result2 :collect (let*  
-                                               ((result3-2 (om- (first cknloop3) (second cknloop3))))
+(result3 (loop :for cknloop3 :in result2 :collect 
+  (let* (
+          (result3-2 (om- (first cknloop3) (second cknloop3))))
 
-  (if 
-      (or (om= result3-2 0) (om= result3-2 1200) (and (om> cents result3-2) (om< (om- cents (om* cents 2)) result3-2))) (x-append cknloop3 "are equal")
+
+(if 
+      (or (om= result3-2 0) (om= result3-2 1200) (and (om> cents result3-2) (om< (om- cents (om* cents 2)) result3-2)))
+      (concatenate 'string (list->string (list (first cknloop3))) " and " (list->string (list (second cknloop3))) " are equal." "!!!!")
       (x-append cknloop3 "will be equal if the fundamental of the second tuning have has the difference of" (approx-m result3-2 temperamento) "cents"))))))
 
-(om::sort-list (mapcar (lambda (x) (fourth x)) result3)))))
+(om::sort-list (remove nil (mapcar (lambda (x) (if (equal (om::type-of x) 'lispworks:simple-text-string) nil (fourth x))) result3))))))
     
 
 

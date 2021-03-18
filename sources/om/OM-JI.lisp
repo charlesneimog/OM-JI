@@ -175,8 +175,9 @@
                                                ((result3-2 (om- (first cknloop3) (second cknloop3))))
 
   (if 
-      (or (om= result3-2 0) (om= result3-2 1200) (and (om> cents result3-2) (om< (om- cents (om* cents 2)) result3-2))) (x-append cknloop3 "are equal")
-      (x-append cknloop3 "will be equal if the second list have has the fundamental with the difference of" (approx-m result3-2 temperamento) "cents"))))) "Check the listener")
+      (or (om= result3-2 0) (om= result3-2 1200) (and (om> cents result3-2) (om< (om- cents (om* cents 2)) result3-2))) 
+      (concatenate 'string (list->string (list (first cknloop3))) " and " (list->string (list (second cknloop3))) " are equal.")
+       (concatenate 'string (list->string (list (first cknloop3))) " and " (list->string (list (second cknloop3))) " will be equal if the fundamental of the second Tuning have has the fundamental with the difference of " (list->string (list (approx-m result3-2 temperamento))) " cents."))))) "Check the listener")
 
 ;;;; ========
 
@@ -190,18 +191,21 @@
                                                                                                   (list cknloop1 cknloop2) 0))))
 (result2 (remove 0 (flat result 1)))
 
-(result3 (loop :for cknloop3 :in result2 :collect (let*  
-                                               ((result3-2 (om- (first cknloop3) (second cknloop3))))
+(result3 (loop :for cknloop3 :in result2 :collect 
+  (let* (
+          (result3-2 (om- (first cknloop3) (second cknloop3))))
 
-  (if 
-      (or (om= result3-2 0) (om= result3-2 1200) (and (om> cents result3-2) (om< (om- cents (om* cents 2)) result3-2))) (x-append cknloop3 "are equal")
+
+(if 
+      (or (om= result3-2 0) (om= result3-2 1200) (and (om> cents result3-2) (om< (om- cents (om* cents 2)) result3-2)))
+      (concatenate 'string (list->string (list (first cknloop3))) " and " (list->string (list (second cknloop3))) " are equal." "!!!!")
       (x-append cknloop3 "will be equal if the fundamental of the second tuning have has the difference of" (approx-m result3-2 temperamento) "cents"))))))
 
-(om::sort-list (remove nil (mapcar (lambda (x) (fourth x)) result3))))))
+(om::sort-list (remove nil (mapcar (lambda (x) (if (equal (om::type-of x) 'lispworks:simple-text-string) nil (fourth x))) result3))))))
 
 ;; ===================================================
 
-(defmethod! choose ((notelist list) (chord-n integer))
+(defmethod! om::choose ((notelist list) (chord-n integer))
 :initvals ' ((1 2 3 4 5 6 7 8 9 10) 2)
 :indoc ' ("List or list of lists of anything" "What element(s) do you want?") 
 :icon 002
@@ -214,7 +218,7 @@ Result: (7 9 458)."
 
 ;; =============
 
-(defmethod! choose ((notelist list) (chord-n list))
+(defmethod! om::choose ((notelist list) (chord-n list))
 :initvals ' ((1 2 3 4 5 6 7 8 9 10) (1 7 9))
 :indoc ' ("List or list of lists of anything." "What element(s) do you want?") 
 :icon 002
@@ -331,12 +335,12 @@ OBS.: It was constructed using ascendant ratios intervals (the numerator is grea
 (let* ((sobreposition (om::om^ ratio sieve))
 (task1 (loop :for y :in sobreposition :collect (denominator y)))
 (task2 (loop :for y :in sobreposition :collect (numerator y))))
-(/ task1 task2))
+(om::om/ task1 task2))
 
 (let* ((sobreposition (om::om^ ratio sieve))
 (task1 (loop :for y :in sobreposition :collect (numerator y)))
 (task2 (loop :for y :in sobreposition :collect (denominator y))))
-(/ task1 task2))
+(om::om/ task1 task2))
 
 ))
 
@@ -469,11 +473,8 @@ The numerator and denominator of fractions representing MOS are also co-prime. W
       (flat (remove nil (loop :for ckn-loop :in (arithm-ser 1 (length (om::sort-list mos)) 1) :collect
               (let* (
                 (box-sort-list (om::sort-list mos))
-                (choose-mos (flat (/ (choose-fun box-sort-list ckn-loop) (list (choose-fun box-sort-list (+ ckn-loop 1)))))))
+                  (choose-mos (flat (om::om/ (choose-fun box-sort-list ckn-loop) (list (choose-fun box-sort-list (om::om+ ckn-loop 1)))))))
                 (om::sort-list (remove nil choose-mos))))))))
-
-
-
 
 (defun mos-verify-fun-ratio (mos)
 
@@ -484,15 +485,15 @@ The numerator and denominator of fractions representing MOS are also co-prime. W
           (flat (remove nil (loop :for ckn-loop :in (arithm-ser 1 (length (om::sort-list mos)) 1) :collect
               (let* (
                 (box-sort-list (om::sort-list mos))
-                (choose-mos (flat (/ (choose-fun box-sort-list ckn-loop) (list (choose-fun box-sort-list (+ ckn-loop 1)))))))
+                (choose-mos (flat (om::om/ (choose-fun box-sort-list ckn-loop) (list (choose-fun box-sort-list (om::om+ ckn-loop 1)))))))
                 (om::sort-list (remove nil choose-mos)))))))
 
           (mos-check-action2 (om::sort-list (remove-duplicates mos-check-action1 :test #'equal)))
 
-          (mos-check-action3 (= (length mos-check-action2) 2))
+          (mos-check-action3 (om::om= (length mos-check-action2) 2))
 
           (mos-check-action4 (loop :for cknloop :in mos-check-action1 :collect
-                                  (if (= cknloop (last-elem (om::sort-list (flat mos-check-action2)))) "s" "L"))))
+                                  (if (om::om= cknloop (last-elem (om::sort-list (flat mos-check-action2)))) "s" "L"))))
 
           (if mos-check-action3 mos-check-action4 "This is not a MOS")))
 
@@ -529,22 +530,19 @@ The numerator and denominator of fractions representing MOS are also co-prime. W
 
 (action1 (mos-fun-ratio ratio sobreposition-mos range)))
 
-(loop :for ckn-loop :in (arithm-ser 1 (length (om::sort-list action1)) 1) :collect
+(loop :for ckn-loop :in (om::arithm-ser 1 (length (om::sort-list action1)) 1) :collect
     (let* (
       (box-sort-list (om::sort-list action1))
-      (choose-mos (flat (/ (choose-fun box-sort-list ckn-loop) (list (choose-fun box-sort-list (+ ckn-loop 1)))))))
+      (choose-mos (flat (om::om/ (choose-fun box-sort-list ckn-loop) (list (choose-fun box-sort-list (om::om+ ckn-loop 1)))))))
       (om::sort-list (remove nil choose-mos)))))))))
 
 (action2 (remove-duplicates action1 :test #'equal))
 
-(action3 (= (length action2) intervals)))
+(action3 (om::om= (length action2) intervals)))
 
 (if action3 sobreposition-mos nil))) (arithm-ser 1 sobreposition 1))))
 
 (remove nil action1-main)))
-
-
-
 
 ;; ===================================================
 
@@ -591,7 +589,7 @@ Example:
 (
   (combinations (cond
             ((<=  quantidade 0) notes) 
-            (t (flat-once (cartesian-op notes (combx notes (1- quantidade)) 'om::x-append)))
+            (t (om::flat-once (cartesian-op notes (combx notes (1- quantidade)) 'om::x-append)))
                 )
   )
 
@@ -691,7 +689,7 @@ Example:
 (
  (combinations (cond
    ((<=  2 0) Hexany)
-   (t (flat-once 
+   (t (om::flat-once 
        (cartesian-op Hexany (combx Hexany (1- 2)) 'om::x-append)))))
 
  (action1 (loop :for cknloop :in combinations collect (om::sort-list cknloop)))
@@ -723,7 +721,7 @@ Example:
       (let* (
         
     (combinations (cond ((<=  2 0) (remove (choose harmonicos cknloopmain) harmonicos))
-   (t (flat-once (cartesian-op (remove (choose harmonicos cknloopmain) harmonicos) (combx (remove (choose harmonicos cknloopmain) harmonicos) (1- 2)) 'om::x-append)))))
+   (t (om::flat-once (cartesian-op (remove (choose harmonicos cknloopmain) harmonicos) (combx (remove (choose harmonicos cknloopmain) harmonicos) (1- 2)) 'om::x-append)))))
 
     (action1 (loop :for cknloop :in combinations :collect 
 
@@ -746,7 +744,7 @@ Example:
 
 (let* ((ratios (loop :for cknloop4 :in (arithm-ser 1 (length harmonicos) 1) :collect 
        (let* ((choose (nth (- cknloop4 1) harmonicos)))
-         (* choose (remove choose harmonicos))))))
+         (om::om* choose (remove choose harmonicos))))))
 
 (loop :for cknloop2 :in ratios :collect (loop :for cknloop3 :in cknloop2 :collect (/ cknloop3 (expt 2 (floor (log cknloop3 2)))))))))
      
@@ -789,7 +787,7 @@ Example:
 (
  (combinations (cond
    ((<=  3 0) 6-notes)
-   (t (flat-once 
+   (t (om::flat-once 
        (cartesian-op 6-notes (combx 6-notes (1- 3)) 'om::x-append)))))
 
  (action1 (loop :for cknloop :in combinations collect (om::sort-list cknloop)))
@@ -818,7 +816,7 @@ Example:
 (action2 (loop :for cknloop5 :in action1 :collect (rt-octave-fun
               (let* ((action2-1 (set-difference 6-notes cknloop5))
                      (action2-2 (cps->ratio-fun (cps-fun cknloop5 2))))
-                (loop :for cknloop6 :in action2-1 :collect (* action2-2 cknloop6))) 2))))
+                (loop :for cknloop6 :in action2-1 :collect (om::om* action2-2 cknloop6))) 2))))
 (flat action2 1))
 
 
@@ -828,7 +826,7 @@ Example:
 
 (action2 (loop :for cknloop1 :in action1 :collect (rt-octave-fun
           (let* ((action2-1 (cps->ratio-fun (cps-fun (set-difference 6-notes cknloop1) 2))))
-            (loop :for cknloop1-1 :in action2-1 :collect (* cknloop1 cknloop1-1))) 2))))
+            (loop :for cknloop1-1 :in action2-1 :collect (om::om* cknloop1 cknloop1-1))) 2))))
 
 (flat action2 1))))
 
@@ -859,7 +857,7 @@ Example:
       (rt-octave-fun (let*
           ((action2-1 (set-difference 6-notes cknloop))
           (action2-2 (reduce #'* action2-1)))
-          (* cknloop action2-2)) 2)))))
+          (om::om* cknloop action2-2)) 2)))))
 
 
 ;; ===================================================
@@ -1196,7 +1194,7 @@ For the automatic work the folder out-files of OM# must be in the files preferen
 (defun combx (vals n)
   (cond
    ((<=  n 0) vals)
-   (t (flat-once 
+   (t (om::flat-once 
        (cartesian-op vals (combx vals (1- n)) 'om::x-append))))
 )
 
