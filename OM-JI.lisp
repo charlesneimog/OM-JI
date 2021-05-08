@@ -19,7 +19,7 @@
 
 (om::fill-library '(
 
-("Just-intonation Utilities" nil nil (rt->mc  range-reduce  filter-ac-inst  modulation-notes  modulation-notes-fund rt-octave) nil)
+("Just-intonation Utilities" nil nil (rt->mc  range-reduce  filter-ac-inst  modulation-notes  modulation-notes-fund rt-octave ji-change-notes) nil)
 
 ("Harry Partch" nil  nil (Diamond Diamond-Identity chord-inverse) nil)
 

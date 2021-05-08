@@ -893,6 +893,25 @@ Example:
            cknloop nil))))
 (remove nil task1)))
 
+;; ;; =================================== Charles' Functions =======================================
+
+(om::defmethod! ji-change-notes ((notas list) (afinação list))
+:initvals '((6000 6100 6200 6300 6400 6500 6600 6700 6800 6900 7000 7100 7200) (6000 6498 6996 6294 6792 6090 6588 7086 6384 6882 6180 6678 7200))    
+:indoc ' ("Some list of notes in midicents" "some tuning system")
+:icon 1997
+:doc "This object change the notes of the first inlet by the nearest notes of the second inlet."
+
+(let* (
+(action1 (om::om-abs(loop for x in notas collect (om::om- afinação x))))
+(action2 (mapcar (lambda (x) 
+                   (let* (
+                          (action1 (apply 'min x))
+                          (action2 (position action1 x)))
+                     (nth action2 afinação))) action1)))
+action2))
+
+
+
 ;; ;; =================================== Temperament =======================================
 
 (om::defmethod! mk-temperament ((fund number)(ratio number) (division number))
@@ -945,7 +964,8 @@ In this object we can undestand how identities can be connected using the theory
 :icon 007
 :doc "Send for MAX/MSP. This work with a list not list of lists. See the patch CKN-OSCreceive in charlesneimog.com"
 
-(om::osc-send (om::x-append "/max" maxlist) "127.0.0.1" 7839))
+(let ((send (om::osc-send (om::x-append "/max" maxlist) "127.0.0.1" 7839)))
+(print "Done!")))
 
 ;; ===================================================
 
