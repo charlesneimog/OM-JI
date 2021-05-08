@@ -902,7 +902,7 @@ Example:
 (defmethod! om::ji-change-notes ((notas list) (afinação list))
 :initvals '((6000 6100 6200 6300 6400 6500 6600 6700 6800 6900 7000 7100 7200) (6000 6498 6996 6294 6792 6090 6588 7086 6384 6882 6180 6678 7200))    
 :indoc ' ("Some list of notes in midicents" "some tuning system")
-:icon 1997
+:icon 002
 :doc "This object change the notes of the first inlet by the nearest notes of the second inlet."
 
 (let* (
