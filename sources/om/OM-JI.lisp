@@ -1204,26 +1204,17 @@ For the automatic work the folder out-files of OM# must be in the files preferen
 ; =================================== COMBINE BY MIKHAIL MALT (IRCAM 1993-1996) ================
 
 
-(defun cartesian-op (l1 l2 fun) 
+(defun malt-cartesian-op (l1 l2 fun) 
 
-  (mapcar #'(lambda (x) (mapcar #'(lambda (y) (funcall fun x y)) (list! l2))) (list! l1))
+  (mapcar #'(lambda (x) (mapcar #'(lambda (y) (funcall fun x y)) (om::list! l2))) (om::list! l1))
 )
 
-(defun combx (vals n)
+(defun malt-combx (vals n)
   (cond
    ((<=  n 0) vals)
    (t (om::flat-once 
-       (cartesian-op vals (combx vals (1- n)) 'om::x-append))))
+       (malt-cartesian-op vals (malt-combx vals (1- n)) 'om::x-append))))
 )
-
-(defun removeIt (a lis)
-  (if (null lis) 0
-      (if (= a (car lis))
-          (delete (car lis))
-          (removeIt (cdr lis))))
-)
-
-
 
 ; ===========================================================================
 

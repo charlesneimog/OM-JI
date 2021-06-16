@@ -593,13 +593,13 @@ Example:
 
 (let* 
 (
-  (combinations (cond
+  (comb (cond
             ((<=  quantidade 0) notes) 
-            (t (om::flat-once (cartesian-op notes (combx notes (1- quantidade)) 'om::x-append)))
+            (t (om::flat-once (malt-cartesian-op notes (malt-combx notes (1- quantidade)) 'om::x-append)))
                 )
   )
 
-  (action1 (loop :for cknloop :in combinations collect (om::sort-list cknloop)))
+  (action1 (loop :for cknloop :in comb collect (om::sort-list cknloop)))
 
   (action2 (remove nil (loop :for cknloop2 :in action1 :collect 
             (if (= (length (remove-duplicates cknloop2 :test #'equal)) quantidade) 
@@ -654,12 +654,12 @@ Example:
 
 (ckn-action (loop :for cknloop2 :in action0 :collect (/ cknloop2 (expt 2 (floor (log cknloop2 2))))))
 
-(combinations (let ((n (1- n)))
-    (combx ckn-action n)))
+(comb (let ((n (1- n)))
+    (malt-combx ckn-action n)))
 
 
 
-  (action1 (loop :for cknloop :in combinations :collect 
+  (action1 (loop :for cknloop :in comb :collect 
 
         (let* ((ordem (om::sort-list cknloop))
                (iguais (let ((L()))
@@ -695,12 +695,12 @@ Example:
 
 (let* 
 (
- (combinations (cond
+ (comb (cond
    ((<=  2 0) Hexany)
    (t (om::flat-once 
-       (cartesian-op Hexany (combx Hexany (1- 2)) 'om::x-append)))))
+       (malt-cartesian-op Hexany (malt-combx Hexany (1- 2)) 'om::x-append)))))
 
- (action1 (loop :for cknloop :in combinations collect (om::sort-list cknloop)))
+ (action1 (loop :for cknloop :in comb :collect (om::sort-list cknloop)))
 
  (action2 (remove nil (loop :for cknloop2 :in action1 :collect 
           (if (= (length (remove-duplicates cknloop2 :test #'equal)) 2) (remove-duplicates cknloop2 :test #'equal) nil)))))
@@ -728,10 +728,10 @@ Example:
   (actionmain (loop :for cknloopmain :in (arithm-ser 1 (length harmonicos) 1) :collect
       (let* (
         
-    (combinations (cond ((<=  2 0) (remove (choose harmonicos cknloopmain) harmonicos))
-   (t (om::flat-once (cartesian-op (remove (choose harmonicos cknloopmain) harmonicos) (combx (remove (choose harmonicos cknloopmain) harmonicos) (1- 2)) 'om::x-append)))))
+    (comb (cond ((<=  2 0) (remove (choose harmonicos cknloopmain) harmonicos))
+   (t (om::flat-once (malt-cartesian-op (remove (choose harmonicos cknloopmain) harmonicos) (malt-combx (remove (choose harmonicos cknloopmain) harmonicos) (1- 2)) 'om::x-append)))))
 
-    (action1 (loop :for cknloop :in combinations :collect 
+    (action1 (loop :for cknloop :in comb :collect 
 
         (let* ((ordem (om::sort-list cknloop))
                (iguais (let ((L()))
@@ -793,12 +793,12 @@ Example:
 
 (let* 
 (
- (combinations (cond
+ (comb (cond
    ((<=  3 0) 6-notes)
    (t (om::flat-once 
-       (cartesian-op 6-notes (combx 6-notes (1- 3)) 'om::x-append)))))
+       (malt-cartesian-op 6-notes (malt-combx 6-notes (1- 3)) 'om::x-append)))))
 
- (action1 (loop :for cknloop :in combinations collect (om::sort-list cknloop)))
+ (action1 (loop :for cknloop :in comb collect (om::sort-list cknloop)))
 
  (action2 (remove nil (loop :for cknloop2 :in action1 :collect 
           (if (= (length (remove-duplicates cknloop2 :test #'equal)) 3) (remove-duplicates cknloop2 :test #'equal) nil)))))
@@ -1214,24 +1214,20 @@ For the automatic work the folder out-files of OM# must be in the files preferen
 ; =================================== COMBINE BY MIKHAIL MALT (IRCAM 1993-1996) ================
 
 
-(defun cartesian-op (l1 l2 fun) 
+(defun malt-cartesian-op (l1 l2 fun) 
 
   (mapcar #'(lambda (x) (mapcar #'(lambda (y) (funcall fun x y)) (om::list! l2))) (om::list! l1))
-)
+      )
 
-(defun combx (vals n)
+(defun malt-combx (vals n)
   (cond
    ((<=  n 0) vals)
    (t (om::flat-once 
-       (cartesian-op vals (combx vals (1- n)) 'om::x-append))))
+       (malt-cartesian-op vals (malt-combx vals (1- n)) 'om::x-append))))
 )
 
-(defun removeIt (a lis)
-  (if (null lis) 0
-      (if (= a (car lis))
-          (delete (car lis))
-          (removeIt (cdr lis))))
-)
+
+; ===========================================================================
 
 (defun to-voice (x)
 
@@ -1243,7 +1239,7 @@ For the automatic work the folder out-files of OM# must be in the files preferen
 (om::make-value 'voice (list (list :tree (om-ji::to-voice x)) (list :lmidic x) (list :tempo 40) (list :lchan 9))))
 
 
-; ===========================================================================
+
 
 (print 
  "
