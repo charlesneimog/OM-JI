@@ -937,13 +937,46 @@ In this object we can undestand how identities can be connected using the theory
 	  (cond ((> d max-d) (return (list n))) ; n is prime
 		((zerop (rem n d)) (return (cons d (factor (truncate n d)))))))))
 
-
 (values 
-(loop :for x :in harmonic :collect (factor x))
-(loop :for x :in harmonic :collect (let* (
+
+;; ============================= SEM EQUIVALENCIA ============
+
+(loop :for x :in harmonic 
+      :collect 
+      (if (is-prime x) (print (format nil "~d e primo" x))
+                 (let* (
+                                           (fatoracao (factor x))
+                                           (combinations (cps fatoracao (1- (length fatoracao)))))
+                                           (loop :for z :in (reverse fatoracao)
+                                                  :for loop-combinations :in combinations
+                                                  :do (om::om-print (format nil "~d pode ser interpretado como o ~d harmonico de ~d." x z 
+                                                                       (reduce (lambda (x y) (om::om* x y)) loop-combinations)) "Sem equivalencia de oitavas"))
+                                       fatoracao)))
+
+;; ============================= COM EQUIVALENCIA ============
+
+
+(let* ()
+(print "
+
+==================  COM EQUIVALENCIA DE OITAVAS =======================
+
+")
+(loop :for x :in harmonic 
+      :collect 
+(if (is-prime x) (print (format nil "~d e primo" x))
+                                      (let* (
                                         (action1 (factor x))
                                         (action2 (remove 2 action1)))
-                                        (if (equal nil action2) '(1) action2)))))
+                                        (if (equal nil action2) (list 1)
+                                          (let* (
+                                           (combinations (if (om::om< (length (om::list! action2)) 2) (om::list! action2) (cps action2 (1- (length action2))))))
+                                           (loop :for z :in (reverse action2)
+                                                  :for loop-combinations :in combinations
+                                                  :do (om::om-print (format nil "~d pode ser interpretado como o ~d harmonico de ~d." x z 
+                                                                       (if (equal 1 (length (om::list! loop-combinations))) loop-combinations 
+(reduce (lambda (x y) (om::om* x y)) loop-combinations))) "Com equivalencia de oitavas"))))
+                                        action2))))))
 
 
 ;; ;; =================================== Others =============================================

@@ -1,5 +1,7 @@
 ;; Functions by Charles K. Neimog (2019 - 2020) | Universidade Federal de Juiz de Fora | charlesneimog.com
 
+;; Necessita de ser carregado dentro do Software OM-Sharp
+
 (in-package :om-ji)
 
 ;; ======================================== Just-Intonation ==============================
@@ -920,8 +922,8 @@ action2))
 :icon 004
 :doc "Create a temperament."
 
-(let ((Question (print "Temperamented music, really?")))
-
+(let* () 
+(print "Temperamented music, really?")
 (om::x-append fund (f->mc (om::om* (mc->f fund) (om::om^ (expt ratio (/ 1 division)) (arithm-ser 1 division 1)))))))
 
 
@@ -939,21 +941,48 @@ In this object we can undestand how identities can be connected using the theory
  Lisp code of https://sholtz9421.wordpress.c/2012/10/08/prime-number-factorization-in-lisp/."
 :numouts 2 
 
-(defun factor (n)
-  "Return a list of factors of N."
-  (when (> n 1)
-    (loop with max-d = (isqrt n)
-	  for d = 2 then (if (evenp d) (+ d 1) (+ d 2)) do
-	  (cond ((> d max-d) (return (list n))) ; n is prime
-		((zerop (rem n d)) (return (cons d (factor (truncate n d)))))))))
-
 
 (values 
-(loop :for x :in harmonic :collect (factor x))
-(loop :for x :in harmonic :collect (let* (
+
+;; ============================= SEM EQUIVALENCIA ============
+
+(loop :for x :in harmonic 
+      :collect 
+      (if (is-prime x) (print (format nil "~d e primo" x))
+                 (let* (
+                                           (fatoracao (factor x))
+                                           (combinations (cps fatoracao (1- (length fatoracao)))))
+                                           (loop :for z :in (reverse fatoracao)
+                                                  :for loop-combinations :in combinations
+                                                  :do (om::om-print (format nil "~d pode ser interpretado como o ~d harmonico de ~d." x z 
+                                                                       (reduce (lambda (x y) (om::om* x y)) loop-combinations)) "Sem equivalencia de oitavas"))
+                                       fatoracao)))
+
+;; ============================= COM EQUIVALENCIA ============
+
+
+(let* ()
+(print "
+
+==================  COM EQUIVALENCIA DE OITAVAS =======================
+
+")
+(loop :for x :in harmonic 
+      :collect 
+(if (is-prime x) (print (format nil "~d e primo" x))
+                                      (let* (
                                         (action1 (factor x))
                                         (action2 (remove 2 action1)))
-                                        (if (equal nil action2) '(1) action2)))))
+                                        (if (equal nil action2) (list 1)
+                                          (let* (
+                                           (combinations (if (om::om< (length (om::list! action2)) 2) (om::list! action2) (cps action2 (1- (length action2))))))
+                                           (loop :for z :in (reverse action2)
+                                                  :for loop-combinations :in combinations
+                                                  :do (om::om-print (format nil "~d pode ser interpretado como o ~d harmonico de ~d." x z 
+                                                                       (if (equal 1 (length (om::list! loop-combinations))) loop-combinations 
+(reduce (lambda (x y) (om::om* x y)) loop-combinations))) "Com equivalencia de oitavas"))))
+                                        action2))))))
+
 
 
 ;; ;; =================================== Others =============================================
@@ -1152,6 +1181,13 @@ For the automatic work the folder out-files of OM# must be in the files preferen
 
 ; ===========================================================================
 
+(defun is-prime (n &optional (d (- n 1))) 
+  (if (/= n 1) (or (= d 1)
+      (and (/= (rem n d) 0)
+           (is-prime  n (- d 1)))) ()))
+
+; ===========================================================================
+
 (defun list-of-listp (thing) (and (listp thing) (every #'listp thing)))
 (deftype list-of-lists () '(satisfies list-of-listp))
 
@@ -1208,7 +1244,15 @@ For the automatic work the folder out-files of OM# must be in the files preferen
   (loop for i from 1 below n 
      when (zerop (mod n i)) collecting i))
 
+; =================================== NUMBER ================
 
+(defun factor (n)
+  "Return a list of factors of N."
+  (when (> n 1)
+    (loop with max-d = (isqrt n)
+	  for d = 2 then (if (evenp d) (+ d 1) (+ d 2)) do
+	  (cond ((> d max-d) (return (list n))) ; n is prime
+		((zerop (rem n d)) (return (cons d (factor (truncate n d)))))))))
 
 
 ; =================================== COMBINE BY MIKHAIL MALT (IRCAM 1993-1996) ================
@@ -1223,8 +1267,7 @@ For the automatic work the folder out-files of OM# must be in the files preferen
   (cond
    ((<=  n 0) vals)
    (t (om::flat-once 
-       (malt-cartesian-op vals (malt-combx vals (1- n)) 'om::x-append))))
-)
+       (malt-cartesian-op vals (malt-combx vals (1- n)) 'om::x-append)))))
 
 
 ; ===========================================================================
