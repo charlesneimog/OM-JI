@@ -14,7 +14,7 @@ See http://charlesneimog.com")
 
 (:symbols 
       (:packages
-            (:package (:name "Just-Intonation Utilities") (:functions "om-ji::rt->mc" "om-ji::range-reduce" "om-ji::filter-ac-inst" "om-ji::modulation-notes" "om-ji::modulation-notes-fund" "om-ji::rt-octave" "om-ji::ji-change-notes"))
+            (:package (:name "Just-Intonation Utilities") (:functions "om-ji::rt->mc" "om-ji::range-reduce" "om-ji::filter-ac-inst" "om-ji::modulation-notes" "om-ji::modulation-notes-fund" "om-ji::rt-octave" "om-ji::ji-change-notes" "om-ji::ji-range-change-notes"))
             (:package (:name "Harry Partch") (:functions "om-ji::Diamond" "om-ji::Diamond-Identity" "om-ji::chord-inverse"))
             (:package (:name "Erv Wilson") (:functions "om-ji::cps->identity" "om-ji::cps->ratio")
                   (:packages

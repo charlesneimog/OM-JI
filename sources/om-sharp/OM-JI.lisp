@@ -912,6 +912,22 @@ Example:
                      (nth action2 afinação))) action1)))
 action2))
 
+;; ;; =================================== 
+
+(om::defmethod! ji-range-change-notes ((timbre list) (afinacao list) (range list))
+:initvals '((6000 6100 6200 6300 6400 6500 6600 6700 6800 6900 7000 7100 7200) (6000 6498 6996 6294 6792 6090 6588 7086 6384 6882 6180 6678 7200) (30 500))    
+:indoc ' ("Some list of notes in midicents" "some tuning system" "range")
+:icon 002
+:doc "This object change the notes of the first inlet by the nearest notes of the second inlet following the range in cents."
+
+(loop :for x :in timbre 
+      :collect (let* (
+      
+      (action1 (lambda (a) 
+                          (if (and  (<= (first range) (abs (om::om- x a))) 
+                                    (>= (second range) (abs (om::om- x a)))) a nil)))
+      (action2 (mapcar action1 afinacao)))
+      (om::nth-random (flat (list (remove nil action2)))))))                             
 
 
 ;; ;; =================================== Temperament =======================================
