@@ -897,19 +897,19 @@ Example:
 
 ;; ;; =================================== Charles' Functions =======================================
 
-(om::defmethod! ji-change-notes ((notas list) (afinação list))
+(om::defmethod! ji-change-notes ((notas list) (afinacao list))
 :initvals '((6000 6100 6200 6300 6400 6500 6600 6700 6800 6900 7000 7100 7200) (6000 6498 6996 6294 6792 6090 6588 7086 6384 6882 6180 6678 7200))    
 :indoc ' ("Some list of notes in midicents" "some tuning system")
 :icon 002
 :doc "This object change the notes of the first inlet by the nearest notes of the second inlet."
 
 (let* (
-(action1 (om::om-abs(loop for x in notas collect (om::om- afinação x))))
+(action1 (om::om-abs(loop for x in notas collect (om::om- afinacao x))))
 (action2 (mapcar (lambda (x) 
                    (let* (
                           (action1 (apply 'min x))
                           (action2 (position action1 x)))
-                     (nth action2 afinação))) action1)))
+                     (nth action2 afinacao))) action1)))
 action2))
 
 ;; ;; =================================== 
@@ -919,16 +919,96 @@ action2))
 :indoc ' ("Some list of notes in midicents" "some tuning system" "range")
 :icon 002
 :doc "This object change the notes of the first inlet by the nearest notes of the second inlet following the range in cents."
-
 (loop :for x :in timbre 
       :collect (let* (
-      
-      (action1 (lambda (a) 
-                          (if (and  (<= (first range) (abs (om::om- x a))) 
-                                    (>= (second range) (abs (om::om- x a)))) a nil)))
-      (action2 (mapcar action1 afinacao)))
-      (om::nth-random (flat (list (remove nil action2)))))))                             
+                      (action1 (lambda (a) 
+                                          (if (and  (<= (first range) (om::om-abs (om::om- x a))) 
+                                                    (>= (second range) (om::om-abs (om::om- x a)))) a nil)))
+                       
+                      (action2 (remove nil (mapcar action1 afinacao))))
+             
+                      (if (not (remove nil action2))
+                          nil
+                          (nth (position (om::list-min (om::om-abs (om::om- x action2))) (om::om-abs (om::om- x action2))) action2)))))
 
+;; ;; =================================== 
+
+(om::defmethod! change-parcials-melodies ((sdif sdiffile) (partial-index list) (area-microtonal list) (range list) (name-sdif-file string))
+:initvals '(nil 1 list (50 100) "om-ji.sdif")    
+:indoc ' ("sdif" "partial-index" "microtonal-area" "range in cents" "sdif name (needs .sdif at the end)")
+:icon 002
+:doc "This object change the notes of the first inlet by the nearest notes of the second inlet following the range in cents."
+(let* (
+      (action1 (ji-sdif->list-fun sdif))
+      (action2 (mapcar (lambda (x) (cdr x)) action1))
+      (action3 (mapcar (lambda (x) (car x)) action1))
+      (action4 (change-parcials-melodies-index-list action2 partial-index area-microtonal range))
+      (action5 (loop :for cdr-sdif :in action4
+                     :for time :in action3 
+                     :collect (let* (
+                                    (action5-1 (om::make-value 'sdifmatrix (list (list :matrixtype "1TRC") (list :data (mat-trans cdr-sdif))))))
+                    (om::make-value 'sdifframe (list (list :frametype "1TRC") (list :ftime time) (list :streamid 0) (list :lmatrix action5-1))))))
+      (action6 (list 
+                  (om::make-value 'sdiftype 
+                    (list (list :struct 'm) (list :signature "1TRC")))))
+      
+      (action7 (om::write-sdif-file action5 :outpath (om::outfile name-sdif-file) :types action6)))
+      (om::make-value-from-model 'sdiffile action7 nil)))
+      
+
+
+;; =================================================
+
+(defun change-parcials-melodies-fun (cdr-timbre partial-index area-microtonal range)
+(let* (
+(action1   
+(loop :for loop-cdr :in cdr-timbre 
+      :collect 
+    (loop :for the-note-itself :in loop-cdr
+        :collect 
+(if (equal (om::om-round (first the-note-itself)) partial-index)
+    (let* (
+          (note (om::f->mc (om::list! (second the-note-itself))))
+          (change-notes (om::mc->f (om-ji::ji-range-change-notes note area-microtonal range))))
+          (if (equal '(0) change-notes)
+            (x-append (first the-note-itself) (second the-note-itself) 0.0 0.0)
+            (x-append (first the-note-itself) change-notes (third the-note-itself) (fourth the-note-itself))))
+    the-note-itself)))))
+(remove nil action1)))
+
+;; ===================
+
+(defun change-parcials-melodies-index-list (cdr-timbre partial-index area-microtonal range)
+
+(let*  (
+    (action1 (first partial-index))
+    (action2 (change-parcials-melodies-fun cdr-timbre action1 area-microtonal range))
+    (action3 (cdr partial-index)))
+    (if (< (length action3) 2)
+        (change-parcials-melodies-fun action2 (car action3) area-microtonal range)
+        (setf cdr-timbre (change-parcials-melodies-index-list action2 action3 area-microtonal range)))))
+
+;; ;; =================================== 
+(defun ji-sdif->list-fun (sdif-file) 
+
+(let* (
+    (action1 (second (multiple-value-list 
+                (om::getsdifdata sdif-file 0 "1TRC" "1TRC" '(0 1 2) nil nil nil nil))))
+    (action2 (om::getsdifframes sdif-file)))
+(loop 
+            :for cknloop 
+            :in (om::arithm-ser 1 (length action2) 1) 
+                  :collect       
+    
+        (x-append (om::get-slot-val (om::make-value-from-model 'sdifframe (om::posn-match action2 (1-  cknloop)) nil) "FTIME")
+              (let* (
+  (action3-1 (om::posn-match 
+                    (om::get-slot-val (om::make-value-from-model 'sdifmatrix 
+                                          (first (om::get-slot-val 
+                              (om::make-value-from-model 'sdifframe (posn-match action2 (1- cknloop)) nil)
+                                            "LMATRIX")) nil) "DATA") '(0 1 2 3)))
+  (action3-2 (mat-trans (list (om::om-round (first action3-1)) (om::om-round (second action3-1) 2) (third action3-1) (fourth action3-1)))))
+action3-2)))))
 
 ;; ;; =================================== Temperament =======================================
 
@@ -964,7 +1044,7 @@ In this object we can undestand how identities can be connected using the theory
 
 (loop :for x :in harmonic 
       :collect 
-      (if (is-prime x) (print (format nil "~d e primo" x))
+      (if (is-prime x) (print (list (format nil "~d e primo" x)))
                  (let* (
                                            (fatoracao (factor x))
                                            (combinations (cps fatoracao (1- (length fatoracao)))))
