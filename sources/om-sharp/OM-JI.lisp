@@ -6,6 +6,16 @@
 
 ;; ======================================== Just-Intonation ==============================
 
+(om::defmethod! rt->mc ((ratio list) (fundamental list))
+:initvals ' ((1/1 11/8 7/4) (6000))
+:indoc ' ("Convert list of ratios to midicent." "This will be a note. This note will be the fundamental (reference note) of the list of ratios.") 
+:icon 002
+:doc "It converts ratio for midicents notes."
+
+(rt->mc ratio (car fundamental)))
+
+;; =================
+
 (om::defmethod! rt->mc ((ratio list) (fundamental number))
 :initvals ' ((1/1 11/8 7/4) (6000))
 :indoc ' ("Convert list of ratios to midicent." "This will be a note. This note will be the fundamental (reference note) of the list of ratios.") 
@@ -618,7 +628,9 @@ Example:
 :icon 006
 :doc "This object converts the combination-product set to ratio."
 
-(cps->ratio-fun hexany))
+(if (not (list-of-listp hexany))
+(cps->ratio-fun (list hexany))
+(cps->ratio-fun hexany)))
 
 ; ====== Functions 
 
@@ -895,7 +907,7 @@ Example:
            cknloop nil))))
 (remove nil task1)))
 
-;; ;; =================================== Charles' Functions =======================================
+;; ;; =================================== Timbre manipulation Functions =======================================
 
 (om::defmethod! ji-change-notes ((notas list) (afinacao list))
 :initvals '((6000 6100 6200 6300 6400 6500 6600 6700 6800 6900 7000 7100 7200) (6000 6498 6996 6294 6792 6090 6588 7086 6384 6882 6180 6678 7200))    
@@ -904,7 +916,7 @@ Example:
 :doc "This object change the notes of the first inlet by the nearest notes of the second inlet."
 
 (let* (
-(action1 (om::om-abs(loop for x in notas collect (om::om- afinacao x))))
+(action1 (om::om-abs (loop for x in notas collect (om::om- afinacao x))))
 (action2 (mapcar (lambda (x) 
                    (let* (
                           (action1 (apply 'min x))
@@ -970,7 +982,7 @@ action2))
     (let* (
           (note (om::f->mc (om::list! (second the-note-itself))))
           (change-notes (om::mc->f (om-ji::ji-range-change-notes note area-microtonal range))))
-          (if (equal '(0) change-notes)
+          (if (equal '(nil) change-notes)
             (x-append (first the-note-itself) (second the-note-itself) 0.0 0.0)
             (x-append (first the-note-itself) change-notes (third the-note-itself) (fourth the-note-itself))))
     the-note-itself)))))
@@ -992,22 +1004,27 @@ action2))
 (defun ji-sdif->list-fun (sdif-file) 
 
 (let* (
+    (info (om::sdifinfo sdif-file nil))
     (action1 (second (multiple-value-list 
-                (om::getsdifdata sdif-file 0 "1TRC" "1TRC" '(0 1 2) nil nil nil nil))))
-    (action2 (om::getsdifframes sdif-file)))
-(loop 
+                (om::getsdifdata sdif-file 0 (second (car info)) (third (car info)) '(0 1 2) nil nil nil nil))))
+    (action2 (getsdifframes sdif-file)))
+
+        (loop 
             :for cknloop 
-            :in (om::arithm-ser 1 (length action2) 1) 
+            :in (arithm-ser 1 (length action2) 1) 
                   :collect       
     
-        (x-append (om::get-slot-val (om::make-value-from-model 'sdifframe (om::posn-match action2 (1-  cknloop)) nil) "FTIME")
+        (x-append 
+              (om::get-slot-val (om::make-value-from-model 'sdifframe (posn-match action2 (1-  cknloop)) nil) "FTIME")
               (let* (
-  (action3-1 (om::posn-match 
+
+(action3-1 
+        (posn-match 
                     (om::get-slot-val (om::make-value-from-model 'sdifmatrix 
                                           (first (om::get-slot-val 
                               (om::make-value-from-model 'sdifframe (posn-match action2 (1- cknloop)) nil)
                                             "LMATRIX")) nil) "DATA") '(0 1 2 3)))
-  (action3-2 (mat-trans (list (om::om-round (first action3-1)) (om::om-round (second action3-1) 2) (third action3-1) (fourth action3-1)))))
+(action3-2 (mat-trans (list (om::om-round (first action3-1)) (om::om-round (second action3-1) 2) (third action3-1) (fourth action3-1)))))
 action3-2)))))
 
 ;; ;; =================================== Temperament =======================================
@@ -1040,7 +1057,7 @@ In this object we can undestand how identities can be connected using the theory
 
 (values 
 
-;; ============================= SEM EQUIVALENCIA ============
+;; SEM EQUIVALENCIA DE OITAVAS ============
 
 (loop :for x :in harmonic 
       :collect 
@@ -1054,7 +1071,7 @@ In this object we can undestand how identities can be connected using the theory
                                                                        (reduce (lambda (x y) (om::om* x y)) loop-combinations)) "Sem equivalencia de oitavas"))
                                        fatoracao)))
 
-;; ============================= COM EQUIVALENCIA ============
+;; COM EQUIVALENCIA DE OITAVAS ============
 
 
 (let* ()
@@ -1258,6 +1275,8 @@ For the automatic work the folder out-files of OM# must be in the files preferen
 (let
  ((tb (om::make-value 'textbuffer (list (list :contents (voice->text-fun voice 1)))))) 
  (setf (om::reader tb) :lines-cols) tb))
+
+(compile 'voice->text-fun)
 
  ; ===========================================================================
  
