@@ -924,6 +924,24 @@ Example:
                      (nth action2 afinacao))) action1)))
 action2))
 
+;; ;; ==========
+
+(om::defmethod! ji-change-notes ((notas number) (afinacao list))
+:initvals '((6000 6100 6200 6300 6400 6500 6600 6700 6800 6900 7000 7100 7200) (6000 6498 6996 6294 6792 6090 6588 7086 6384 6882 6180 6678 7200))    
+:indoc ' ("Some list of notes in midicents" "some tuning system")
+:icon 002
+:doc "This object change the notes of the first inlet by the nearest notes of the second inlet."
+
+(let* (
+(action1 (om::om-abs (loop :for x :in (om::list! notas) :collect (om::om- afinacao x))))
+(action2 (mapcar (lambda (x) 
+                   (let* (
+                          (action1 (apply 'min x))
+                          (action2 (position action1 x)))
+                     (nth action2 afinacao))) action1)))
+(car action2)))
+
+
 ;; ;; =================================== 
 
 (om::defmethod! ji-range-change-notes ((timbre list) (afinacao list) (range list))
@@ -1401,7 +1419,7 @@ For the automatic work the folder out-files of OM# must be in the files preferen
 
 (print 
  "
-                                              -JI
+                                  OM-JI
       by Charles K. Neimog | charlesneimog.com  
    Universidade Federal de Juiz de Fora (2019-2020)
 "
