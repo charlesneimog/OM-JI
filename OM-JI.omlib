@@ -1,6 +1,6 @@
 (:om-lib
 
-(:version 1.0)
+(:version 1.0.1)
 (:doc "This Library was developed for the microtonal composition, Mainly to Just Intonation composition in Electronic Environment. 
 For suggestions email us at charlesneimog@outlook.com.
 
