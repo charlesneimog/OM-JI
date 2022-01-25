@@ -914,7 +914,6 @@ Example:
                      (nth action2 afinação))) action1)))
 action2))
 
-
 ;; ;; =================================== Math =============================================
 
 (defmethod! om::Prime-decomposition ((harmonic list))
