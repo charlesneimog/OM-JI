@@ -986,7 +986,7 @@ action2))
       (om::make-value-from-model 'sdiffile action7 nil)))
       
 
-
+(compile 'change-parcials-melodies)
 ;; =================================================
 
 (defun change-parcials-melodies-fun (cdr-timbre partial-index area-microtonal range)
@@ -1006,6 +1006,7 @@ action2))
     the-note-itself)))))
 (remove nil action1)))
 
+(compile 'change-parcials-melodies-fun)
 ;; ===================
 
 (defun change-parcials-melodies-index-list (cdr-timbre partial-index area-microtonal range)
@@ -1018,6 +1019,8 @@ action2))
         (change-parcials-melodies-fun action2 (car action3) area-microtonal range)
         (setf cdr-timbre (change-parcials-melodies-index-list action2 action3 area-microtonal range)))))
 
+
+(compile 'change-parcials-melodies-index-list)
 ;; ;; =================================== 
 (defun ji-sdif->list-fun (sdif-file) 
 
@@ -1085,8 +1088,8 @@ In this object we can undestand how identities can be connected using the theory
                                            (combinations (cps fatoracao (1- (length fatoracao)))))
                                            (loop :for z :in (reverse fatoracao)
                                                   :for loop-combinations :in combinations
-                                                  :do (om::om-print (format nil "~d pode ser interpretado como o ~d harmonico de ~d." x z 
-                                                                       (reduce (lambda (x y) (om::om* x y)) loop-combinations)) "Sem equivalencia de oitavas"))
+                                                  :do (om::om-print (format nil "~d could be interpreted how the ~dº harmonic of ~d." x z 
+                                                                       (reduce (lambda (x y) (om::om* x y)) loop-combinations)) "Without octave equivalence."))
                                        fatoracao)))
 
 ;; COM EQUIVALENCIA DE OITAVAS ============
