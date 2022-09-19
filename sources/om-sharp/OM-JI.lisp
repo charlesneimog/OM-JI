@@ -916,7 +916,7 @@ Example:
 :doc "This object change the notes of the first inlet by the nearest notes of the second inlet."
 
 (let* (
-(action1 (om::om-abs (loop for x in notas collect (om::om- afinacao x))))
+(action1 (om::om-abs (loop :for x :in notas :collect (om::om- afinacao x))))
 (action2 (mapcar (lambda (x) 
                    (let* (
                           (action1 (apply 'min x))
@@ -978,11 +978,11 @@ action2))
                      :collect (let* (
                                     (action5-1 (om::make-value 'sdifmatrix (list (list :matrixtype "1TRC") (list :data (mat-trans cdr-sdif))))))
                     (om::make-value 'sdifframe (list (list :frametype "1TRC") (list :ftime time) (list :streamid 0) (list :lmatrix action5-1))))))
-      (action6 (list 
-                  (om::make-value 'sdiftype 
-                    (list (list :struct 'm) (list :signature "1TRC")))))
       
+      
+      (action6 (list (om::make-value 'sdiftype (list (list :struct 'm) (list :signature "1TRC")))))
       (action7 (om::write-sdif-file action5 :outpath (om::outfile name-sdif-file) :types action6)))
+      ;(print action5)
       (om::make-value-from-model 'sdiffile action7 nil)))
       
 
@@ -1048,6 +1048,26 @@ action2))
 (action3-2 (mat-trans (list (om::om-round (first action3-1)) (om::om-round (second action3-1) 2) (third action3-1) (fourth action3-1)))))
 action3-2)))))
 
+; ==========================================================================================
+(defun ji-list->sdif (list-sdif name-sdif-file)
+
+(let* (
+  (data (mapcar (lambda (x) (cdr x)) list-sdif))
+  (sdif-time (mapcar (lambda (x) (car x)) list-sdif))
+  
+  (mk-frame 
+    (loop :for sdif-frame :in data
+          :for time :in sdif-time
+          :collect (let* (
+                    (matrix (om::make-instance 'om::sdifmatrix :matrixtype "1TRC" :data (om::mat-trans sdif-frame))))
+                    (om::make-value 'sdifframe (list (list :frametype "1TRC") (list :ftime time) (list :streamid 0) (list :lmatrix matrix))))))
+  
+  (sdiftype (list (make-instance 'om::sdiftype :struct 'm :signature "1TRC")))
+  (write-sdif-file (om::write-sdif-file mk-frame :outpath (om::outfile name-sdif-file) :types sdiftype)))
+  (om::make-value-from-model 'sdiffile write-sdif-file nil)))
+
+(compile 'ji-list->sdif)
+
 ;; ;; =================================== Temperament =======================================
 
 (om::defmethod! mk-temperament ((fund number)(ratio number) (division number))
@@ -1088,7 +1108,7 @@ In this object we can undestand how identities can be connected using the theory
                                            (combinations (cps fatoracao (1- (length fatoracao)))))
                                            (loop :for z :in (reverse fatoracao)
                                                   :for loop-combinations :in combinations
-                                                  :do (om::om-print (format nil "~d could be interpreted how the ~dº harmonic of ~d." x z 
+                                                  :do (om::om-print (format nil "~d could be interpreted how the ~dï¿½ harmonic of ~d." x z 
                                                                        (reduce (lambda (x y) (om::om* x y)) loop-combinations)) "Without octave equivalence."))
                                        fatoracao)))
 
