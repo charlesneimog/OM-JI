@@ -1,6 +1,9 @@
 # OM-Just Intonation
 This Library aim to create an environment for the microtonal music composition, mainly for Just Intonation composition. This library constructs the theory of Harry Partch, Erv Wilson, and Ben Johnston. It works in [OM#](https://github.com/cac-t-u-s/om-sharp) and [OpenMusic](https://github.com/openmusic-project/openmusic/releases).
 
+**Cite this repository:** [![DOI](https://zenodo.org/badge/214263190.svg)](https://zenodo.org/badge/latestdoi/214263190)
+
+
 # [Download](https://bit.ly/3lsjz3b)
 
 ---
