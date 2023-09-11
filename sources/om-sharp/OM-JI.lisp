@@ -403,7 +403,7 @@ This is a procedure used by Ben Johnston in your strings quartets no. 2 and no. 
 (om::defmethod! MOS ((ratio number)(sobreposition number) (range number))
 :initvals ' (4/3 11 2/1)     
 :indoc ' ("Fundamental note of sobreposition" "Just Intonation interval" "High note" "Number of sobreposition")
-:icon 'MOS
+:icon 1999
 :doc "This object creates a Moment of Symmetry without a octave equivalence. For make the octave equivalence use the object Octave-reduce, choose the range of the this MOS. 
 
 MOS is a Theory of the composer Erv Wilson.                  
@@ -471,7 +471,7 @@ The numerator and denominator of fractions representing MOS are also co-prime. W
 (om::defmethod! MOS-verify ((mos list))
 :initvals ' ((1 4/3 16/9 32/27 128/81 256/243 1024/729 4096/2187 8192/6561 32768/19683 65536/59049 262144/177147 2))  
 :indoc ' ("list of notes - object-MOS")
-:icon 'MOS
+:icon 1999
 :numouts 2
 :outdoc ' ("s or L interval" "The ratio of the intervals")
 :doc "This object do the verification whether a list of notes is a MOS or not. If yes, informs the internal symmetry of your intervals, s for small intervals and L for Large interval. See Microtonality and the Tuning Systems of Erv Wilson-Routledge of NARUSHIMA."
@@ -518,7 +518,7 @@ The numerator and denominator of fractions representing MOS are also co-prime. W
 (om::defmethod! MOS-check ((ratio number)(sobreposition number) (range number) &optional (intervals 2))
 :initvals ' (4/3 60 2)     
 :indoc ' ("Just Intonation interval" "sobreposition" "range of check")
-:icon 'MOS
+:icon 1999
 :doc "This object creates a Moment of Symmetry without a octave equivalence. For make the octave equivalence use the object Octave-reduce, choose the range of the this MOS. 
 
 MOS is a Theory of the composer Erv Wilson.                  
@@ -567,7 +567,7 @@ The numerator and denominator of fractions representing MOS are also co-prime. W
 (om::defmethod! MOS-complementary ((ratio ratio) (range number) (sobreposition number))
 :initvals '(3/2 4 50)    
 :indoc ' ("ratio tested" "range (2 for octave) (3 for 10ª + 2¢) etc" "number maximum of sobreposition")
-:icon 'MOS
+:icon 1999
 :doc "(ratios fundamental num-mix-max range)"
 
 (let* (

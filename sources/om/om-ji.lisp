@@ -219,13 +219,6 @@ Result: (7 9 458)."
 ;; =============
 
 (defmethod! om::choose ((notelist list) (chord-n list))
-:initvals ' ((1 2 3 4 5 6 7 8 9 10) (1 7 9))
-:indoc ' ("List or list of lists of anything." "What element(s) do you want?") 
-:icon 002
-:doc "This object choose an element in a list; or a list in a list of lists. If you put more that one element in the second inlet this object will choose all the elements that you put in second inlet.
-Inlet1: (7 8 9 10 458)
-Inlet2: (1 3 5)
-Result: (7 9 458)."
 
 (posn-match notelist (om::om- chord-n 1)))
 
@@ -391,7 +384,7 @@ This is a procedure used by Ben Johnston in your strings quartets no. 2 and no. 
 (defmethod! om::MOS ((ratio number)(sobreposition number) (range number))
 :initvals ' (4/3 11 2/1)     
 :indoc ' ("Fundamental note of sobreposition" "Just Intonation interval" "High note" "Number of sobreposition")
-:icon 'MOS
+:icon 1999
 :doc "This object creates a Moment of Symmetry without a octave equivalence. For make the octave equivalence use the object Octave-reduce, choose the range of the this MOS. 
 
 MOS is a Theory of the composer Erv Wilson.                  
@@ -459,7 +452,7 @@ The numerator and denominator of fractions representing MOS are also co-prime. W
 (defmethod! om::MOS-verify ((mos list))
 :initvals ' ((1 4/3 16/9 32/27 128/81 256/243 1024/729 4096/2187 8192/6561 32768/19683 65536/59049 262144/177147 2))  
 :indoc ' ("list of notes - object-MOS")
-:icon 'MOS
+:icon 1999
 :numouts 2
 :outdoc ' ("s or L interval" "The ratio of the intervals")
 :doc "This object do the verification whether a list of notes is a MOS or not. If yes, informs the internal symmetry of your intervals, s for small intervals and L for Large interval. See Microtonality and the Tuning Systems of Erv Wilson-Routledge of NARUSHIMA."
@@ -503,7 +496,7 @@ The numerator and denominator of fractions representing MOS are also co-prime. W
 (defmethod! om::MOS-check ((ratio number)(sobreposition number) (range number) &optional (intervals 2))
 :initvals ' (4/3 60 2)     
 :indoc ' ("Just Intonation interval" "sobreposition" "range of check")
-:icon 'MOS
+:icon 1999
 :doc "This object creates a Moment of Symmetry without a octave equivalence. For make the octave equivalence use the object Octave-reduce, choose the range of the this MOS. 
 
 MOS is a Theory of the composer Erv Wilson.                  
@@ -549,7 +542,7 @@ The numerator and denominator of fractions representing MOS are also co-prime. W
 (defmethod! om::MOS-complementary ((ratio ratio) (range number) (sobreposition number))
 :initvals '(3/2 4 50)    
 :indoc ' ("ratio tested" "range (2 for octave) (3 for 10ª + 2¢) etc" "number maximum of sobreposition")
-:icon 'MOS
+:icon 1999
 :doc "(ratios fundamental num-mix-max range)"
 
 (let* (
@@ -589,7 +582,7 @@ Example:
 (
   (combinations (cond
             ((<=  quantidade 0) notes) 
-            (t (om::flat-once (cartesian-op notes (combx notes (1- quantidade)) 'om::x-append)))
+            (t (om::flat-once (malt-cartesian-op notes (malt-combx notes (1- quantidade)) 'om::x-append)))
                 )
   )
 
@@ -649,7 +642,7 @@ Example:
 (ckn-action (loop :for cknloop2 :in action0 :collect (/ cknloop2 (expt 2 (floor (log cknloop2 2))))))
 
 (combinations (let ((n (1- n)))
-    (combx ckn-action n)))
+    (malt-combx ckn-action n)))
 
 (action1 (loop :for cknloop :in combinations :collect 
 
@@ -680,7 +673,7 @@ Example:
 (defmethod! om::Hexany ((Hexany list))
 :initvals ' ((5 7 13 17))    
 :indoc ' ("List of just four harmonics.")
-:icon 19971997
+:icon 1998
 :doc "This object create a Hexany of the theory of Combination Product-Set of the Composer Erv Wilson."
 
 (if (= 4 (length Hexany)) 
@@ -690,7 +683,7 @@ Example:
  (combinations (cond
    ((<=  2 0) Hexany)
    (t (om::flat-once 
-       (cartesian-op Hexany (combx Hexany (1- 2)) 'om::x-append)))))
+       (malt-cartesian-op Hexany (malt-combx Hexany (1- 2)) 'om::x-append)))))
 
  (action1 (loop :for cknloop :in combinations collect (om::sort-list cknloop)))
 
@@ -706,11 +699,11 @@ Example:
 ;; ===================================================
 
 (defmethod! om::Hexany-triads ((harmonicos list))
-:initvals ' (1 3 5 7)      
-:indoc ' ("harmonicos")
-:outdoc ' ("sub-harmonic" "harmonic")
+:initvals ' ((5 7 13 17))    
+:indoc '("harmonicos")
+:outdoc '("sub-harmonic" "harmonic")
 :numouts 2 
-:icon 19971997
+:icon 1998
 :doc "The object hexany-triads construct the triads of the CPS Hexany. It follows the theory presented by Terumi Narushima in your book Microtonality and the Tuning Systems of Erv Wilson. In the outlet of the left, we have the sub-harmonics triads. In the outlet of the right, we have the harmonic triads."
 
 (values 
@@ -720,10 +713,10 @@ Example:
   (actionmain (loop :for cknloopmain :in (arithm-ser 1 (length harmonicos) 1) :collect
       (let* (
         
-    (combinations (cond ((<=  2 0) (remove (choose harmonicos cknloopmain) harmonicos))
-   (t (om::flat-once (cartesian-op (remove (choose harmonicos cknloopmain) harmonicos) (combx (remove (choose harmonicos cknloopmain) harmonicos) (1- 2)) 'om::x-append)))))
+    (comb (cond ((<=  2 0) (remove (om::choose harmonicos cknloopmain) harmonicos))
+   (t (om::flat-once (malt-cartesian-op (remove (om::choose harmonicos cknloopmain) harmonicos) (malt-combx (remove (om::choose harmonicos cknloopmain) harmonicos) (1- 2)) 'om::x-append)))))
 
-    (action1 (loop :for cknloop :in combinations :collect 
+    (action1 (loop :for cknloop :in comb :collect 
 
         (let* ((ordem (om::sort-list cknloop))
                (iguais (let ((L()))
@@ -754,7 +747,7 @@ Example:
 (defmethod! om::Hexany-connections ((harmonico list) (hexany list))
 :initvals ' ((3 13) ((3 5) (3 13) (5 13) (3 21) (5 21) (13 21)))    
 :indoc ' ("list of two harmonics" "list of just four harmonics")
-:icon 19971997
+:icon 1998
 :doc "This object shown the Hexany connections of the theory of Combination Product-Set of the Composer Erv Wilson."
 
 (let*
@@ -788,7 +781,7 @@ Example:
  (combinations (cond
    ((<=  3 0) 6-notes)
    (t (om::flat-once 
-       (cartesian-op 6-notes (combx 6-notes (1- 3)) 'om::x-append)))))
+       (malt-cartesian-op 6-notes (malt-combx 6-notes (1- 3)) 'om::x-append)))))
 
  (action1 (loop :for cknloop :in combinations collect (om::sort-list cknloop)))
 
