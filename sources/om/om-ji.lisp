@@ -908,6 +908,19 @@ Example:
 action2))
 
 ;; ;; =================================== Math =============================================
+(defun is-prime (n &optional (d (- n 1))) 
+  (if (/= n 1) (or (= d 1)
+      (and (/= (rem n d) 0)
+           (is-prime  n (- d 1)))) ()))
+
+(defun factor (n)
+  "Return a list of factors of N."
+  (when (> n 1)
+    (loop with max-d = (isqrt n)
+	  for d = 2 then (if (evenp d) (+ d 1) (+ d 2)) do
+	  (cond ((> d max-d) (return (list n))) ; n is prime
+		((zerop (rem n d)) (return (cons d (factor (truncate n d)))))))))
+
 
 (defmethod! om::Prime-decomposition ((harmonic list))
 :initvals ' ((9 18 172))     
@@ -921,13 +934,7 @@ In this object we can undestand how identities can be connected using the theory
  Lisp code of https://sholtz9421.wordpress.c/2012/10/08/prime-number-factorization-in-lisp/."
 :numouts 2 
 
-(defun factor (n)
-  "Return a list of factors of N."
-  (when (> n 1)
-    (loop with max-d = (isqrt n)
-	  for d = 2 then (if (evenp d) (+ d 1) (+ d 2)) do
-	  (cond ((> d max-d) (return (list n))) ; n is prime
-		((zerop (rem n d)) (return (cons d (factor (truncate n d)))))))))
+
 
 (values 
 
@@ -938,7 +945,7 @@ In this object we can undestand how identities can be connected using the theory
       (if (is-prime x) (print (format nil "~d e primo" x))
                  (let* (
                                            (fatoracao (factor x))
-                                           (combinations (cps fatoracao (1- (length fatoracao)))))
+                                           (combinations (cps-fun fatoracao (1- (length fatoracao)))))
                                            (loop :for z :in (reverse fatoracao)
                                                   :for loop-combinations :in combinations
                                                   :do (om::om-print (format nil "~d pode ser interpretado como o ~d harmonico de ~d." x z 
@@ -962,7 +969,7 @@ In this object we can undestand how identities can be connected using the theory
                                         (action2 (remove 2 action1)))
                                         (if (equal nil action2) (list 1)
                                           (let* (
-                                           (combinations (if (om::om< (length (om::list! action2)) 2) (om::list! action2) (cps action2 (1- (length action2))))))
+                                           (combinations (if (om::om< (length (om::list! action2)) 2) (om::list! action2) (cps-fun action2 (1- (length action2))))))
                                            (loop :for z :in (reverse action2)
                                                   :for loop-combinations :in combinations
                                                   :do (om::om-print (format nil "~d pode ser interpretado como o ~d harmonico de ~d." x z 
